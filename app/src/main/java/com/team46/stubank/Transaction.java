@@ -16,4 +16,24 @@ public class Transaction {
         this.dateTransaction = dateTransaction;
         this.paymentType = paymentType;
     }
+
+    public Card getCardPaidFrom() {
+        return cardPaidFrom;
+    }
+
+    public PaymentAccount getPaymentAccount() {
+        return paymentAccount;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public Date getDateTransaction() {
+        return dateTransaction;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
 }
