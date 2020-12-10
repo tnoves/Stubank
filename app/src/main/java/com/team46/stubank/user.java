@@ -1,3 +1,5 @@
+package com.team46.stubank;
+
 import java.util.Date;
 
 public class user {
