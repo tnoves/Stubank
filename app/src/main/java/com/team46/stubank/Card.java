@@ -1,12 +1,14 @@
 package com.team46.stubank;
 
+import com.team46.stubank.data_access.CardDao;
+
 import java.util.Date;
 
 public class Card {
     private String name;
     private double balance;
     private String cardType;
-    private String accountNum;
+    private Double accountNum;
     private String sortCode;
     private String expiryEnd;
     private String paymentProcessor;
@@ -36,11 +38,11 @@ public class Card {
         cardType = cardType;
     }
 
-    public String getAccountNum() {
+    public Double getAccountNum() {
         return accountNum;
     }
 
-    public void setAccountNum(String accountNum) {
+    public void setAccountNum(Double accountNum) {
         accountNum = accountNum;
     }
 
@@ -77,20 +79,40 @@ public class Card {
     }
 
     //* ===== Card Functionality ===== *//
-    public boolean makePayment(double amount) {
-        // card doesn't have enough money to send amount
-        if (balance < amount) {
+    public boolean makePayment(double amount, PaymentAccount account) {
+        try {
+            refresh();
+
+            // card doesn't have enough money to send amount
+            if (balance < amount) {
+                return false;
+            }
+
+            // deduct amount from cards balance
+            balance -= amount;
+
+            // get card of payment account
+            Card paymentCard = new CardDao().getCard(account.getAccountNumber());
+
+            // debit x amount to payment account
+            if (paymentCard != null) {
+                paymentCard.debit(amount);
+                paymentCard.update();
+            }
+
+            // update this card
+            update();
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
-
-        // TODO: send money from this card to a payment account
-
-        return true;
     }
 
-    public boolean makePayment(double amount, Date recurringPaymentDate) {
+    public boolean makePayment(double amount, PaymentAccount account, Date recurringPaymentDate) {
         // make initial payment
-        boolean initialPaymentMade = makePayment(amount);
+        boolean initialPaymentMade = makePayment(amount, account);
 
         if (!initialPaymentMade) {
             return false;
@@ -104,21 +126,43 @@ public class Card {
     public boolean debit(double amount) {
         // TODO: verify amount for security
 
+        refresh();
+
         // add amount to card
         balance += amount;
+
+        // update card in database
+        update();
 
         return true;
     }
 
     private void update() {
-        // TODO: Push updated card details to the database (DAO)
+        // push updated card details to the database (DAO)
+        CardDao dao = new CardDao();
+
+        dao.updateCard(this);
     }
 
     public void refresh() {
-        // TODO: Get updated card details from database (DAO)
+        // get updated card details from database (DAO)
+        CardDao dao = new CardDao();
+
+        Card updatedCard = dao.getCard(accountNum);
+
+        name = updatedCard.name;
+        balance = updatedCard.balance;
+        cardType = updatedCard.cardType;
+        accountNum = updatedCard.accountNum;
+        sortCode = updatedCard.sortCode;
+        expiryEnd = updatedCard.expiryEnd;
+        paymentProcessor = updatedCard.paymentProcessor;
+        active = updatedCard.active;
     }
 
     public void delete() {
-        // TODO: Delete this card from database (DAO)
+        // delete this card from database (DAO)
+        CardDao dao = new CardDao();
+        dao.deleteCard(this);
     }
 }

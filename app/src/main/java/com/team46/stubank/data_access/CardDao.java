@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CardDao {
 
-    public Card getCard(String accountNumber) {
+    public Card getCard(Double accountNumber) {
         Card card = null;
 
         return card;
