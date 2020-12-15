@@ -5,4 +5,5 @@
     <string name="prompt_email">email</string>
     <string name="prompt_password">Password</string>
     <string name="sign_in">Sign in</string>
+    <string name="cards_menu">Cards</string>
 </resources>
