@@ -6,4 +6,8 @@
     <string name="prompt_password">Password</string>
     <string name="sign_in">Sign in</string>
     <string name="cards_menu">Cards</string>
+    <string name="account_number">Account number</string>
+    <string name="card_no">User card number</string>
+    <string name="toggle_card_details">Toggle card details</string>
+    <string name="card_status">Card status</string>
 </resources>
