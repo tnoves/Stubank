@@ -9,8 +9,8 @@
     tools:context=".displayCards">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="366dp"
-        android:layout_height="173dp"
+        android:layout_width="362dp"
+        android:layout_height="172dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="80dp"
@@ -27,7 +27,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:onClick="viewCard">
 
             <ImageView
                 android:id="@+id/imageView2"

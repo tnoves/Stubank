@@ -10,4 +10,5 @@
     <string name="card_no">User card number</string>
     <string name="toggle_card_details">Toggle card details</string>
     <string name="card_status">Card status</string>
+    <string name="account_balance">Balance</string>
 </resources>
