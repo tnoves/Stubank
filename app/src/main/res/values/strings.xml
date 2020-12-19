@@ -13,4 +13,7 @@
     <string name="account_balance">BALANCE</string>
     <string name="balance_default">£0.00</string>
     <string name="account_number_default">3411-4885-6324-7195</string>
+    <string name="name_default">Joe Bloggs</string>
+    <string name="card_number_default">0000-0000-0000-0000</string>
+    <string name="sortcode_default">11-11-11</string>
 </resources>
