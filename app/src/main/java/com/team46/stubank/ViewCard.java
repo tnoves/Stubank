@@ -2,7 +2,9 @@ package com.team46.stubank;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListAdapter;
@@ -94,5 +96,13 @@ public class ViewCard extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(1), transaction_two);
         listDataChild.put(listDataHeader.get(2), transaction_three);
         listDataChild.put(listDataHeader.get(3), transactionfour);
+    }
+    public void viewBudget(View view){
+        Intent intent = new Intent(this, DisplayBudget.class);
+        startActivity(intent);
+    }
+    public void viewPay(View view){
+        Intent intent = new Intent(this, DisplayPay.class);
+        startActivity(intent);
     }
 }

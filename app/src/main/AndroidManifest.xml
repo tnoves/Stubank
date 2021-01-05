@@ -11,6 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StuBank">
+        <activity android:name=".DisplayPay">
+            android:parentActivityName=".ViewCard">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ViewCard" />
+        </activity>
+        <activity android:name=".DisplayBudget">
+            android:parentActivityName=".ViewCard">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ViewCard" />
+        </activity>
         <activity android:name=".ViewCard">
             android:parentActivityName=".displayCards">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -18,7 +32,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".displayCards" />
         </activity>
-        <activity android:name=".viewMainMenu"></activity>
+        <activity android:name=".viewMainMenu" />
         <activity android:name=".displayCards">
             android:parentActivityName=".viewMainMenu">
             <!-- The meta-data tag is required if you support API level 15 and lower -->

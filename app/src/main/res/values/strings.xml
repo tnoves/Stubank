@@ -16,4 +16,6 @@
     <string name="name_default">Joe Bloggs</string>
     <string name="card_number_default">0000-0000-0000-0000</string>
     <string name="sortcode_default">11-11-11</string>
+    <string name="pay">PAY</string>
+    <string name="budget">BUDGET</string>
 </resources>
