@@ -5,21 +5,22 @@ import com.team46.stubank.data_access.CardDao;
 import java.util.Date;
 
 public class Card {
-    private String name;
+    private String cardNumber;
     private double balance;
     private String cardType;
     private Double accountNum;
     private String sortCode;
+    private String cvcCode;
     private String expiryEnd;
     private String paymentProcessor;
     private boolean active;
 
-    public String getName() {
-        return name;
+    public String getCardNumber() {
+        return cardNumber;
     }
 
-    public void setName(String name) {
-        name = name;
+    public void setCardNumber(String cardNumber) {
+        cardNumber = cardNumber;
     }
 
     public double getBalance() {
@@ -52,6 +53,14 @@ public class Card {
 
     public void setSortCode(String sortCode) {
         sortCode = sortCode;
+    }
+
+    public String getCvcCode() {
+        return cvcCode;
+    }
+
+    public void setCvcCode(String cvcCode) {
+        cvcCode = cvcCode;
     }
 
     public String getExpiryEnd() {
@@ -92,7 +101,9 @@ public class Card {
             balance -= amount;
 
             // get card of payment account
-            Card paymentCard = new CardDao().getCard(account.getAccountNumber());
+            /* Card paymentCard = new CardDao().getCard(account.getAccountNumber());
+
+            // get payment account card id --> check against card account ids
 
             // debit x amount to payment account
             if (paymentCard != null) {
@@ -102,7 +113,7 @@ public class Card {
 
             // update this card
             update();
-
+            */
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,13 +159,14 @@ public class Card {
         // get updated card details from database (DAO)
         CardDao dao = new CardDao();
 
-        Card updatedCard = dao.getCard(accountNum);
+        Card updatedCard = dao.getCard(cardNumber);
 
-        name = updatedCard.name;
+        cardNumber = updatedCard.cardNumber;
         balance = updatedCard.balance;
         cardType = updatedCard.cardType;
         accountNum = updatedCard.accountNum;
         sortCode = updatedCard.sortCode;
+        cvcCode = updatedCard.cvcCode;
         expiryEnd = updatedCard.expiryEnd;
         paymentProcessor = updatedCard.paymentProcessor;
         active = updatedCard.active;
