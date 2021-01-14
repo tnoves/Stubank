@@ -1,20 +1,13 @@
 package com.team46.stubank;
 
-import java.util.Date;
-
-public class user {
+public class User {
 
     private String firstName, lastName, email, phoneNumber, username, password;
-    private Date dob;
+    private String dob;
+    private int userID;
 
-    public user(String firstName, String lastName, String email, String phoneNumber, String username, String password, Date dob){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.username = username;
-        this.password = password;
-        this.dob = dob;
+    public User() {
+
     }
 
     public void setFirstName(String firstName) {
@@ -33,17 +26,21 @@ public class user {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
 
     public String getFirstName() {
         return firstName;
@@ -61,7 +58,7 @@ public class user {
         return phoneNumber;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
@@ -73,7 +70,8 @@ public class user {
         return username;
     }
 
-    public void delete(){
-
+    public int getUserID() {
+        return userID;
     }
+
 }
