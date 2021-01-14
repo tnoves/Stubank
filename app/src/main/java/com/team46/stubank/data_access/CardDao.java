@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.team46.stubank.Card;
+import com.team46.stubank.User;
 
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
@@ -45,12 +46,13 @@ public class CardDao {
 
                 // assign card json response to card object and return
                 Card card = new Card();
+                AccountDAO account = new AccountDAO();
 
                 card.setCardNumber(json.get("card_number").getAsString());
                 card.setBalance(json.get("balance").getAsDouble());
                 card.setCardType(json.get("card_type").getAsString());
-                // TODO: card.setAccountNum(); --> access AccountsDAO
-                // TODO: card.setSortCode(); --> access AccountsDAO --> access SortCode
+                card.setAccountNum(account.getAccountNumber(json.get("account_id").getAsString()));
+                card.setSortCode(account.getSortCodeNumber(account.getSortCodeId(json.get("account_id").getAsString())));
                 card.setCvcCode(json.get("cvc_code").getAsString());
                 card.setExpiryEnd(json.get("expiry_date").getAsString());
                 card.setPaymentProcessor(json.get("payment_processor").getAsString());
@@ -103,12 +105,13 @@ public class CardDao {
 
                     // assign card json response to card object and return
                     Card card = new Card();
+                    AccountDAO account = new AccountDAO();
 
                     card.setCardNumber(cardObj.get("card_number").getAsString());
                     card.setBalance(cardObj.get("balance").getAsDouble());
                     card.setCardType(cardObj.get("card_type").getAsString());
-                    // TODO: card.setAccountNum(); --> access AccountsDAO
-                    // TODO: card.setSortCode(); --> access AccountsDAO --> access SortCode
+                    card.setAccountNum(account.getAccountNumber(cardObj.get("account_id").getAsString()));
+                    card.setSortCode(account.getSortCodeNumber(account.getSortCodeId(cardObj.get("account_id").getAsString())));
                     card.setCvcCode(cardObj.get("cvc_code").getAsString());
                     card.setExpiryEnd(cardObj.get("expiry_date").getAsString());
                     card.setPaymentProcessor(cardObj.get("payment_processor").getAsString());
@@ -143,14 +146,14 @@ public class CardDao {
             conn.setDoOutput(true);
 
             JsonObject json = new JsonObject();
-            // TODO: json.addProperty("account_id", ); --> access AccountsDAO
+            // TODO: json.addProperty("account_id", User.getAccountId());
             json.addProperty("active", card.getActive());
             json.addProperty("balance", card.getBalance());
             json.addProperty("cvc_code", card.getCvcCode());
             json.addProperty("card_type", card.getCardType());
             json.addProperty("expiry_date", card.getExpiryEnd());
             json.addProperty("payment_processor", card.getPaymentProcessor());
-            // TODO: json.addProperty("user_id", ); --> access UsersDAO
+            // TODO: json.addProperty("user_id", User.getId());
 
             DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
             dataOutputStream.writeBytes(json.toString());
@@ -184,14 +187,14 @@ public class CardDao {
             conn.setDoOutput(true);
 
             JsonObject json = new JsonObject();
-            // TODO: json.addProperty("account_id", ); --> access AccountsDAO
+            // TODO: json.addProperty("account_id", User.getAccountId()); --> access AccountsDAO
             json.addProperty("active", card.getActive());
             json.addProperty("balance", card.getBalance());
             json.addProperty("cvc_code", card.getCvcCode());
             json.addProperty("card_type", card.getCardType());
             json.addProperty("expiry_date", card.getExpiryEnd());
             json.addProperty("payment_processor", card.getPaymentProcessor());
-            // TODO: json.addProperty("user_id", ); --> access UsersDAO
+            // TODO: json.addProperty("user_id", User.getId()); --> access UsersDAO
 
             DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
             dataOutputStream.writeBytes(json.toString());
