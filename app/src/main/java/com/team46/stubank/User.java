@@ -2,12 +2,12 @@ package com.team46.stubank;
 
 import java.util.Date;
 
-public class user {
+public class User {
 
     private String firstName, lastName, email, phoneNumber, username, password;
     private Date dob;
 
-    public user(String firstName, String lastName, String email, String phoneNumber, String username, String password, Date dob){
+    public User(String firstName, String lastName, String email, String phoneNumber, String username, String password, Date dob){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

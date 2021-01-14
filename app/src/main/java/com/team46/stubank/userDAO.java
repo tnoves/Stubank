@@ -3,7 +3,7 @@ package com.team46.stubank;
 public class userDAO {
 
     private int id;
-    private user user;
+    private User user;
 
     public int getUser(int user){
         return user;
@@ -13,11 +13,11 @@ public class userDAO {
         return users;
     }
 
-    public void insertUser(user user) {
+    public void insertUser(User user) {
 
     }
 
-    public void DeleteUser(user user){
+    public void DeleteUser(User user){
 
     }
 }
