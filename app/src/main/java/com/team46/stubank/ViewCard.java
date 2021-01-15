@@ -36,7 +36,6 @@ public class ViewCard extends AppCompatActivity {
         //set the spinners adapter to the previously created one.
         spinner.setAdapter(adapter);
 
-
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
@@ -47,7 +46,6 @@ public class ViewCard extends AppCompatActivity {
         listAdapter = new com.team46.stubank.ExpandableListAdapter(this, listDataHeader, listDataChild);
         // setting list adapter
         expListView.setAdapter(listAdapter);
-
 
     }
 

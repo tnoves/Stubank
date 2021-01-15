@@ -6,6 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".viewMainMenu">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="79dp"
+        app:cardBackgroundColor="#6d0095"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/mainMenuText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:autoText="false"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/main_menu"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp" />
+    </androidx.cardview.widget.CardView>
+
     <Button
         android:id="@+id/cards"
         android:layout_width="wrap_content"
@@ -18,16 +39,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/mainMenuText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:autoText="false"
-        android:text="@string/main_menu"
-        android:textSize="36sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
