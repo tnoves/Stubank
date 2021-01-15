@@ -3,36 +3,36 @@ package com.team46.stubank;
 import java.util.Date;
 
 public class Transaction {
-    Card cardPaidFrom;
+    String cardNumber;
     Double balance;
-    Date dateTransaction;
-    String paymentAccountID;
+    String dateTransaction;
+    String paymentActID;
     Double paymentAmount;
     String paymentType;
 
-    public Transaction(Card cardPaidFrom, PaymentAccount paymentAccount, Double paymentAmount, Date dateTransaction, String paymentType) {
-        this.cardPaidFrom = cardPaidFrom;
-        this.balance = cardPaidFrom.getBalance();
+    public Transaction(String cardNumber, Double balance, String dateTransaction, String paymentActID, Double paymentAmount, String paymentType) {
+        this.cardNumber = cardNumber;
+        this.balance = balance;
         this.dateTransaction = dateTransaction;
-        this.paymentAccountID = paymentAccount.getPaymentActID();
+        this.paymentActID = paymentActID;
         this.paymentAmount = paymentAmount;
         this.paymentType = paymentType;
     }
 
-    public Card getCardPaidFrom() {
-        return cardPaidFrom;
+    public String getCardNumber() {
+        return cardNumber;
     }
 
     public Double getBalanceAtTransaction() {
         return balance;
     }
 
-    public Date getDateTransaction() {
+    public String getDateTransaction() {
         return dateTransaction;
     }
 
     public String getPaymentAccountID() {
-        return paymentAccountID;
+        return paymentActID;
     }
 
     public Double getAmount() {
