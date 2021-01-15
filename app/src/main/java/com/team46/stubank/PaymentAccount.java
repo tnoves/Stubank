@@ -2,38 +2,30 @@ package com.team46.stubank;
 
 public class PaymentAccount {
 
-    private String firstName;
-    private String lastName;
-    private Double accountNumber;
-    private String sortCode;
 
+    private String paymentActID;
+    private String accountID;
+    private String userDetailsID;
 
-    public String getFirstName(){
-        return firstName;
+    public String getPaymentActID(){
+        return paymentActID;
     }
-    public void setFirstName(String firstName){
-        firstName = firstName;
-    }
-
-    public String getLastName(){
-        return  lastName;
-    }
-    public void  setLastName(String lastName){
-        lastName = lastName;
+    public void setPaymentActID(String paymentActID){
+        paymentActID = paymentActID;
     }
 
-    public Double getAccountNumber(){
-        return accountNumber;
+    public String getAccountID(){
+        return accountID;
     }
-    public void setAccountNumber(Double accountNumber){
-        accountNumber = accountNumber;
+    public void setAccountID(String accountID){
+        accountID = accountID;
     }
 
-    public String getSortCode(){
-        return sortCode;
+    public String getUserDetailsID(){
+        return userDetailsID;
     }
-    public void setSortCode(String sortCode){
-        sortCode = sortCode;
+    public void setUserDetailsID(String userDetailsID){
+        userDetailsID = userDetailsID;
     }
-    
+
 }
