@@ -4,16 +4,18 @@ import java.util.Date;
 
 public class Transaction {
     Card cardPaidFrom;
-    String paymentAccountID;
-    Double amount;
+    Double balance;
     Date dateTransaction;
+    String paymentAccountID;
+    Double paymentAmount;
     String paymentType;
 
-    public Transaction(Card cardPaidFrom, PaymentAccount paymentAccount, Double amount, Date dateTransaction, String paymentType) {
+    public Transaction(Card cardPaidFrom, PaymentAccount paymentAccount, Double paymentAmount, Date dateTransaction, String paymentType) {
         this.cardPaidFrom = cardPaidFrom;
-        this.paymentAccountID = paymentAccount.getPaymentActID();
-        this.amount = amount;
+        this.balance = cardPaidFrom.getBalance();
         this.dateTransaction = dateTransaction;
+        this.paymentAccountID = paymentAccount.getPaymentActID();
+        this.paymentAmount = paymentAmount;
         this.paymentType = paymentType;
     }
 
@@ -26,7 +28,7 @@ public class Transaction {
     }
 
     public Double getAmount() {
-        return amount;
+        return paymentAmount;
     }
 
     public Date getDateTransaction() {
