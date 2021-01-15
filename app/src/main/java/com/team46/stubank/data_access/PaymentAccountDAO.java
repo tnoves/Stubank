@@ -40,20 +40,21 @@ public class PaymentAccountDAO {
                 JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
                 // assign card json response to PaymentAccount object and return
+                String accountID = json.get("account_id").getAsString();
+                Integer userID = (json.get("user_details_id").getAsInt());
+
                 PaymentAccount paymentAccount = new PaymentAccount();
                 AccountDAO accountDAO = new AccountDAO();
                 UserDAO userDAO = new UserDAO();
 
-                String accountID = json.get("account_id").getAsString();
                 Integer sortCodeId = accountDAO.getSortCodeId(accountID);
-
-                Integer userID = (json.get("user_details_id").getAsInt());
 
                 User user = new User();
                 userDAO.getUser(userID);
 
                 paymentAccount.setSortCode((accountDAO.getSortCodeNumber(sortCodeId)));
 
+                paymentAccount.setPaymentActID((json.get("payment_account_id").getAsString()));
                 paymentAccount.setFirstName(user.getFirstName());
                 paymentAccount.setLastName(user.getLastName());
                 paymentAccount.setAccountNumber(accountDAO.getAccountNumber(accountID));
@@ -64,7 +65,6 @@ public class PaymentAccountDAO {
                 (json.get("account_id").getAsString());
                 (json.get("user_details_id").getAsString());
                  **/
-
 
                 return paymentAccount;
             }
