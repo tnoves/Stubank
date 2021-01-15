@@ -134,7 +134,7 @@ public class CardDao {
         }
     }
 
-    public boolean insertCard(Card card) {
+    public boolean insertCard(Card card, User user) {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - insert card endpoint
@@ -147,14 +147,14 @@ public class CardDao {
             conn.setDoOutput(true);
 
             JsonObject json = new JsonObject();
-            // TODO: json.addProperty("account_id", User.getAccountId());
+            // json.addProperty("account_id", user.getAccountId());
             json.addProperty("active", card.getActive());
             json.addProperty("balance", card.getBalance());
             json.addProperty("cvc_code", card.getCvcCode());
             json.addProperty("card_type", card.getCardType());
             json.addProperty("expiry_date", card.getExpiryEnd());
             json.addProperty("payment_processor", card.getPaymentProcessor());
-            // TODO: json.addProperty("user_id", User.getId());
+            json.addProperty("user_id", user.getUserID());
 
             DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
             dataOutputStream.writeBytes(json.toString());
@@ -174,7 +174,7 @@ public class CardDao {
         }
     }
 
-    public boolean updateCard(Card card) {
+    public boolean updateCard(Card card, User user) {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - update card endpoint
@@ -195,7 +195,7 @@ public class CardDao {
             json.addProperty("card_type", card.getCardType());
             json.addProperty("expiry_date", card.getExpiryEnd());
             json.addProperty("payment_processor", card.getPaymentProcessor());
-            // TODO: json.addProperty("user_id", User.getId()); --> access UsersDAO
+            json.addProperty("user_id", user.getUserID());
 
             DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
             dataOutputStream.writeBytes(json.toString());
