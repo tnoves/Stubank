@@ -23,16 +23,20 @@ public class Transaction {
         return cardPaidFrom;
     }
 
+    public Double getBalanceAtTransaction() {
+        return balance;
+    }
+
+    public Date getDateTransaction() {
+        return dateTransaction;
+    }
+
     public String getPaymentAccountID() {
         return paymentAccountID;
     }
 
     public Double getAmount() {
         return paymentAmount;
-    }
-
-    public Date getDateTransaction() {
-        return dateTransaction;
     }
 
     public String getPaymentType() {
