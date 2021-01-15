@@ -2,11 +2,18 @@ package com.team46.stubank;
 
 public class PaymentAccount {
 
+    private String paymentActID;
     private String firstName;
     private String lastName;
     private Double accountNumber;
     private String sortCode;
 
+    public String getPaymentActID(){
+        return paymentActID;
+    }
+    public void setPaymentActID(String paymentActID){
+        paymentActID = paymentActID;
+    }
 
     public String getFirstName(){
         return firstName;
