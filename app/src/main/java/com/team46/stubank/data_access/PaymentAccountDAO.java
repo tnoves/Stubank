@@ -80,5 +80,33 @@ public class PaymentAccountDAO {
 
 
 
+    public boolean deletePaymentAccount(String paymentActId) {
+        HttpURLConnection conn = null;
+        try {
+            // make connection to the StuBank api - delete card endpoint
+            URL url = new URL(String.format("DELETE 127.0.0.1:5000/payment_account/<id>", paymentActId));
+
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("DELETE");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conn != null)
+                conn.disconnect();
+        }
+    }
+
+
+
     //Database Access code
 }
