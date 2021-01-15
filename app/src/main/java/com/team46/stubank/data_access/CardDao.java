@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.team46.stubank.Card;
 import com.team46.stubank.User;
+import com.team46.stubank.data_access_connection.RequestManager;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
