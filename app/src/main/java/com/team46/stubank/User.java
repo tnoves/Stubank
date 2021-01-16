@@ -4,7 +4,7 @@ public class User {
 
     private String firstName, lastName, email, phoneNumber, username, password;
     private String dob;
-    private int userID;
+    private int userID, userDetailsID, accountID;
 
     public User() {
 
@@ -33,6 +33,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -41,6 +42,13 @@ public class User {
         this.userID = userID;
     }
 
+    public int getUserDetailsID() {
+        return userDetailsID;
+    }
+
+    public int getAccountID() {
+        return accountID;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -74,4 +82,11 @@ public class User {
         return userID;
     }
 
+    public void setUserDetailsID(int userDetailsID) {
+        this.userDetailsID = userDetailsID;
+    }
+
+    public void setAccountID(int accountID) {
+        this.accountID = accountID;
+    }
 }
