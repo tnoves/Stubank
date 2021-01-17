@@ -16,7 +16,7 @@ public class PaymentAccountDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get account endpoint
-            URL url = new URL(String.format("GET 127.0.0.1:5000/payment_account/<id>", paymentActId));
+            URL url = new URL(String.format("http://127.0.0.1:5000/payment_account/%s", paymentActId));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -77,7 +77,7 @@ public class PaymentAccountDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - update card endpoint
-            URL url = new URL(String.format("PUT 127.0.0.1:5000/payment_account/<id>", paymentAccount.getPaymentActID()));
+            URL url = new URL(String.format("http://127.0.0.1:5000/payment_account/%s", paymentAccount.getPaymentActID()));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("PUT");
@@ -114,8 +114,7 @@ public class PaymentAccountDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - insert card endpoint
-            URL url = new URL(String.format("POST 127.0.0.1:5000/payment_account/"));
-
+            URL url = new URL(String.format("http://127.0.0.1:5000/payment_account/"));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -146,11 +145,11 @@ public class PaymentAccountDAO {
         }
     }
 
-    public boolean deletePaymentAccount(String paymentActId) {
+    public boolean deletePaymentAccount(PaymentAccount paymentAccount) {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - delete card endpoint
-            URL url = new URL(String.format("DELETE 127.0.0.1:5000/payment_account/<id>", paymentActId));
+            URL url = new URL(String.format("http://127.0.0.1:5000/payment_account/%s", paymentAccount.getPaymentActID()));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
@@ -171,8 +170,5 @@ public class PaymentAccountDAO {
                 conn.disconnect();
         }
     }
-
-
-
 
 }
