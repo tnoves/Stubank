@@ -18,6 +18,7 @@ public class TransactionDAO {
     public boolean insertTransaction(Transaction transaction) {
         HttpURLConnection conn = null;
         try {
+            // Make connection to the StuBank API - insert transaction endpoint.
             URL url = new URL(String.format("http://127.0.0.1:5000/transaction/"));
 
             conn = (HttpURLConnection) url.openConnection();
@@ -57,6 +58,7 @@ public class TransactionDAO {
     public Transaction getTransaction(String transactionID) {
         HttpURLConnection conn = null;
         try {
+            // Make connection to the StuBank API - get transaction endpoint.
             URL url = new URL(String.format("http://127.0.0.1:5000/transaction/%s", transactionID));
 
             conn = (HttpURLConnection) url.openConnection();
@@ -80,6 +82,7 @@ public class TransactionDAO {
 
                 JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
+                // Returns a constructed Transaction object.
                 return new Transaction(
                         json.get("card_number").getAsString(),
                         json.get("balance").getAsDouble(),
@@ -102,6 +105,7 @@ public class TransactionDAO {
     public List<Transaction> getCardTransactions(String cardID) {
             HttpURLConnection conn = null;
             try {
+                // Make connection to the StuBank API - get all transaction endpoint
                 URL url = new URL(String.format("http://127.0.0.1:5000/transaction/card/%s", cardID));
 
                 conn = (HttpURLConnection) url.openConnection();
@@ -111,6 +115,8 @@ public class TransactionDAO {
                 conn.setDoOutput(true);
                 conn.connect();
 
+                // Get all transactions from an account.
+                // TODO: this only fetches transactions coming from the provided card ID, need another endpoint to fetch transactions going into the account. Alternative method is to create 2 opposite transactions when they're made.
                 if (conn.getResponseCode() != 200) {
                     throw new RuntimeException("HttpResponseCode: " + conn.getResponseCode());
                 } else {
@@ -129,6 +135,7 @@ public class TransactionDAO {
                     for (JsonElement transactions : json) {
                         JsonObject transactionObj = transactions.getAsJsonObject();
 
+                        // Creates a transaction from the json response.
                         Transaction transaction = new Transaction(
                                 transactionObj.get("card_number").getAsString(),
                                 transactionObj.get("balance").getAsDouble(),
@@ -138,6 +145,7 @@ public class TransactionDAO {
                                 transactionObj.get("payment_type").getAsString()
                         );
 
+                        // Adds constructed transaction to the list of transactions from the provided card.
                         transactionList.add(transaction);
                     }
                     return transactionList;
@@ -157,6 +165,7 @@ public class TransactionDAO {
     public boolean deleteTransaction(String transactionID) {
         HttpURLConnection conn = null;
         try {
+            // Make connection to the StuBank API - delete transaction endpoint.
             URL url = new URL(String.format("http://127.0.0.1:5000/transaction/%s", transactionID));
 
             conn = (HttpURLConnection) url.openConnection();
