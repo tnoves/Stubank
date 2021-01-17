@@ -1,11 +1,13 @@
 package com.team46.stubank.data_access;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.team46.stubank.Transaction;
 
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 
 public class TransactionDAO {
 
@@ -47,4 +49,49 @@ public class TransactionDAO {
                 conn.disconnect();
         }
     }
+
+    public Transaction getTransaction(String id) {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(String.format("http://127.0.0.1:5000/transaction/%s", id));
+
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+            conn.connect();
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("HttpResponseCode: " + conn.getResponseCode());
+            } else {
+                String response = "";
+                Scanner scanner = new Scanner(url.openStream());
+
+                while (scanner.hasNext()) {
+                    response += scanner.nextLine();
+                }
+
+                scanner.close();
+
+                JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+
+                return new Transaction(
+                        json.get("card_number").getAsString(),
+                        json.get("balance").getAsDouble(),
+                        json.get("date").getAsString(),
+                        json.get("payment_account_id").getAsString(),
+                        json.get("payment_amount").getAsDouble(),
+                        json.get("payment_type").getAsString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        } finally {
+            if (conn != null)
+                conn.disconnect();
+        }
+    }
+
 }
