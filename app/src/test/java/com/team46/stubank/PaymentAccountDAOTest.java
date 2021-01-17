@@ -1,9 +1,7 @@
 package com.team46.stubank;
 
 import com.team46.stubank.data_access.PaymentAccountDAO;
-
 import junit.framework.TestCase;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,6 +31,7 @@ public class PaymentAccountDAOTest extends TestCase {
         }
         catch (final NullPointerException e) {
             Assert.assertFalse(true);
+            paymentAccountDAO.deletePaymentAccount(paymentAccount);
         }
     }
 
@@ -81,6 +80,7 @@ public class PaymentAccountDAOTest extends TestCase {
         }
         catch (final NullPointerException e){
             Assert.assertTrue(true);
+            paymentAccountDAO.deletePaymentAccount(paymentAccount);
         }
     }
 
