@@ -2,7 +2,6 @@ package com.team46.stubank.data_access;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.team46.stubank.Card;
 import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.User;
 
@@ -12,7 +11,6 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class PaymentAccountDAO {
-
 
     public PaymentAccount getPaymentAccount(String paymentActId) {
         HttpURLConnection conn = null;
@@ -24,6 +22,7 @@ public class PaymentAccountDAO {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
+            conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.connect();
 
@@ -62,13 +61,6 @@ public class PaymentAccountDAO {
                 paymentAccount.setAccountNumber(accountDAO.getAccountNumber(accountID));
                 paymentAccount.setSortCode((accountDAO.getSortCodeNumber(sortCodeId)));
 
-
-                /**
-                (json.get("payment_account_id").getAsString());
-                (json.get("account_id").getAsString());
-                (json.get("user_details_id").getAsString());
-                 **/
-
                 return paymentAccount;
             }
         } catch (Exception e) {
@@ -95,8 +87,43 @@ public class PaymentAccountDAO {
             conn.setDoOutput(true);
 
             JsonObject json = new JsonObject();
-            // TODO: json.addProperty("account_id", User.getAccountId()); --> access AccountsDAO
 
+            json.addProperty("payment_account_id", paymentAccount.getPaymentActID());
+            json.addProperty("account_id", paymentAccount.getAccountID());
+            json.addProperty("user_details_id", paymentAccount.getUserDetailsID());
+
+            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
+            dataOutputStream.writeBytes(json.toString());
+            dataOutputStream.close();
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conn != null)
+                conn.disconnect();
+        }
+    }
+
+    public boolean insertPaymentAccount(PaymentAccount paymentAccount) {
+        HttpURLConnection conn = null;
+        try {
+            // make connection to the StuBank api - insert card endpoint
+            URL url = new URL(String.format("POST 127.0.0.1:5000/payment_account/"));
+
+
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            JsonObject json = new JsonObject();
             json.addProperty("payment_account_id", paymentAccount.getPaymentActID());
             json.addProperty("account_id", paymentAccount.getAccountID());
             json.addProperty("user_details_id", paymentAccount.getUserDetailsID());
