@@ -154,4 +154,31 @@ public class TransactionDAO {
 
     }
 
+    public boolean deleteTransaction(String transactionID) {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(String.format("http://127.0.0.1:5000/transaction/%s", transactionID));
+
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("DELETE");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
+            } else {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+    }
+
 }
