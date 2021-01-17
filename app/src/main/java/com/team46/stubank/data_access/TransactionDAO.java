@@ -50,10 +50,10 @@ public class TransactionDAO {
         }
     }
 
-    public Transaction getTransaction(String id) {
+    public Transaction getTransaction(String transactionID) {
         HttpURLConnection conn = null;
         try {
-            URL url = new URL(String.format("http://127.0.0.1:5000/transaction/%s", id));
+            URL url = new URL(String.format("http://127.0.0.1:5000/transaction/%s", transactionID));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
