@@ -1,12 +1,16 @@
 package com.team46.stubank.data_access;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.team46.stubank.Card;
 import com.team46.stubank.Transaction;
 
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Scanner;
 
 public class TransactionDAO {
@@ -84,6 +88,7 @@ public class TransactionDAO {
                         json.get("payment_amount").getAsDouble(),
                         json.get("payment_type").getAsString());
             }
+
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -91,6 +96,61 @@ public class TransactionDAO {
         } finally {
             if (conn != null)
                 conn.disconnect();
+        }
+    }
+
+    public List<Transaction> getCardTransactions(String cardID) {
+            HttpURLConnection conn = null;
+            try {
+                URL url = new URL(String.format("http://127.0.0.1:5000/transaction/card/%s", cardID));
+
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Content-Type", "application/json; utf-8");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setDoOutput(true);
+                conn.connect();
+
+                if (conn.getResponseCode() != 200) {
+                    throw new RuntimeException("HttpResponseCode: " + conn.getResponseCode());
+                } else {
+                    String response = "";
+                    Scanner scanner = new Scanner(url.openStream());
+
+                    while (scanner.hasNext()) {
+                        response += scanner.nextLine();
+                    }
+
+                    scanner.close();
+
+                    JsonArray json = JsonParser.parseString(response).getAsJsonArray();
+                    List<Transaction> transactionList = null;
+
+                    for (JsonElement transactions : json) {
+                        JsonObject transactionObj = transactions.getAsJsonObject();
+
+                        Transaction transaction = new Transaction(
+                                transactionObj.get("card_number").getAsString(),
+                                transactionObj.get("balance").getAsDouble(),
+                                transactionObj.get("date").getAsString(),
+                                transactionObj.get("payment_account_id").getAsString(),
+                                transactionObj.get("payment_amount").getAsDouble(),
+                                transactionObj.get("payment_type").getAsString()
+                        );
+
+                        transactionList.add(transaction);
+                    }
+                    return transactionList;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                return null;
+            } finally {
+                if (conn != null)
+                    conn.disconnect();
+            }
         }
     }
 
