@@ -1,5 +1,7 @@
 package com.team46.stubank.data_access;
 
+import android.accounts.Account;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -9,7 +11,10 @@ import com.team46.stubank.Card;
 import com.team46.stubank.User;
 import com.team46.stubank.data_access_connection.RequestManager;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -52,7 +57,7 @@ public class CardDao {
                 card.setCardNumber(json.get("card_number").getAsString());
                 card.setBalance(json.get("balance").getAsDouble());
                 card.setCardType(json.get("card_type").getAsString());
-                card.setAccountNum(account.getAccountNumber(json.get("account_id").getAsString()));
+                card.setAccountNum(account.getAccountNumber(json.get("account_id").getAsString()).intValue());
                 card.setSortCode(account.getSortCodeNumber(account.getSortCodeId(json.get("account_id").getAsString())));
                 card.setCvcCode(json.get("cvc_code").getAsString());
                 card.setExpiryEnd(json.get("expiry_date").getAsString());
@@ -111,7 +116,7 @@ public class CardDao {
                     card.setCardNumber(cardObj.get("card_number").getAsString());
                     card.setBalance(cardObj.get("balance").getAsDouble());
                     card.setCardType(cardObj.get("card_type").getAsString());
-                    card.setAccountNum(account.getAccountNumber(cardObj.get("account_id").getAsString()));
+                    card.setAccountNum(account.getAccountNumber(cardObj.get("account_id").getAsString()).intValue());
                     card.setSortCode(account.getSortCodeNumber(account.getSortCodeId(cardObj.get("account_id").getAsString())));
                     card.setCvcCode(cardObj.get("cvc_code").getAsString());
                     card.setExpiryEnd(cardObj.get("expiry_date").getAsString());
@@ -144,10 +149,13 @@ public class CardDao {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
+            conn.setConnectTimeout(10 * 1000);
+            conn.setReadTimeout(10 * 1000);
             conn.setDoOutput(true);
+            conn.connect();
 
             JsonObject json = new JsonObject();
-            // json.addProperty("account_id", user.getAccountId());
+            json.addProperty("account_id", 4);
             json.addProperty("active", card.getActive());
             json.addProperty("balance", card.getBalance());
             json.addProperty("cvc_code", card.getCvcCode());
@@ -156,13 +164,26 @@ public class CardDao {
             json.addProperty("payment_processor", card.getPaymentProcessor());
             json.addProperty("user_id", user.getUserID());
 
-            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
-            dataOutputStream.writeBytes(json.toString());
-            dataOutputStream.close();
+            try (DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream())) {
+                dataOutputStream.writeBytes(json.toString());
+            }
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
             } else {
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()))) {
+                    String output;
+                    StringBuffer response = new StringBuffer();
+                    while ((output = reader.readLine()) != null) {
+                        response.append(output);
+                    }
+
+                    JsonObject responseJson = JsonParser.parseString(response.toString()).getAsJsonObject();
+
+                    card.setCardNumber(responseJson.get("card_number").getAsString());
+
+                }
                 return true;
             }
         } catch (Exception e) {
@@ -219,7 +240,7 @@ public class CardDao {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - delete card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/card/%s", card.getAccountNum()));
+            URL url = new URL(String.format("http://127.0.0.1:5000/card/%s", card.getCardNumber()));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
