@@ -1,10 +1,13 @@
 package com.team46.stubank;
 
+import java.math.BigInteger;
+
 public class User {
 
-    private String firstName, lastName, email, phoneNumber, username, password;
-    private String dob;
+    private String firstName, lastName, email, username, password;
+    private String dob, phoneNumber;
     private int userID, userDetailsID, accountID;
+
 
     public User() {
 
@@ -41,6 +44,15 @@ public class User {
     public void setUserID(int userID) {
         this.userID = userID;
     }
+
+    public void setUserDetailsID(int userDetailsID) {
+        this.userDetailsID = userDetailsID;
+    }
+
+    public void setAccountID(int accountID) {
+        this.accountID = accountID;
+    }
+
 
     public int getUserDetailsID() {
         return userDetailsID;
@@ -82,11 +94,4 @@ public class User {
         return userID;
     }
 
-    public void setUserDetailsID(int userDetailsID) {
-        this.userDetailsID = userDetailsID;
-    }
-
-    public void setAccountID(int accountID) {
-        this.accountID = accountID;
-    }
 }
