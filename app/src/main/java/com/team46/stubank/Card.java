@@ -8,7 +8,7 @@ public class Card {
     private String cardNumber;
     private double balance;
     private String cardType;
-    private Double accountNum;
+    private int accountNum;
     private String sortCode;
     private String cvcCode;
     private String expiryEnd;
@@ -20,7 +20,7 @@ public class Card {
     }
 
     public void setCardNumber(String cardNumber) {
-        cardNumber = cardNumber;
+        this.cardNumber = cardNumber;
     }
 
     public double getBalance() {
@@ -28,7 +28,7 @@ public class Card {
     }
 
     public void setBalance(double balance) {
-        balance = balance;
+        this.balance = balance;
     }
 
     public String getCardType() {
@@ -36,15 +36,15 @@ public class Card {
     }
 
     public void setCardType(String cardType) {
-        cardType = cardType;
+        this.cardType = cardType;
     }
 
-    public Double getAccountNum() {
+    public int getAccountNum() {
         return accountNum;
     }
 
-    public void setAccountNum(Double accountNum) {
-        accountNum = accountNum;
+    public void setAccountNum(int accountNum) {
+        this.accountNum = accountNum;
     }
 
     public String getSortCode() {
@@ -52,7 +52,7 @@ public class Card {
     }
 
     public void setSortCode(String sortCode) {
-        sortCode = sortCode;
+        this.sortCode = sortCode;
     }
 
     public String getCvcCode() {
@@ -60,7 +60,7 @@ public class Card {
     }
 
     public void setCvcCode(String cvcCode) {
-        cvcCode = cvcCode;
+        this.cvcCode = cvcCode;
     }
 
     public String getExpiryEnd() {
@@ -68,7 +68,7 @@ public class Card {
     }
 
     public void setExpiryEnd(String expiryEnd) {
-        expiryEnd = expiryEnd;
+        this.expiryEnd = expiryEnd;
     }
 
     public String getPaymentProcessor() {
@@ -76,7 +76,7 @@ public class Card {
     }
 
     public void setPaymentProcessor(String paymentProcessor) {
-        paymentProcessor = paymentProcessor;
+        this.paymentProcessor = paymentProcessor;
     }
 
     public boolean getActive() {
@@ -84,7 +84,7 @@ public class Card {
     }
 
     public void setActive(boolean active) {
-        active = active;
+        this.active = active;
     }
 
     //* ===== Card Functionality ===== *//
@@ -134,7 +134,7 @@ public class Card {
         return true;
     }
 
-    public boolean debit(double amount) {
+    public boolean debit(double amount, User user) {
         // TODO: verify amount for security
 
         refresh();
@@ -143,16 +143,16 @@ public class Card {
         balance += amount;
 
         // update card in database
-        update();
+        update(user);
 
         return true;
     }
 
-    private void update() {
+    private void update(User user) {
         // push updated card details to the database (DAO)
         CardDao dao = new CardDao();
 
-        dao.updateCard(this);
+        dao.updateCard(this, user);
     }
 
     public void refresh() {

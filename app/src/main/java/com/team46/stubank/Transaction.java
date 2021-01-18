@@ -9,14 +9,16 @@ public class Transaction {
     String paymentActID;
     Double paymentAmount;
     String paymentType;
+    String transactionID;
 
-    public Transaction(String cardNumber, Double balance, String dateTransaction, String paymentActID, Double paymentAmount, String paymentType) {
+    public Transaction(String cardNumber, Double balance, String dateTransaction, String paymentActID, Double paymentAmount, String paymentType, String transactionID) {
         this.cardNumber = cardNumber;
         this.balance = balance;
         this.dateTransaction = dateTransaction;
         this.paymentActID = paymentActID;
         this.paymentAmount = paymentAmount;
         this.paymentType = paymentType;
+        this.transactionID = transactionID;
     }
 
     public String getCardNumber() {
@@ -42,4 +44,7 @@ public class Transaction {
     public String getPaymentType() {
         return paymentType;
     }
+
+    public String getTransactionID() { return transactionID; }
+
 }
