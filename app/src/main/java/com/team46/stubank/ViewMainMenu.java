@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class viewMainMenu extends AppCompatActivity {
+import com.team46.stubank.card_activities.DisplayCards;
+
+public class ViewMainMenu extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +17,7 @@ public class viewMainMenu extends AppCompatActivity {
     }
 
     public void viewCard(View view){
-        Intent intent = new Intent(this, displayCards.class);
+        Intent intent = new Intent(this, DisplayCards.class);
         startActivity(intent);
     }
 }

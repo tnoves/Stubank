@@ -19,4 +19,10 @@
     <string name="pay">PAY</string>
     <string name="budget">BUDGET</string>
     <string name="budget_title">Budget</string>
+    <string name="budget_input">Enter Budget</string>
+    <string name="budget_graph">Graph</string>
+    <string name="budget_pie">Pie</string>
+    <string name="piechart_button">Pie</string>
+    <string name="linegraph_button">Line</string>
+    <string name="apply_budget">APPLY</string>
 </resources>

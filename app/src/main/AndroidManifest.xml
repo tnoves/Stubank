@@ -11,34 +11,49 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StuBank">
+        <activity android:name=".budget_activities.DisplayPieChart">
+            android:parentActivityName=".DisplayBudget">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".budget_activities.DisplayBudget" />
+        </activity>
+        <activity android:name=".budget_activities.DisplayLineGraph">
+            android:parentActivityName=".DisplayBudget">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".budget_activities.DisplayBudget" />
+        </activity>
+
         <activity android:name=".DisplayPay">
             android:parentActivityName=".ViewCard">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ViewCard" />
+                android:value=".card_activities.ViewCard" />
         </activity>
-        <activity android:name=".DisplayBudget">
+        <activity android:name=".budget_activities.DisplayBudget">
             android:parentActivityName=".ViewCard">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ViewCard" />
+                android:value=".card_activities.ViewCard" />
         </activity>
-        <activity android:name=".ViewCard">
+        <activity android:name=".card_activities.ViewCard">
             android:parentActivityName=".displayCards">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".displayCards" />
+                android:value=".card_activities.DisplayCards" />
         </activity>
-        <activity android:name=".viewMainMenu" />
-        <activity android:name=".displayCards">
+        <activity android:name=".ViewMainMenu" />
+        <activity android:name=".card_activities.DisplayCards">
             android:parentActivityName=".viewMainMenu">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".viewMainMenu" />
+                android:value=".ViewMainMenu" />
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>

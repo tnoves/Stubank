@@ -1,25 +1,23 @@
-package com.team46.stubank;
+package com.team46.stubank.card_activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
-public class displayCards extends AppCompatActivity {
+import com.team46.stubank.R;
+
+public class DisplayCards extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_cards);
-        //simpleSwitch.setChecked(false);
     }
 
     public void viewCard(View view){
@@ -30,12 +28,12 @@ public class displayCards extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     public void toggleDetails(View view){
-        Switch simpleSwitch = (Switch) findViewById(R.id.switch1);
+        Switch simpleSwitch = findViewById(R.id.switch1);
 
-        TextView tv = (TextView)findViewById(R.id.textView4);
-        TextView tv1 = (TextView)findViewById(R.id.textView);
-        TextView tv2 = (TextView)findViewById(R.id.textView5);
-        TextView tv3 = (TextView)findViewById(R.id.textView6);
+        TextView tv = findViewById(R.id.textView4);
+        TextView tv1 = findViewById(R.id.textView);
+        TextView tv2 = findViewById(R.id.textView5);
+        TextView tv3 = findViewById(R.id.textView6);
 
         if (simpleSwitch.isChecked()){
             tv.setText("card.getCardNumber");
