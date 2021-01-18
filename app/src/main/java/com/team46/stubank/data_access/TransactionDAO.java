@@ -89,7 +89,8 @@ public class TransactionDAO {
                         json.get("date").getAsString(),
                         json.get("payment_account_id").getAsString(),
                         json.get("payment_amount").getAsDouble(),
-                        json.get("payment_type").getAsString());
+                        json.get("payment_type").getAsString(),
+                        json.get("id").getAsString());
             }
 
         } catch (Exception e) {
@@ -142,8 +143,8 @@ public class TransactionDAO {
                                 transactionObj.get("date").getAsString(),
                                 transactionObj.get("payment_account_id").getAsString(),
                                 transactionObj.get("payment_amount").getAsDouble(),
-                                transactionObj.get("payment_type").getAsString()
-                        );
+                                transactionObj.get("payment_type").getAsString(),
+                                transactionObj.get("id").getAsString());
 
                         // Adds constructed transaction to the list of transactions from the provided card.
                         transactionList.add(transaction);
