@@ -7,7 +7,9 @@ import com.google.gson.JsonParser;
 import com.team46.stubank.Card;
 import com.team46.stubank.Transaction;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -19,7 +21,7 @@ public class TransactionDAO {
         HttpURLConnection conn = null;
         try {
             // Make connection to the StuBank API - insert transaction endpoint.
-            URL url = new URL(String.format("http://127.0.0.1:5000/transaction/"));
+            URL url = new URL("http://127.0.0.1:5000/transaction/");
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -31,7 +33,7 @@ public class TransactionDAO {
 
             json.addProperty("card_number", transaction.getCardNumber());
             json.addProperty("balance", transaction.getBalanceAtTransaction());
-            json.addProperty("date", transaction.getDateTransaction().toString());
+            json.addProperty("date", transaction.getDateTransaction());
             json.addProperty("payment_account_id", transaction.getPaymentAccountID());
             json.addProperty("payment_amount", transaction.getAmount());
             json.addProperty("payment_type", transaction.getPaymentType());
@@ -43,6 +45,19 @@ public class TransactionDAO {
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
             } else {
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()))) {
+                    String output;
+                    StringBuffer response = new StringBuffer();
+                    while ((output = reader.readLine()) != null) {
+                        response.append(output);
+                    }
+
+                    JsonObject responseJson = JsonParser.parseString(response.toString()).getAsJsonObject();
+
+                    transaction.setTransactionID(responseJson.get("transaction_id").getAsString());
+
+                }
                 return true;
             }
 
@@ -87,7 +102,7 @@ public class TransactionDAO {
                         json.get("card_number").getAsString(),
                         json.get("balance").getAsDouble(),
                         json.get("date").getAsString(),
-                        json.get("payment_account_id").getAsString(),
+                        json.get("payment_account_id").getAsInt(),
                         json.get("payment_amount").getAsDouble(),
                         json.get("payment_type").getAsString(),
                         json.get("id").getAsString());
@@ -141,7 +156,7 @@ public class TransactionDAO {
                                 transactionObj.get("card_number").getAsString(),
                                 transactionObj.get("balance").getAsDouble(),
                                 transactionObj.get("date").getAsString(),
-                                transactionObj.get("payment_account_id").getAsString(),
+                                transactionObj.get("payment_account_id").getAsInt(),
                                 transactionObj.get("payment_amount").getAsDouble(),
                                 transactionObj.get("payment_type").getAsString(),
                                 transactionObj.get("id").getAsString());
