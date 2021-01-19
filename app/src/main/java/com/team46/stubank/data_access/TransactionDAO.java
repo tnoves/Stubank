@@ -55,7 +55,7 @@ public class TransactionDAO {
 
                     JsonObject responseJson = JsonParser.parseString(response.toString()).getAsJsonObject();
 
-                    transaction.setTransactionID(responseJson.get("transaction_id").getAsString());
+                    transaction.setTransactionID(responseJson.get("id").getAsString());
 
                 }
                 return true;
@@ -98,14 +98,15 @@ public class TransactionDAO {
                 JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
                 // Returns a constructed Transaction object.
-                return new Transaction(
+                Transaction transaction = new Transaction(
                         json.get("card_number").getAsString(),
                         json.get("balance").getAsDouble(),
                         json.get("date").getAsString(),
                         json.get("payment_account_id").getAsInt(),
                         json.get("payment_amount").getAsDouble(),
-                        json.get("payment_type").getAsString(),
-                        json.get("id").getAsString());
+                        json.get("payment_type").getAsString());
+                transaction.setTransactionID(transactionID);
+                return transaction;
             }
 
         } catch (Exception e) {
@@ -158,8 +159,8 @@ public class TransactionDAO {
                                 transactionObj.get("date").getAsString(),
                                 transactionObj.get("payment_account_id").getAsInt(),
                                 transactionObj.get("payment_amount").getAsDouble(),
-                                transactionObj.get("payment_type").getAsString(),
-                                transactionObj.get("id").getAsString());
+                                transactionObj.get("payment_type").getAsString());
+                        transaction.setTransactionID(transactionObj.get("id").getAsString());
 
                         // Adds constructed transaction to the list of transactions from the provided card.
                         transactionList.add(transaction);
