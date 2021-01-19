@@ -8,6 +8,7 @@ public class Card {
     private String cardNumber;
     private double balance;
     private String cardType;
+    private int accountId;
     private int accountNum;
     private String sortCode;
     private String cvcCode;
@@ -38,6 +39,10 @@ public class Card {
     public void setCardType(String cardType) {
         this.cardType = cardType;
     }
+
+    public int getAccountId() { return accountId; }
+
+    public void setAccountId(int accountId) { this.accountId = accountId; }
 
     public int getAccountNum() {
         return accountNum;
