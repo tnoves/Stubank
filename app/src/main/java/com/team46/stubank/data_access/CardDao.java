@@ -57,6 +57,7 @@ public class CardDao {
                 card.setCardNumber(json.get("card_number").getAsString());
                 card.setBalance(json.get("balance").getAsDouble());
                 card.setCardType(json.get("card_type").getAsString());
+                card.setAccountId(json.get("account_id").getAsInt());
                 card.setAccountNum(account.getAccountNumber(json.get("account_id").getAsString()).intValue());
                 card.setSortCode(account.getSortCodeNumber(account.getSortCodeId(json.get("account_id").getAsString())));
                 card.setCvcCode(json.get("cvc_code").getAsString());
@@ -116,6 +117,7 @@ public class CardDao {
                     card.setCardNumber(cardObj.get("card_number").getAsString());
                     card.setBalance(cardObj.get("balance").getAsDouble());
                     card.setCardType(cardObj.get("card_type").getAsString());
+                    card.setAccountId(cardObj.get("account_id").getAsInt());
                     card.setAccountNum(account.getAccountNumber(cardObj.get("account_id").getAsString()).intValue());
                     card.setSortCode(account.getSortCodeNumber(account.getSortCodeId(cardObj.get("account_id").getAsString())));
                     card.setCvcCode(cardObj.get("cvc_code").getAsString());
@@ -209,7 +211,7 @@ public class CardDao {
             conn.setDoOutput(true);
 
             JsonObject json = new JsonObject();
-            // TODO: json.addProperty("account_id", User.getAccountId()); --> access AccountsDAO
+            json.addProperty("account_id", user.getAccountID());
             json.addProperty("active", card.getActive());
             json.addProperty("balance", card.getBalance());
             json.addProperty("cvc_code", card.getCvcCode());
