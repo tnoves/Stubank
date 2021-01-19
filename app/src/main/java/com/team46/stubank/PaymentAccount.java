@@ -36,28 +36,28 @@ public class PaymentAccount {
         return firstName;
     }
     public void setFirstName(String firstName){
-        firstName = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName(){
         return  lastName;
     }
     public void  setLastName(String lastName){
-        lastName = lastName;
+        this.lastName = lastName;
     }
 
     public Double getAccountNumber(){
         return accountNumber;
     }
     public void setAccountNumber(Double accountNumber){
-        accountNumber = accountNumber;
+        this.accountNumber = accountNumber;
     }
 
     public String getSortCode(){
         return sortCode;
     }
     public void setSortCode(String sortCode){
-        sortCode = sortCode;
+        this.sortCode = sortCode;
     }
 
 }
