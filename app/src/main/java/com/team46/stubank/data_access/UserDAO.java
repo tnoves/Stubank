@@ -1,6 +1,8 @@
 package com.team46.stubank.data_access;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
@@ -39,14 +41,14 @@ public class UserDAO {
 
                 JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
-                // assign card json response to card object and return
                 User user = new User();
                 AccountDAO accountDAO = new AccountDAO();
 
-                user.setUsername(json.get("username").getAsString());
-                user.setPassword(json.get("password").getAsString());
-                user.setAccountID(accountDAO.getAccountNumber(json.get("account_id").getAsString()).intValue());
+                user.setUserID(json.get("id").getAsInt());
                 user.setUserDetailsID(json.get("user_details_id").getAsInt());
+                user.setUsername(json.get("username").getAsString());
+                //user.setAccountID(accountDAO.getAccountNumber(json.get("account_id").getAsString()).intValue());
+                user.setAccountID(json.get("account_id").getAsString());
 
                 return user;
             }
@@ -71,22 +73,44 @@ public class UserDAO {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
+            conn.setConnectTimeout(10 * 1000);
+            conn.setReadTimeout(10 * 1000);
             conn.setDoOutput(true);
+            conn.connect();
 
             JsonObject json = new JsonObject();
-
             json.addProperty("username", user.getUsername());
             json.addProperty("password", user.getPassword());
-            json.addProperty("user_details_id", user.getUserDetailsID());
-            json.addProperty("account_id", user.getAccountID());
+            json.addProperty("dob", user.getDob());
+            json.addProperty("email", user.getEmail());
+            json.addProperty("firstname", user.getFirstName());
+            json.addProperty("lastname", user.getLastName());
+            json.addProperty("phone", user.getPhoneNumber());
+            /*json.addProperty("user_details_id", user.getUserDetailsID());
+            json.addProperty("account_id", user.getAccountID());*/
 
-            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
-            dataOutputStream.writeBytes(json.toString());
-            dataOutputStream.close();
+            try (DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream())) {
+                dataOutputStream.writeBytes(json.toString());
+            }
+            //dataOutputStream.close();
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
-            } else {
+            }  else {
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()))) {
+                    String output;
+                    StringBuffer response = new StringBuffer();
+                    while ((output = reader.readLine()) != null) {
+                        response.append(output);
+                    }
+
+                    JsonObject responseJson = JsonParser.parseString(response.toString()).getAsJsonObject();
+
+                    user.setUserID((responseJson.get("id").getAsInt()));
+                    user.setAccountID((responseJson.get("account_id").getAsString()));
+                    user.setUserDetailsID((responseJson.get("user_details_id").getAsInt()));
+                }
                 return true;
             }
         } catch (Exception e) {
@@ -102,7 +126,7 @@ public class UserDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - insert card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/user/details/"));
+            URL url = new URL(String.format("http://127.0.0.1:5000/user/details/%s"));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -142,12 +166,13 @@ public class UserDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - insert card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/user/"));
+            URL url = new URL(String.format("http://127.0.0.1:5000/user/%s", user));
 
             conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
+            conn.setDoInput(true);
             conn.setDoOutput(true);
 
             JsonObject json = new JsonObject();
@@ -155,9 +180,12 @@ public class UserDAO {
 
             json.addProperty("username", user.getUsername());
             json.addProperty("password", user.getPassword());
-            json.addProperty("user_details_id", user.getUserDetailsID());
-            json.addProperty("account_id", (accountDAO.getAccountNumber(json.get("account_id").getAsString()).intValue()));
-//user.getAccountID
+            json.addProperty("dob", user.getDob());
+            json.addProperty("email", user.getEmail());
+            json.addProperty("firstname", user.getFirstName());
+            json.addProperty("lastname", user.getLastName());
+            json.addProperty("phone", user.getPhoneNumber());
+
             DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
             dataOutputStream.writeBytes(json.toString());
             dataOutputStream.close();
@@ -180,7 +208,7 @@ public class UserDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000//user/details//%s", userDetailsId));
+            URL url = new URL(String.format("http://127.0.0.1:5000//user/details/%s", userDetailsId));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");

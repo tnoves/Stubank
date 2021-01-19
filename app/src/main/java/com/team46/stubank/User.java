@@ -5,8 +5,8 @@ import java.math.BigInteger;
 public class User {
 
     private String firstName, lastName, email, username, password;
-    private String dob, phoneNumber;
-    private int userID, userDetailsID, accountID;
+    private String dob, phoneNumber, accountID;
+    private int userID, userDetailsID;
 
 
     public User() {
@@ -49,7 +49,7 @@ public class User {
         this.userDetailsID = userDetailsID;
     }
 
-    public void setAccountID(int accountID) {
+    public void setAccountID(String accountID) {
         this.accountID = accountID;
     }
 
@@ -58,7 +58,7 @@ public class User {
         return userDetailsID;
     }
 
-    public int getAccountID() {
+    public String getAccountID() {
         return accountID;
     }
 
