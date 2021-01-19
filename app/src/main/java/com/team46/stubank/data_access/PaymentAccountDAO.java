@@ -5,7 +5,9 @@ import com.google.gson.JsonParser;
 import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.User;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
@@ -127,16 +129,25 @@ public class PaymentAccountDAO {
             json.addProperty("account_id", paymentAccount.getAccountID());
             json.addProperty("user_details_id", paymentAccount.getUserDetailsID());
 
-            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
-            dataOutputStream.writeBytes(json.toString());
-            dataOutputStream.close();
+            try (DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream())){
+                dataOutputStream.writeBytes(json.toString());
+            }
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
             } else {
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()))) {
+                    String output;
+                    StringBuffer response = new StringBuffer();
+                    while ((output = reader.readLine()) != null) {
+                        response.append(output);
+                    }
+                    JsonObject responseJson = JsonParser.parseString(response.toString()).getAsJsonObject();
+                    paymentAccount.setPaymentActID(responseJson.get("payment_account_id").getAsInt());
+                }
                 return true;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -144,13 +155,17 @@ public class PaymentAccountDAO {
             if (conn != null)
                 conn.disconnect();
         }
+
     }
 
     public boolean deletePaymentAccount(PaymentAccount paymentAccount) {
         HttpURLConnection conn = null;
         try {
-            // make connection to the StuBank api - delete card endpoint
+            // make connection to the StuBank api - delete PaymentAccount endpoint
             URL url = new URL(String.format("http://127.0.0.1:5000/payment_account/%s", paymentAccount.getPaymentActID()));
+
+            System.out.println(paymentAccount.getPaymentActID());
+            System.out.println(url);
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
@@ -163,6 +178,7 @@ public class PaymentAccountDAO {
             } else {
                 return true;
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
