@@ -3,15 +3,15 @@ package com.team46.stubank;
 import java.util.Date;
 
 public class Transaction {
-    String cardNumber;
-    Double balance;
-    String dateTransaction;
-    String paymentActID;
-    Double paymentAmount;
-    String paymentType;
-    String transactionID;
+    private String cardNumber;
+    private Double balance;
+    private String dateTransaction;
+    private int paymentActID;
+    private Double paymentAmount;
+    private String paymentType;
+    private String transactionID;
 
-    public Transaction(String cardNumber, Double balance, String dateTransaction, String paymentActID, Double paymentAmount, String paymentType, String transactionID) {
+    public Transaction(String cardNumber, Double balance, String dateTransaction, int paymentActID, Double paymentAmount, String paymentType, String transactionID) {
         this.cardNumber = cardNumber;
         this.balance = balance;
         this.dateTransaction = dateTransaction;
@@ -33,7 +33,7 @@ public class Transaction {
         return dateTransaction;
     }
 
-    public String getPaymentAccountID() {
+    public int getPaymentAccountID() {
         return paymentActID;
     }
 
@@ -46,5 +46,8 @@ public class Transaction {
     }
 
     public String getTransactionID() { return transactionID; }
+    public void setTransactionID(String transactionID) {
+        this.transactionID = transactionID;
+    }
 
 }
