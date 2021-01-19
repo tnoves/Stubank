@@ -155,7 +155,7 @@ public class CardDao {
             conn.connect();
 
             JsonObject json = new JsonObject();
-            json.addProperty("account_id", 4);
+            json.addProperty("account_id", user.getAccountID());
             json.addProperty("active", card.getActive());
             json.addProperty("balance", card.getBalance());
             json.addProperty("cvc_code", card.getCvcCode());
