@@ -162,9 +162,6 @@ public class PaymentAccountDAO {
             // make connection to the StuBank api - delete PaymentAccount endpoint
             URL url = new URL(String.format("http://127.0.0.1:5000/payment_account/%s", paymentAccount.getPaymentActID()));
 
-            System.out.println(paymentAccount.getPaymentActID());
-            System.out.println(url);
-
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
