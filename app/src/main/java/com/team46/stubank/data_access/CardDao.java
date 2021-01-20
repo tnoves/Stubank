@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -58,7 +59,7 @@ public class CardDao {
                 card.setBalance(json.get("balance").getAsDouble());
                 card.setCardType(json.get("card_type").getAsString());
                 card.setAccountId(json.get("account_id").getAsInt());
-                card.setAccountNum(account.getAccountNumber(json.get("account_id").getAsString()).intValue());
+                card.setAccountNum(account.getAccountNumber(json.get("account_id").getAsString()));
                 card.setSortCode(account.getSortCodeNumber(account.getSortCodeId(json.get("account_id").getAsString())));
                 card.setCvcCode(json.get("cvc_code").getAsString());
                 card.setExpiryEnd(json.get("expiry_date").getAsString());
@@ -78,7 +79,7 @@ public class CardDao {
         }
     }
 
-    public List<Card> getAllCards(String userID) {
+    public ArrayList<Card> getAllCards(int userID) {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get all card endpoint
@@ -105,7 +106,7 @@ public class CardDao {
                 scanner.close();
 
                 JsonArray json = JsonParser.parseString(response).getAsJsonArray();
-                List<Card> cardList = null;
+                ArrayList<Card> cardList = new ArrayList<Card>();
 
                 for (JsonElement cards : json) {
                     JsonObject cardObj = cards.getAsJsonObject();
@@ -118,7 +119,7 @@ public class CardDao {
                     card.setBalance(cardObj.get("balance").getAsDouble());
                     card.setCardType(cardObj.get("card_type").getAsString());
                     card.setAccountId(cardObj.get("account_id").getAsInt());
-                    card.setAccountNum(account.getAccountNumber(cardObj.get("account_id").getAsString()).intValue());
+                    card.setAccountNum(account.getAccountNumber(cardObj.get("account_id").getAsString()));
                     card.setSortCode(account.getSortCodeNumber(account.getSortCodeId(cardObj.get("account_id").getAsString())));
                     card.setCvcCode(cardObj.get("cvc_code").getAsString());
                     card.setExpiryEnd(cardObj.get("expiry_date").getAsString());
@@ -173,6 +174,8 @@ public class CardDao {
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
             } else {
+                AccountDAO accountDAO = new AccountDAO();
+
                 try (BufferedReader reader = new BufferedReader(
                         new InputStreamReader(conn.getInputStream()))) {
                     String output;
@@ -184,7 +187,8 @@ public class CardDao {
                     JsonObject responseJson = JsonParser.parseString(response.toString()).getAsJsonObject();
 
                     card.setCardNumber(responseJson.get("card_number").getAsString());
-
+                    card.setAccountNum(accountDAO.getAccountNumber(responseJson.get("account_id").getAsString()));
+                    card.setSortCode(accountDAO.getSortCodeNumber(accountDAO.getSortCodeId(responseJson.get("account_id").getAsString())));
                 }
                 return true;
             }

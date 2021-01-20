@@ -9,7 +9,7 @@ public class Card {
     private double balance;
     private String cardType;
     private int accountId;
-    private int accountNum;
+    private String accountNum;
     private String sortCode;
     private String cvcCode;
     private String expiryEnd;
@@ -44,11 +44,11 @@ public class Card {
 
     public void setAccountId(int accountId) { this.accountId = accountId; }
 
-    public int getAccountNum() {
+    public String getAccountNum() {
         return accountNum;
     }
 
-    public void setAccountNum(int accountNum) {
+    public void setAccountNum(String accountNum) {
         this.accountNum = accountNum;
     }
 
