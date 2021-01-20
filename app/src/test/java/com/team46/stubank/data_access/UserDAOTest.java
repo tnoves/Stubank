@@ -24,7 +24,7 @@ public class UserDAOTest extends TestCase {
         //new id made
 
         userDAO.getUser(testuser.getUserID());
-        //new random ids are added to user object
+        //new random ids are added back to user object
 
         User user2 = userDAO.getUser(testuser.getUserID());
         // creates new object with same ids as test user
@@ -151,10 +151,11 @@ public class UserDAOTest extends TestCase {
         testuser.setDob("01/10/1999");
 
         userDAO.insertUser(testuser);
-        userDAO.getUser(testuser.getUserID());
+        //userDAO.getUser(testuser.getUserID());
         userDAO.getUserDetails(testuser.getUserDetailsID());
 
         try {
+
             User user2 = userDAO.getUser(testuser.getUserID());
             Assert.assertEquals(testuser.getUserDetailsID(), user2.getUserDetailsID());
             Assert.assertEquals(testuser.getFirstName(), user2.getFirstName());

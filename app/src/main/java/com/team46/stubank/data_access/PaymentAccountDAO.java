@@ -12,6 +12,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+/**
+ * PaymentAccount Database object class, retrieves Data from API connected to database
+ *
+ *
+ * @author  Douglas Gray
+ * @version 1.0
+ * @since   2021-01-20
+ */
+
 public class PaymentAccountDAO {
 
     public PaymentAccount getPaymentAccount(int paymentActId) {

@@ -1,15 +1,22 @@
 package com.team46.stubank;
 
 import com.team46.stubank.data_access.AccountDAO;
-import com.team46.stubank.data_access.CardDao;
 import com.team46.stubank.data_access.PaymentAccountDAO;
-import com.team46.stubank.data_access.TransactionDAO;
 import com.team46.stubank.data_access.UserDAO;
 
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+/**
+ * Testing for the PaymentAccountDAO class
+ *
+ *
+ * @author  Douglas Gray
+ * @version 1.0
+ * @since   2021-01-20
+ */
 
 public class PaymentAccountDAOTest extends TestCase {
     private AccountDAO accountDAO;
@@ -23,7 +30,6 @@ public class PaymentAccountDAOTest extends TestCase {
     public void setUp() {
         accountDAO = new AccountDAO();
         paymentAccountDAO = new PaymentAccountDAO();
-        paymentAccount = new PaymentAccount();
         userDAO = new UserDAO();
 
         user = new User();
@@ -36,6 +42,7 @@ public class PaymentAccountDAOTest extends TestCase {
         user.setDob("2003-05-03");
         userDAO.insertUser(user);
 
+        paymentAccount = new PaymentAccount();
         paymentAccount.setAccountID(Integer.parseInt(user.getAccountID()));
         paymentAccount.setUserDetailsID(user.getUserDetailsID());
         paymentAccountDAO.insertPaymentAccount(paymentAccount);
