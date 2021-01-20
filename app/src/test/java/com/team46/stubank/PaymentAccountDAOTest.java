@@ -38,7 +38,6 @@ public class PaymentAccountDAOTest extends TestCase {
 
         paymentAccount.setAccountID(Integer.parseInt(user.getAccountID()));
         paymentAccount.setUserDetailsID(user.getUserDetailsID());
-        paymentAccount.setAccountID(Integer.parseInt(user.getAccountID()));
         paymentAccountDAO.insertPaymentAccount(paymentAccount);
     }
 
@@ -76,9 +75,28 @@ public class PaymentAccountDAOTest extends TestCase {
     @Test
     public void testUpdatePaymentAccount(){
         paymentAccountDAO = new PaymentAccountDAO();
+        User updatedUser = new User();
+
+        updatedUser.setFirstName("firstTest2");
+        updatedUser.setLastName("lastTest2");
+        updatedUser.setEmail("PaymentAct2@test.com");
+        updatedUser.setPhoneNumber("07573298");
+        updatedUser.setUsername("paymentAccount2");
+        updatedUser.setPassword("paymentaccount123");
+        updatedUser.setDob("2003-05-03");
+        userDAO.insertUser(updatedUser);
+        
+        paymentAccount.setAccountID(Integer.parseInt(updatedUser.getAccountID()));
+        paymentAccount.setUserDetailsID(updatedUser.getUserDetailsID());
         paymentAccountDAO.updatePaymentAccount(paymentAccount);
 
+        PaymentAccount newPaymentAccountUpdated = paymentAccountDAO.getPaymentAccount(paymentAccount.getPaymentActID());
+
+        Assert.assertEquals(newPaymentAccountUpdated.getFirstName(), updatedUser.getFirstName());
+        Assert.assertEquals(newPaymentAccountUpdated.getLastName(), updatedUser.getLastName());
+        
         userDAO.deleteUser(user);
+        userDAO.deleteUser(updatedUser);
         paymentAccountDAO.deletePaymentAccount(paymentAccount);
     }
 
