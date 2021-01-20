@@ -12,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -147,7 +148,7 @@ public class TransactionDAO {
                     scanner.close();
 
                     JsonArray json = JsonParser.parseString(response).getAsJsonArray();
-                    List<Transaction> transactionList = null;
+                    List<Transaction> transactionList = new ArrayList<>();
 
                     for (JsonElement transactions : json) {
                         JsonObject transactionObj = transactions.getAsJsonObject();
