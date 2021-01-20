@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class AccountDAO {
 
-    public Double getAccountNumber(String accountId) {
+    public String getAccountNumber(String accountId) {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get account endpoint
@@ -42,7 +42,7 @@ public class AccountDAO {
 
                 JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
-                return json.get("account_number").getAsDouble();
+                return json.get("account_number").getAsString();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +54,7 @@ public class AccountDAO {
         }
     }
 
-    public Integer getSortCodeId(String accountId) {
+    public int getSortCodeId(String accountId) {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get account endpoint
@@ -87,7 +87,7 @@ public class AccountDAO {
         } catch (Exception e) {
             e.printStackTrace();
 
-            return null;
+            return -1;
         } finally {
             if (conn != null)
                 conn.disconnect();
