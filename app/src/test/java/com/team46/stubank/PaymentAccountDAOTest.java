@@ -1,59 +1,84 @@
 package com.team46.stubank;
 
+import com.team46.stubank.data_access.AccountDAO;
+import com.team46.stubank.data_access.CardDao;
 import com.team46.stubank.data_access.PaymentAccountDAO;
+import com.team46.stubank.data_access.TransactionDAO;
+import com.team46.stubank.data_access.UserDAO;
+
 import junit.framework.TestCase;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class PaymentAccountDAOTest extends TestCase {
+    private AccountDAO accountDAO;
     private PaymentAccountDAO paymentAccountDAO;
+    private UserDAO userDAO;
 
-    @Test
-    public void testGetPaymentAccount(){
+    private PaymentAccount paymentAccount;
+    private User user;
+
+    @Before
+    public void setUp() {
+        accountDAO = new AccountDAO();
         paymentAccountDAO = new PaymentAccountDAO();
+        paymentAccount = new PaymentAccount();
+        userDAO = new UserDAO();
 
-        PaymentAccount paymentAccount = new PaymentAccount();
-        paymentAccount.setPaymentActID("1");
-        paymentAccount.setUserDetailsID("1");
-        paymentAccount.setAccountID("1");
+        user = new User();
+        user.setFirstName("firstTest");
+        user.setLastName("lastTest");
+        user.setEmail("PaymentAct@test.com");
+        user.setPhoneNumber("07573298");
+        user.setUsername("paymentAccount");
+        user.setPassword("paymentaccount123");
+        user.setDob("2003-05-03");
+        userDAO.insertUser(user);
 
-        paymentAccount.setFirstName("TestFirst");
-        paymentAccount.setLastName("TestLast");
-        paymentAccount.setSortCode("00-00-00");
-        paymentAccount.setAccountNumber(1.0);
-
+        paymentAccount.setAccountID(Integer.parseInt(user.getAccountID()));
+        paymentAccount.setUserDetailsID(user.getUserDetailsID());
+        paymentAccount.setAccountID(Integer.parseInt(user.getAccountID()));
         paymentAccountDAO.insertPaymentAccount(paymentAccount);
-
-        try {
-            PaymentAccount newPaymentAccount = paymentAccountDAO.getPaymentAccount(paymentAccount.getPaymentActID());
-            Assert.assertEquals(paymentAccount.getPaymentActID(), newPaymentAccount.getPaymentActID() );
-            paymentAccountDAO.deletePaymentAccount(paymentAccount);
-        }
-        catch (final NullPointerException e) {
-            Assert.assertFalse(true);
-            paymentAccountDAO.deletePaymentAccount(paymentAccount);
-        }
     }
 
     @Test
-    public void testInsertPaymentAccount(){
+    public void testGetPaymentAccount() {
         paymentAccountDAO = new PaymentAccountDAO();
 
-        PaymentAccount paymentAccount = new PaymentAccount();
-        paymentAccount.setPaymentActID("1");
-        paymentAccount.setUserDetailsID("1");
-        paymentAccount.setAccountID("1");
+        PaymentAccount newPaymentAccount = paymentAccountDAO.getPaymentAccount(paymentAccount.getPaymentActID());
+        Double accountNum = accountDAO.getAccountNumber(user.getAccountID());
+        String sortCode = accountDAO.getSortCodeNumber(accountDAO.getSortCodeId(user.getAccountID()));
 
-        paymentAccount.setFirstName("TestFirst");
-        paymentAccount.setLastName("TestLast");
-        paymentAccount.setSortCode("00-00-00");
-        paymentAccount.setAccountNumber(1.0);
+        Assert.assertEquals(newPaymentAccount.getPaymentActID(), paymentAccount.getPaymentActID());
+        Assert.assertEquals(newPaymentAccount.getAccountID(), paymentAccount.getAccountID());
+        Assert.assertEquals(newPaymentAccount.getUserDetailsID(), paymentAccount.getUserDetailsID());
+        Assert.assertEquals(newPaymentAccount.getFirstName(), user.getFirstName());
+        Assert.assertEquals(newPaymentAccount.getLastName(), user.getLastName());
+        Assert.assertEquals(newPaymentAccount.getAccountNumber(), accountNum);
+        Assert.assertEquals(newPaymentAccount.getSortCode(), sortCode);
 
-        paymentAccountDAO.insertPaymentAccount(paymentAccount);
-        PaymentAccount newPaymentAccount = paymentAccountDAO.getPaymentAccount("1");
+        userDAO.deleteUser(user);
+        paymentAccountDAO.deletePaymentAccount(paymentAccount);
+    }
 
-        Assert.assertEquals(paymentAccount.getPaymentActID(), newPaymentAccount.getPaymentActID() );
+    @Test
+    public void testInsertPaymentAccount() {
+        paymentAccountDAO = new PaymentAccountDAO();
 
+        PaymentAccount newPaymentAccount = paymentAccountDAO.getPaymentAccount(paymentAccount.getPaymentActID());
+        Assert.assertEquals(newPaymentAccount.getPaymentActID(), paymentAccount.getPaymentActID());
+
+        userDAO.deleteUser(user);
+        paymentAccountDAO.deletePaymentAccount(paymentAccount);
+    }
+
+    @Test
+    public void testUpdatePaymentAccount(){
+        paymentAccountDAO = new PaymentAccountDAO();
+        paymentAccountDAO.updatePaymentAccount(paymentAccount);
+
+        userDAO.deleteUser(user);
         paymentAccountDAO.deletePaymentAccount(paymentAccount);
     }
 
@@ -61,26 +86,14 @@ public class PaymentAccountDAOTest extends TestCase {
     public void testDeletePaymentAccount(){
         paymentAccountDAO = new PaymentAccountDAO();
 
-        PaymentAccount paymentAccount = new PaymentAccount();
-        paymentAccount.setPaymentActID("1");
-        paymentAccount.setUserDetailsID("1");
-        paymentAccount.setAccountID("1");
-
-        paymentAccount.setFirstName("TestFirst");
-        paymentAccount.setLastName("TestLast");
-        paymentAccount.setSortCode("00-00-00");
-        paymentAccount.setAccountNumber(1.0);
-
-        paymentAccountDAO.insertPaymentAccount(paymentAccount);
         paymentAccountDAO.deletePaymentAccount(paymentAccount);
+        userDAO.deleteUser(user);
 
         try {
-            PaymentAccount newPaymentAccount = paymentAccountDAO.getPaymentAccount(paymentAccount.getPaymentActID());
             paymentAccountDAO.deletePaymentAccount(paymentAccount);
         }
         catch (final NullPointerException e){
             Assert.assertTrue(true);
-            paymentAccountDAO.deletePaymentAccount(paymentAccount);
         }
     }
 
