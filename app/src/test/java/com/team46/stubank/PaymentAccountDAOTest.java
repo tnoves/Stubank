@@ -53,7 +53,7 @@ public class PaymentAccountDAOTest extends TestCase {
         paymentAccountDAO = new PaymentAccountDAO();
 
         PaymentAccount newPaymentAccount = paymentAccountDAO.getPaymentAccount(paymentAccount.getPaymentActID());
-        Double accountNum = accountDAO.getAccountNumber(user.getAccountID());
+        String accountNum = accountDAO.getAccountNumber(user.getAccountID());
         String sortCode = accountDAO.getSortCodeNumber(accountDAO.getSortCodeId(user.getAccountID()));
 
         Assert.assertEquals(newPaymentAccount.getPaymentActID(), paymentAccount.getPaymentActID());

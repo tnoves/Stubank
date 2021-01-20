@@ -8,7 +8,7 @@ public class PaymentAccount {
 
     private String firstName;
     private String lastName;
-    private Double accountNumber;
+    private String accountNumber;
     private String sortCode;
 
     public int getPaymentActID(){
@@ -46,10 +46,10 @@ public class PaymentAccount {
         this.lastName = lastName;
     }
 
-    public Double getAccountNumber(){
+    public String getAccountNumber(){
         return accountNumber;
     }
-    public void setAccountNumber(Double accountNumber){
+    public void setAccountNumber(String accountNumber){
         this.accountNumber = accountNumber;
     }
 
