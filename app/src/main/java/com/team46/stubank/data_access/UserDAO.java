@@ -176,7 +176,6 @@ public class UserDAO {
             conn.setDoOutput(true);
 
             JsonObject json = new JsonObject();
-            AccountDAO accountDAO = new AccountDAO();
 
             json.addProperty("username", user.getUsername());
             json.addProperty("password", user.getPassword());
