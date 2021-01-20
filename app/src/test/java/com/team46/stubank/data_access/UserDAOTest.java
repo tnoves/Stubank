@@ -14,7 +14,7 @@ public class UserDAOTest extends TestCase {
         testuser.setUserID(0);
         testuser.setUsername("TestUser1");
         testuser.setPassword("Password123");
-        testuser.setDob("01/10/1999");
+        testuser.setDob("2012-05-03");
         testuser.setEmail("harryalexander1@gmail.com");
         testuser.setFirstName("Harry");
         testuser.setLastName("Alexander");
@@ -52,7 +52,7 @@ public class UserDAOTest extends TestCase {
         testuser.setUserID(0);
         testuser.setUsername("TestUser1");
         testuser.setPassword("Password123");
-        testuser.setDob("01/10/1999");
+        testuser.setDob("2012-05-03");
         testuser.setEmail("harryalexander1@gmail.com");
         testuser.setFirstName("Harry");
         testuser.setLastName("Alexander");
@@ -80,7 +80,7 @@ public class UserDAOTest extends TestCase {
 
         testuser.setUsername("NewTester");
         testuser.setPassword("Password123");
-        testuser.setDob("01/10/1999");
+        testuser.setDob("2012-05-03");
         testuser.setEmail("harryalexander1@gmail.com");
         testuser.setFirstName("Harry");
         testuser.setLastName("Alexander");
@@ -125,7 +125,7 @@ public class UserDAOTest extends TestCase {
         testuser.setUserID(0);
         testuser.setUsername("TestUser1");
         testuser.setPassword("Password123");
-        testuser.setDob("01/10/1999");
+        testuser.setDob("2012-05-03");
         testuser.setEmail("harryalexander1@gmail.com");
         testuser.setFirstName("Harry");
         testuser.setLastName("Alexander");
@@ -153,7 +153,7 @@ public class UserDAOTest extends TestCase {
 
         testuser.setUsername("TestUser1");
         testuser.setPassword("Password123");
-        testuser.setDob("01/10/1999");
+        testuser.setDob("2012-05-03");
         testuser.setEmail("harryalexander1@gmail.com");
         testuser.setFirstName("Harry");
         testuser.setLastName("Alexander");
@@ -164,7 +164,7 @@ public class UserDAOTest extends TestCase {
         userDAO.getUser(testuser.getUserID());
         //new random ids are added back to user object
 
-        testuser.setDob("01/10/1998");
+        testuser.setDob("2012-05-03");
         testuser.setEmail("harryalexander2@gmail.com");
         testuser.setFirstName("James");
         testuser.setLastName("Brown");
@@ -203,7 +203,7 @@ public class UserDAOTest extends TestCase {
 
         testuser.setUsername("TestUser1");
         testuser.setPassword("Password123");
-        testuser.setDob("01/10/1999");
+        testuser.setDob("2012-05-03");
         testuser.setEmail("harryalexander1@gmail.com");
         testuser.setFirstName("Harry");
         testuser.setLastName("Alexander");
@@ -230,7 +230,7 @@ public class UserDAOTest extends TestCase {
             Assert.assertEquals(testuser.getLastName(), user2.getLastName());
             Assert.assertEquals(testuser.getEmail(), user2.getEmail());
             Assert.assertEquals(testuser.getPhoneNumber(), user2.getPhoneNumber());
-            //Assert.assertEquals(testuser.getDob(), user2.getDob());
+            Assert.assertEquals(testuser.getDob(), user2.getDob());
             Assert.assertEquals(testuser.getUserDetailsID(), user2.getUserDetailsID());
             userDAO.deleteUser(testuser);
 

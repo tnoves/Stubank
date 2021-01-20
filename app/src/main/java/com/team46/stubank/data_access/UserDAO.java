@@ -139,7 +139,7 @@ public class UserDAO {
             json.addProperty("lastname", user.getLastName());
             json.addProperty("email", user.getEmail());
             json.addProperty("phone", user.getPhoneNumber());
-            //json.addProperty("dob", user.getDob());
+            json.addProperty("dob", user.getDob());
 
             DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
             dataOutputStream.writeBytes(json.toString());
@@ -238,7 +238,7 @@ public class UserDAO {
 
                 User user = new User();
 
-                //user.setDob(json.get("dob").getAsString());
+                user.setDob(json.get("dob").getAsString());
                 user.setEmail(json.get("email").getAsString());
                 user.setFirstName(json.get("firstname").getAsString());
                 user.setLastName(json.get("lastname").getAsString());
