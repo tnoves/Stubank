@@ -25,4 +25,5 @@
     <string name="piechart_button">Pie</string>
     <string name="linegraph_button">Line</string>
     <string name="apply_budget">APPLY</string>
+    <string name="submit">Create Account</string>
 </resources>
