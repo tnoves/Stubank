@@ -17,7 +17,7 @@ public class PaymentAccountDAO {
     public PaymentAccount getPaymentAccount(int paymentActId) {
         HttpURLConnection conn = null;
         try {
-            // make connection to the StuBank api - get account endpoint
+            // make connection to the StuBank api - get Payment account endpoint
             URL url = new URL(String.format("http://127.0.0.1:5000/payment_account/%s", paymentActId));
 
             conn = (HttpURLConnection) url.openConnection();
@@ -47,15 +47,15 @@ public class PaymentAccountDAO {
                 UserDAO userDAO = new UserDAO();
                 User user;
 
+                paymentAccount.setPaymentActID((json.get("payment_account_id").getAsInt()));
+                paymentAccount.setUserDetailsID(json.get("user_details_id").getAsInt());
+                paymentAccount.setAccountID(json.get("account_id").getAsInt());
+
                 String accountID = json.get("account_id").getAsString();
                 Integer userID = (json.get("user_details_id").getAsInt());
                 Integer sortCodeId = accountDAO.getSortCodeId(accountID);
+                user = userDAO.getUserDetails(userID);
 
-                paymentAccount.setPaymentActID((json.get("payment_account_id").getAsInt()));
-                paymentAccount.setUserDetailsID(json.get("user_details_id").getAsInt());
-                paymentAccount.setPaymentActID(json.get("account_id").getAsInt());
-
-                user = userDAO.getUser(userID);
                 paymentAccount.setFirstName(user.getFirstName());
                 paymentAccount.setLastName(user.getLastName());
 
@@ -77,7 +77,7 @@ public class PaymentAccountDAO {
     public boolean updatePaymentAccount(PaymentAccount paymentAccount) {
         HttpURLConnection conn = null;
         try {
-            // make connection to the StuBank api - update card endpoint
+            // make connection to the StuBank api - update Payment Account endpoint
             URL url = new URL(String.format("http://127.0.0.1:5000/payment_account/%s", paymentAccount.getPaymentActID()));
 
             conn = (HttpURLConnection) url.openConnection();
@@ -86,7 +86,6 @@ public class PaymentAccountDAO {
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
             conn.connect();
-
 
             JsonObject json = new JsonObject();
 
@@ -155,7 +154,6 @@ public class PaymentAccountDAO {
             if (conn != null)
                 conn.disconnect();
         }
-
     }
 
     public boolean deletePaymentAccount(PaymentAccount paymentAccount) {
@@ -176,6 +174,7 @@ public class PaymentAccountDAO {
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
             } else {
+
                 return true;
             }
 
