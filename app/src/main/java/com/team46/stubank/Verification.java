@@ -13,7 +13,7 @@ public class Verification {
     }
 
     public boolean checkHasCard(Card card){
-        return card.getCardType() != null;
+        return card.getCardNumber() != null;
     }
 
     public boolean checkCardActive(Card card){
@@ -30,7 +30,7 @@ public class Verification {
     }
 
     public boolean checkUserExists(User user){
-        return user.getUsername().equals(username);
+        return user.getUsername() != null;
     }
 
     public boolean checkPassword(String password, User user){
