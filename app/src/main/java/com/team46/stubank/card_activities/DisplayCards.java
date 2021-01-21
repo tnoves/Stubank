@@ -30,10 +30,10 @@ public class DisplayCards extends AppCompatActivity {
     public void toggleDetails(View view){
         Switch simpleSwitch = findViewById(R.id.switch1);
 
-        TextView tv = findViewById(R.id.textView4);
-        TextView tv1 = findViewById(R.id.textView);
-        TextView tv2 = findViewById(R.id.textView5);
-        TextView tv3 = findViewById(R.id.textView6);
+        TextView tv = findViewById(R.id.cardNumber);
+        TextView tv1 = findViewById(R.id.cardName);
+        TextView tv2 = findViewById(R.id.sortCode);
+        TextView tv3 = findViewById(R.id.accountNumber);
 
         if (simpleSwitch.isChecked()){
             tv.setText("card.getCardNumber");
