@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:translationX="0">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -22,15 +21,15 @@
             android:text="Payment Accounts"
             android:textColor="#FFFFFF"
             android:textSize="36sp"
-            android:translationX="10"
-            android:translationY="10" />
+            android:translationX="10dp"
+            android:translationY="10dp" />
 
         <ImageView
             android:id="@+id/imageLogo"
             android:layout_width="71dp"
             android:layout_height="65dp"
-            android:translationX="325"
-            android:translationY="5"
+            android:translationX="325dp"
+            android:translationY="5dp"
             app:srcCompat="@drawable/teamlogo" />
     </androidx.cardview.widget.CardView>
 
@@ -46,24 +45,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
-            android:translationX="15"
-            android:translationY="10" />
+            android:translationX="15dp"
+            android:translationY="10dp" />
 
         <TextView
             android:id="@+id/textAccountNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AccountNumber"
-            android:translationX="110"
-            android:translationY="10" />
+            android:translationX="110dp"
+            android:translationY="10dp" />
 
         <TextView
             android:id="@+id/textSortCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SortCode"
-            android:translationX="280"
-            android:translationY="10" />
+            android:translationX="280dp"
+            android:translationY="10dp" />
 
         <Button
             android:id="@+id/btnSelect"
@@ -71,8 +70,8 @@
             android:layout_height="35dp"
             android:text="Select"
             android:textSize="10sp"
-            android:translationX="10"
-            android:translationY="35"
+            android:translationX="10dp"
+            android:translationY="35dp"
             app:backgroundTint="#6d0095" />
 
     </androidx.cardview.widget.CardView>
@@ -93,40 +92,40 @@
         android:layout_height="70dp"
         app:cardBackgroundColor="#dddddd"
         tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="259dp" >
+        tools:layout_editor_absoluteY="259dp">
 
         <TextView
             android:id="@+id/textName2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
-            android:translationX="15"
-            android:translationY="10" />
+            android:translationX="15dp"
+            android:translationY="10dp" />
 
         <TextView
             android:id="@+id/textAccountNo2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AccountNumber"
-            android:translationX="110"
-            android:translationY="10" />
+            android:translationX="110dp"
+            android:translationY="10dp" />
 
         <TextView
             android:id="@+id/textSortCode2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SortCode"
-            android:translationX="280"
-            android:translationY="10" />
+            android:translationX="280dp"
+            android:translationY="10dp" />
 
         <Button
             android:id="@+id/btnSelect2"
-            android:layout_width="75"
-            android:layout_height="35"
+            android:layout_width="75dp"
+            android:layout_height="35dp"
             android:text="Select"
             android:textSize="10sp"
-            android:translationX="10"
-            android:translationY="35"
+            android:translationX="10dp"
+            android:translationY="35dp"
             app:backgroundTint="#6d0095" />
     </androidx.cardview.widget.CardView>
 
