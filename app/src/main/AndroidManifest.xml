@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StuBank">
+        <activity android:name=".CreateAccount"></activity>
         <activity android:name=".budget_activities.DisplayPieChart">
             android:parentActivityName=".DisplayBudget">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -25,7 +26,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".budget_activities.DisplayBudget" />
         </activity>
-
         <activity android:name=".DisplayPay">
             android:parentActivityName=".ViewCard">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
