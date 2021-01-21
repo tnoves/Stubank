@@ -18,4 +18,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ViewMainMenu.class);
         startActivity(intent);
     }
+
+    public void viewCreateAccount(View view){
+        Intent intent = new Intent(this, CreateAccount.class);
+        startActivity(intent);
+    }
 }

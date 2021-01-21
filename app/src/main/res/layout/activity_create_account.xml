@@ -25,8 +25,8 @@
         android:layout_marginLeft="84dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="Date of Birth"
         android:inputType="date"
-        android:text="Date of Birth"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
 
@@ -38,8 +38,8 @@
         android:layout_marginLeft="84dp"
         android:layout_marginTop="28dp"
         android:ems="10"
+        android:hint="First Name"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -51,8 +51,8 @@
         android:layout_marginLeft="84dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="Email Address"
         android:inputType="textEmailAddress"
-        android:text="Email Address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5" />
 
@@ -64,8 +64,8 @@
         android:layout_marginLeft="84dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="Username"
         android:inputType="textPersonName"
-        android:text="Username"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
 
@@ -77,8 +77,8 @@
         android:layout_marginLeft="84dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Phone Number"
+        android:hint="Phone Number"
+        android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
 
@@ -90,8 +90,8 @@
         android:layout_marginLeft="84dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="Last Name"
         android:inputType="textPersonName"
-        android:text="Last Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
 
@@ -103,8 +103,8 @@
         android:layout_marginLeft="84dp"
         android:layout_marginTop="12dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
-        android:text="Password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6" />
 
@@ -114,8 +114,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
         android:layout_marginLeft="84dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="340dp"
+        android:layout_marginTop="165dp"
+        android:layout_marginBottom="270dp"
         android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
