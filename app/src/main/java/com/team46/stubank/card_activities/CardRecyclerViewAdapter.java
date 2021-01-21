@@ -9,87 +9,89 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.team46.stubank.Card;
 import com.team46.stubank.R;
 
 import java.util.List;
 
 public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerViewAdapter.ViewHolder> {
 
-    private List<String> mData;
+    private List<Card> mCards;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
 
-    CardRecyclerViewAdapter(Context context, List<String> data) {
-        this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
+    // stores and recycles views as they are scrolled off screen
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView cardNumber;
+        public TextView name;
+        public TextView sortCode;
+        public TextView accountNumber;
+        public Switch simpleSwitch;
+        public View layout;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            layout = itemView;
+            cardNumber = itemView.findViewById(R.id.cardNumber);
+            name = itemView.findViewById(R.id.cardName);
+            sortCode = itemView.findViewById(R.id.sortCode);
+            accountNumber = itemView.findViewById(R.id.accountNumber);
+            simpleSwitch = itemView.findViewById(R.id.switch1);
+        }
+    }
+
+    public void add(int position, Card item) {
+        mCards.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public void remove(int position) {
+        mCards.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    CardRecyclerViewAdapter(List<Card> data) {
+        this.mCards = data;
     }
 
     // inflates the row layout from xml when needed
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.card_element, parent, false);
+    public CardRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // create a new view
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+        View view = inflater.inflate(R.layout.card_element, parent, false);
         return new ViewHolder(view);
     }
 
-    // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Switch simpleSwitch = holder.itemView.findViewById(R.id.switch1);
+        // Grab card at this position and replace contents of view with data
+        Card card = mCards.get(position);
 
-        TextView cardNumber = holder.itemView.findViewById(R.id.cardNumber);
-        TextView name = holder.itemView.findViewById(R.id.cardName);
-        TextView sortCode = holder.itemView.findViewById(R.id.sortCode);
-        TextView accountNumber = holder.itemView.findViewById(R.id.accountNumber);
+        Switch simpleSwitch = holder.simpleSwitch;
+
+        TextView cardNumber = holder.cardNumber;
+        TextView name = holder.name;
+        TextView sortCode = holder.sortCode;
+        TextView accountNumber = holder.accountNumber;
 
         if (simpleSwitch.isChecked()){
-            cardNumber.setText("card.getCardNumber");
-            name.setText("user.getName");
-            sortCode.setText("card.getSortCode");
-            accountNumber.setText("card.getAccountNumber");
-            //needs to call getter methods from card and user classes
+            cardNumber.setText(card.getCardNumber());
+            // name.setText(user.getFirstName());
+            sortCode.setText(card.getSortCode());
+            accountNumber.setText(card.getAccountNum());
         }
         else{
             cardNumber.setText("0000-0000-0000-0000");
-            name.setText("Joe Bloggs");
+            name.setText("John Doe");
             sortCode.setText("11-11-11");
-            accountNumber.setText("3411-4885-6324-7195");
+            accountNumber.setText("03725748");
         }
     }
 
-    // total number of rows
+    // total number of cards
     @Override
     public int getItemCount() {
-        return mData.size();
-    }
-
-    // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            myTextView = itemView.findViewById(R.id.tvAnimalName);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
-    }
-
-    // convenience method for getting data at click position
-    String getItem(int id) {
-        return mData.get(id);
-    }
-
-    // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
+        return mCards.size();
     }
 }
