@@ -1,7 +1,29 @@
 <resources>
     <string name="app_name">StuBank</string>
-    <string name="prompt_email" />
-    <string name="prompt_password" />
-    <string name="action_sign_in_short" />
-    <string name="action_sign_in" />
+    <string name="view_cards">View Cards</string>
+    <string name="main_menu">Main menu</string>
+    <string name="prompt_email">email</string>
+    <string name="prompt_password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="cards_menu">Cards</string>
+    <string name="account_number">Account number</string>
+    <string name="card_no">User card number</string>
+    <string name="toggle_card_details">Toggle card details</string>
+    <string name="card_status">Card status</string>
+    <string name="account_balance">BALANCE</string>
+    <string name="balance_default">£0.00</string>
+    <string name="account_number_default">3411-4885-6324-7195</string>
+    <string name="name_default">Joe Bloggs</string>
+    <string name="card_number_default">0000-0000-0000-0000</string>
+    <string name="sortcode_default">11-11-11</string>
+    <string name="pay">PAY</string>
+    <string name="budget">BUDGET</string>
+    <string name="budget_title">Budget</string>
+    <string name="budget_input">Enter Budget</string>
+    <string name="budget_graph">Graph</string>
+    <string name="budget_pie">Pie</string>
+    <string name="piechart_button">Pie</string>
+    <string name="linegraph_button">Line</string>
+    <string name="apply_budget">APPLY</string>
+    <string name="submit">Create Account</string>
 </resources>

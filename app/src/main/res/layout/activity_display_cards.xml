@@ -2,11 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewMainMenu">
+    android:orientation="vertical"
+    tools:context=".card_activities.DisplayCards">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
         android:layout_width="match_parent"
         android:layout_height="79dp"
         app:cardBackgroundColor="#6d0095"
@@ -14,29 +17,25 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/mainMenuText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/cards_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:autoText="false"
             android:fontFamily="@font/roboto_medium"
-            android:text="@string/main_menu"
+            android:text="@string/cards_menu"
             android:textColor="#FFFFFF"
             android:textSize="36sp" />
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/cards"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="100dp"
-        android:onClick="viewCard"
-        android:text="@string/view_cards"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/card_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/cardView3"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
