@@ -50,12 +50,12 @@ public class UserDAOTest extends TestCase {
         User testuser = new User();
 
         testuser.setUserID(0);
-        testuser.setUsername("TestUser1");
+        testuser.setUsername("SamS123");
         testuser.setPassword("Password123");
         testuser.setDob("2012-05-03");
         testuser.setEmail("harryalexander1@gmail.com");
-        testuser.setFirstName("Harry");
-        testuser.setLastName("Alexander");
+        testuser.setFirstName("Sam");
+        testuser.setLastName("Smith");
         testuser.setPhoneNumber("07743211926");
 
         userDAO.insertUser(testuser);
@@ -66,7 +66,7 @@ public class UserDAOTest extends TestCase {
             Assert.assertEquals(user2.getAccountID(), testuser.getAccountID());
             Assert.assertEquals(testuser.getUserDetailsID(), testuser.getUserDetailsID());
 
-            userDAO.deleteUser(user2);
+            //userDAO.deleteUser(user2);
 
         } catch (final NullPointerException e) {
             Assert.assertFalse(true);
