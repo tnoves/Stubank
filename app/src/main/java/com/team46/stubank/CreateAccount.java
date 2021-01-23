@@ -66,22 +66,21 @@ public class CreateAccount extends AppCompatActivity{
                 {
                     public void onClick(View view)
                     {
-
-                       /* validateFirstName(firstname);
+                        validateFirstName(firstname);
                         validateLastName(lastname);
                         validateEmail(email);
                         validateDob(dob);
                         validatePhone(phone);
                         validateUsername(username);
-                        validatePassword(password);*/
-                        addUser(firstname, lastname, dob, phone, email, username, password);
-                        displayMainMenu(view);
-                      /*  if (validateEmail(email) && validateDob(dob) && validateFirstName(firstname) && validateLastName(lastname)
-                                && validatePhone(phone) && validateUsername(username) && validatePassword(password))
+                        validatePassword(password);
+
+                        if (validateEmail(email) && validateDob(dob) && validateFirstName(firstname) && validateLastName(lastname)
+                                && validatePhone(phone) && validateUsername(username) && validatePassword(password) )
                         {
-                            addUser(firstname, lastname, dob, phone, email, username, password);
+                            ExampleRunnable runnable = new ExampleRunnable();
+                            new Thread(runnable).start();
                             displayMainMenu(view);
-                        }*/
+                        }
                     }
                 });
     }
@@ -95,8 +94,6 @@ public class CreateAccount extends AppCompatActivity{
         String emailInput = email.getText().toString();
         String usernameInput = username.getText().toString();
         String passwordInput = password.getText().toString();
-
-        UserDAO userDAO = new UserDAO();
 
         user.setFirstName(firstNameInput);
         user.setLastName(lastNameInput);
@@ -113,22 +110,11 @@ public class CreateAccount extends AppCompatActivity{
         System.out.println(user.getPhoneNumber());
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
-
-        //userDAO.insertUser(user);
-
-       /* System.out.println(firstNameInput);
-        System.out.println(lastNameInput);
-        System.out.println(dobInput);
-        System.out.println(phoneInput);
-        System.out.println(emailInput);
-        System.out.println(usernameInput);
-        System.out.println(passwordInput);*/
-
     }
 
     public boolean validateFirstName(EditText firstname) {
         String firstNameInput = firstname.getText().toString();
-        if (!firstNameInput.isEmpty()) {
+        if (!firstNameInput.isEmpty() && !(firstNameInput.length() > 20)){
             return true;
         }
         else {
@@ -139,7 +125,7 @@ public class CreateAccount extends AppCompatActivity{
 
     public boolean validateLastName(EditText lastname){
         String lastNameInput = lastname.getText().toString();
-        if (!lastNameInput.isEmpty()) {
+        if (!lastNameInput.isEmpty() && !(lastname.length() > 20)) {
             return true;
         }
         else {
@@ -207,5 +193,15 @@ public class CreateAccount extends AppCompatActivity{
         Intent intent = new Intent(this, ViewMainMenu.class);
         intent.putExtra("newUser", user);
         startActivity(intent);
+    }
+
+    class ExampleRunnable implements Runnable{
+
+        @Override
+        public void run() {
+            addUser(firstname, lastname, dob, phone, email, username, password);
+            UserDAO userDAO = new UserDAO();
+            userDAO.insertUser(user);
+        }
     }
 }

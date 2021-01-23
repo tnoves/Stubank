@@ -17,7 +17,7 @@ public class UserDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/user/%s", userID));
+            URL url = new URL(String.format("http://10.0.2.2:5000/user/%s", userID));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -65,7 +65,7 @@ public class UserDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - insert card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/user/"));
+            URL url = new URL(String.format("http://10.0.2.2:5000/user/"));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -84,13 +84,10 @@ public class UserDAO {
             json.addProperty("firstname", user.getFirstName());
             json.addProperty("lastname", user.getLastName());
             json.addProperty("phone", user.getPhoneNumber());
-            /*json.addProperty("user_details_id", user.getUserDetailsID());
-            json.addProperty("account_id", user.getAccountID());*/
 
             try (DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream())) {
                 dataOutputStream.writeBytes(json.toString());
             }
-            //dataOutputStream.close();
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
