@@ -1,24 +1,18 @@
 package com.team46.stubank.data_access;
 
-import android.accounts.Account;
-
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.team46.stubank.Card;
 import com.team46.stubank.User;
-import com.team46.stubank.data_access_connection.RequestManager;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class CardDao {
