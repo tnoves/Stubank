@@ -22,7 +22,7 @@ public class TransactionDAO {
         HttpURLConnection conn = null;
         try {
             // Make connection to the StuBank API - insert transaction endpoint.
-            URL url = new URL("http://127.0.0.1:5000/transaction/");
+            URL url = new URL("http://10.0.2.2:5000/transaction/");
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -75,13 +75,12 @@ public class TransactionDAO {
         HttpURLConnection conn = null;
         try {
             // Make connection to the StuBank API - get transaction endpoint.
-            URL url = new URL(String.format("http://127.0.0.1:5000/transaction/%s", transactionID));
+            URL url = new URL(String.format("http://10.0.2.2:5000/transaction/%s", transactionID));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
             conn.connect();
 
             if (conn.getResponseCode() != 200) {
@@ -124,13 +123,12 @@ public class TransactionDAO {
             HttpURLConnection conn = null;
             try {
                 // Make connection to the StuBank API - get all transaction endpoint
-                URL url = new URL(String.format("http://127.0.0.1:5000/transaction/card/%s", cardID));
+                URL url = new URL(String.format("http://10.0.2.2:5000/transaction/card/%s", cardID));
 
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Content-Type", "application/json; utf-8");
                 conn.setRequestProperty("Accept", "application/json");
-                conn.setDoOutput(true);
                 conn.connect();
 
                 // Get all transactions from an account.
@@ -184,7 +182,7 @@ public class TransactionDAO {
         HttpURLConnection conn = null;
         try {
             // Make connection to the StuBank API - delete transaction endpoint.
-            URL url = new URL(String.format("http://127.0.0.1:5000/transaction/%s", transactionID));
+            URL url = new URL(String.format("http://10.0.2.2:5000/transaction/%s", transactionID));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
