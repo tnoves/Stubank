@@ -27,4 +27,11 @@
     <string name="linegraph_button">Line</string>
     <string name="apply_budget">APPLY</string>
     <string name="submit">Create Account</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="first_name">First Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="last_name">Last Name</string>
+    <string name="username">Username</string>
 </resources>

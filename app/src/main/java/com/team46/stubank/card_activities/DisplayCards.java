@@ -24,15 +24,16 @@ import java.util.concurrent.Executors;
 
 public class DisplayCards extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private CardRecyclerViewAdapter cardAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private User user;
-    private List<Card> cards = new ArrayList<Card>();
+    public static List<Card> cards = new ArrayList<Card>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_cards);
+        cards.clear();
 
         // Get logged in user from previous activity
         // Intent intent = getIntent();
@@ -43,7 +44,7 @@ public class DisplayCards extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         ProgressBar loading = findViewById(R.id.progressBar);
-        CardRecyclerViewAdapter cardAdapter = new CardRecyclerViewAdapter(cards);
+        cardAdapter = new CardRecyclerViewAdapter(cards);
 
         // Retrieve user and user's cards in background thread
         executor.submit(new Runnable() {
@@ -82,41 +83,7 @@ public class DisplayCards extends AppCompatActivity {
             public void onClick(View view) {
                 CreateCard createCardPopup = new CreateCard();
                 createCardPopup.showPopupWindow(view);
-
-
-
-
             }
         });
     }
-
-
-    /*
-    public void viewCard(View view){
-        Intent intent = new Intent(this, ViewCard.class);
-        startActivity(intent);
-    }
-    @SuppressLint("SetTextI18n")
-    public void toggleDetails(View view){
-        Switch simpleSwitch = findViewById(R.id.switch1);
-
-        TextView tv = findViewById(R.id.cardNumber);
-        TextView tv1 = findViewById(R.id.cardName);
-        TextView tv2 = findViewById(R.id.sortCode);
-        TextView tv3 = findViewById(R.id.accountNumber);
-
-        if (simpleSwitch.isChecked()){
-            tv.setText("card.getCardNumber");
-            tv1.setText("user.getName");
-            tv2.setText("card.getSortCode");
-            tv3.setText("card.getAccountNumber");
-            //needs to call getter methods from card and user classes
-        }
-        else{
-            tv.setText("0000-0000-0000-0000");
-            tv1.setText("Joe Bloggs");
-            tv2.setText("11-11-11");
-            tv3.setText("3411-4885-6324-7195");
-        }
-    }*/
 }
