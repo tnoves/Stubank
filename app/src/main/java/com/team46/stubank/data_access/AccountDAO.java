@@ -1,15 +1,10 @@
 package com.team46.stubank.data_access;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.team46.stubank.Card;
 
-import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 import java.util.Scanner;
 
 public class AccountDAO {
@@ -18,13 +13,12 @@ public class AccountDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get account endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/account/%s", accountId));
+            URL url = new URL(String.format("http://10.0.2.2:5000/account/%s", accountId));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
             conn.connect();
 
             // get account for specified account ID
@@ -58,13 +52,12 @@ public class AccountDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get account endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/account/%s", accountId));
+            URL url = new URL(String.format("http://10.0.2.2:5000/account/%s", accountId));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
             conn.connect();
 
             // get account for specified account ID
@@ -98,13 +91,12 @@ public class AccountDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get account endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/sort_code/%s", sortCodeId));
+            URL url = new URL(String.format("http://10.0.2.2:5000/sort_code/%s", sortCodeId));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
             conn.connect();
 
             // get account for specified account ID
@@ -137,7 +129,7 @@ public class AccountDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - delete card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/account/%s", accountId));
+            URL url = new URL(String.format("http://10.0.2.2:5000/account/%s", accountId));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");

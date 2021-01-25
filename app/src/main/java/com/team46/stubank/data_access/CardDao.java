@@ -21,13 +21,12 @@ public class CardDao {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/card/%s", cardNumber));
+            URL url = new URL(String.format("http://10.0.2.2:5000/card/%s", cardNumber));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
             conn.connect();
 
             // get card for specified card number
@@ -77,13 +76,12 @@ public class CardDao {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get all card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/card/user/%s", userID));
+            URL url = new URL(String.format("http://10.0.2.2:5000/card/user/%s", userID));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
             conn.connect();
 
             // get all cards for specified user
@@ -140,7 +138,7 @@ public class CardDao {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - insert card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/card/"));
+            URL url = new URL(String.format("http://10.0.2.2:5000/card/"));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -199,7 +197,7 @@ public class CardDao {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - update card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/card/%s", card.getCardNumber()));
+            URL url = new URL(String.format("http://10.0.2.2:5000/card/%s", card.getCardNumber()));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("PUT");
@@ -240,7 +238,7 @@ public class CardDao {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - delete card endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/card/%s", card.getCardNumber()));
+            URL url = new URL(String.format("http://10.0.2.2:5000/card/%s", card.getCardNumber()));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");

@@ -1,9 +1,9 @@
 package com.team46.stubank.card_activities;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -49,6 +49,11 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         notifyItemRemoved(position);
     }
 
+    public void update(List<Card> cards) {
+        mCards.clear();
+        mCards.addAll(cards);
+    }
+
     CardRecyclerViewAdapter(List<Card> data) {
         this.mCards = data;
     }
@@ -74,6 +79,24 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         TextView name = holder.name;
         TextView sortCode = holder.sortCode;
         TextView accountNumber = holder.accountNumber;
+
+        simpleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    cardNumber.setText(card.getCardNumber());
+                    // name.setText(user.getFirstName());
+                    sortCode.setText(card.getSortCode());
+                    accountNumber.setText(card.getAccountNum());
+                }
+                else{
+                    cardNumber.setText("0000-0000-0000-0000");
+                    name.setText("John Doe");
+                    sortCode.setText("11-11-11");
+                    accountNumber.setText("03725748");
+                }
+            }
+        });
 
         if (simpleSwitch.isChecked()){
             cardNumber.setText(card.getCardNumber());
