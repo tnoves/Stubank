@@ -6,18 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.team46.stubank.card_activities.ViewCard;
 import com.team46.stubank.data_access.UserDAO;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -59,13 +55,13 @@ public class CreateAccount extends AppCompatActivity{
 
         submit = (Button)findViewById(R.id.createAccountSubmit);
 
-        firstname  = (EditText)findViewById(R.id.editTextTextPersonName2);
-        lastname = (EditText)findViewById(R.id.editTextTextPersonName3);
-        dob = (EditText)findViewById(R.id.editTextDate);
-        phone = (EditText)findViewById(R.id.editTextTextPersonName5);
-        email = (EditText)findViewById(R.id.editTextTextEmailAddress);
-        username = (EditText)findViewById(R.id.editTextTextPersonName6);
-        password = (EditText)findViewById(R.id.editTextTextPassword);
+        firstname  = (EditText)findViewById(R.id.editFirstName);
+        lastname = (EditText)findViewById(R.id.editLastName);
+        dob = (EditText)findViewById(R.id.editDateofBirth);
+        phone = (EditText)findViewById(R.id.editPhoneNumber);
+        email = (EditText)findViewById(R.id.editEmail);
+        username = (EditText)findViewById(R.id.editUsername);
+        password = (EditText)findViewById(R.id.editPassword);
 
         submit.setOnClickListener(
                 new View.OnClickListener()
