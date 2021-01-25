@@ -2,9 +2,10 @@ package com.team46.stubank;
 
 import com.team46.stubank.data_access.CardDao;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Card {
+public class Card implements Serializable {
     private String cardNumber;
     private double balance;
     private String cardType;
