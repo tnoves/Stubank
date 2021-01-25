@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/transaction_direction"
         android:textColor="@color/transaction_colour"
-        android:textSize="50"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.397"
