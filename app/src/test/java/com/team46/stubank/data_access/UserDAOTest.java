@@ -6,6 +6,8 @@ import junit.framework.TestCase;
 
 import org.junit.Assert;
 
+import java.util.ArrayList;
+
 public class UserDAOTest extends TestCase {
 
     public void testGetUser() {
@@ -239,4 +241,28 @@ public class UserDAOTest extends TestCase {
             e.printStackTrace();
         }
     }
+
+    public void testGetAllUsers(){
+        UserDAO userDAO = new UserDAO();
+        ArrayList<User> Allusers = userDAO.getAllUsers();
+
+        try{
+            System.out.println(Allusers);
+            Assert.assertNotNull(Allusers);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+/*    public void testGetUser(){
+        UserDAO userDAO = new UserDAO();
+        //userDAO.getUser(userid);
+        //User user = new User();
+
+        User user = (userDAO.getUser(1253));
+        System.out.println(user.getUserID());
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+    }*/
 }
