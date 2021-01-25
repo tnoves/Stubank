@@ -10,6 +10,7 @@ public class Transaction {
     private Double paymentAmount;
     private String paymentType;
     private String transactionID;
+    private Date sortDate;
 
     public Transaction(String cardNumber, Double balance, String dateTransaction, int paymentActID, Double paymentAmount, String paymentType) {
         this.cardNumber = cardNumber;
@@ -47,6 +48,13 @@ public class Transaction {
     public String getTransactionID() { return transactionID; }
     public void setTransactionID(String transactionID) {
         this.transactionID = transactionID;
+    }
+
+    public Date getSortDate() {
+        return sortDate;
+    }
+    public void setSortDate(Date sortDate) {
+        this.sortDate = sortDate;
     }
 
 }
