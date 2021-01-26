@@ -9,6 +9,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 /**
  * Testing for the PaymentAccountDAO class
  *
@@ -108,23 +110,30 @@ public class PaymentAccountDAOTest extends TestCase {
     }
 
     @Test
-    public void testGetPaymentAccountUserID() {
+    public void testGetAllPaymentAccount() {
         paymentAccountDAO = new PaymentAccountDAO();
 
-        PaymentAccount newPaymentAccount = paymentAccountDAO.getPaymentAccountUserID(paymentAccount.getUserDetailsID());
-        String accountNum = accountDAO.getAccountNumber(user.getAccountID());
-        String sortCode = accountDAO.getSortCodeNumber(accountDAO.getSortCodeId(user.getAccountID()));
+        PaymentAccount paymentAccount1;
+        paymentAccount1 = new PaymentAccount();
+        paymentAccount1.setAccountID(Integer.parseInt(user.getAccountID()));
+        paymentAccount1.setUserDetailsID(user.getUserDetailsID());
 
-        Assert.assertEquals(newPaymentAccount.getPaymentActID(), paymentAccount.getPaymentActID());
-        Assert.assertEquals(newPaymentAccount.getAccountID(), paymentAccount.getAccountID());
-        Assert.assertEquals(newPaymentAccount.getUserDetailsID(), paymentAccount.getUserDetailsID());
-        Assert.assertEquals(newPaymentAccount.getFirstName(), user.getFirstName());
-        Assert.assertEquals(newPaymentAccount.getLastName(), user.getLastName());
-        Assert.assertEquals(newPaymentAccount.getAccountNumber(), accountNum);
-        Assert.assertEquals(newPaymentAccount.getSortCode(), sortCode);
+       paymentAccountDAO.insertPaymentAccount(paymentAccount1);
 
-        userDAO.deleteUser(user);
-        paymentAccountDAO.deletePaymentAccount(paymentAccount);
+        try{
+
+            ArrayList<PaymentAccount> paymentAccounts = paymentAccountDAO.getAllPaymentAccount(user.getUserDetailsID());
+            userDAO.deleteUser(user);
+            paymentAccountDAO.deletePaymentAccount(paymentAccount);
+            paymentAccountDAO.deletePaymentAccount(paymentAccount1);
+            Assert.assertEquals(2, paymentAccounts.size());
+
+        }catch (final NullPointerException e) {
+          userDAO.deleteUser(user);
+          paymentAccountDAO.deletePaymentAccount(paymentAccount);
+          paymentAccountDAO.deletePaymentAccount(paymentAccount1);
+            Assert.assertFalse(true);
+        }
     }
 
     @Test
