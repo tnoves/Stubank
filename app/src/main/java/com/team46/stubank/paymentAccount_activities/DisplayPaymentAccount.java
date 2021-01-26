@@ -43,7 +43,7 @@ public class DisplayPaymentAccount extends AppCompatActivity {
 
         payActAdapter = new PayActRecycler(paymentAccounts);
 
-        // Retrieve user and user's cards in background thread
+        // Retrieve user and user's PaymentAccount in background thread
         executor.submit(new Runnable() {
             @Override
             public void run() {
@@ -69,7 +69,7 @@ public class DisplayPaymentAccount extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        // Pass card adapter to the recycler view
+        // Pass PaymentAccount adapter to the recycler view
         recyclerView.setAdapter(payActAdapter);
 
     }

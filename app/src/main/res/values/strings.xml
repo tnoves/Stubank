@@ -45,4 +45,5 @@
     <string name="paymentActAccountNo">AccountNo.</string>
     <string name="paymentActSortcode">Sortcode</string>
     <string name="PaymentActButton">select</string>
+    <string name="PaymentAccountTitle">Payment Accounts</string>
 </resources>
