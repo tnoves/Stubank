@@ -34,8 +34,4 @@
     <string name="email_address">Email Address</string>
     <string name="last_name">Last Name</string>
     <string name="username">Username</string>
-    <string name="create_card">Create Card</string>
-    <string name="currency">Currency:</string>
-    <string name="create_account">Create Account</string>
-    <string name="log_in">Log in</string>
 </resources>

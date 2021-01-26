@@ -1,20 +1,17 @@
-package com.team46.stubank.card_activities;
-
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.View;
-import android.widget.ProgressBar;
+package com.team46.stubank.paymentAccount_activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.team46.stubank.Card;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+
+import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.R;
 import com.team46.stubank.User;
-import com.team46.stubank.data_access.CardDao;
+import com.team46.stubank.data_access.PaymentAccountDAO;
 import com.team46.stubank.data_access.UserDAO;
 
 import java.util.ArrayList;
@@ -22,18 +19,19 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DisplayCards extends AppCompatActivity {
+
+public class DisplayPaymentAccount extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private CardRecyclerViewAdapter cardAdapter;
+    private PayActRecycler payActAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private User user;
-    public static List<Card> cards = new ArrayList<Card>();
+    private static List<PaymentAccount> paymentAccounts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_cards);
-        cards.clear();
+        setContentView(R.layout.activity_display_paymentacount);
+        paymentAccounts.clear();
 
         // Get logged in user from previous activity
         // Intent intent = getIntent();
@@ -43,49 +41,36 @@ public class DisplayCards extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
-        ProgressBar loading = findViewById(R.id.progressBar);
-        cardAdapter = new CardRecyclerViewAdapter(cards);
+        payActAdapter = new PayActRecycler(paymentAccounts);
 
         // Retrieve user and user's cards in background thread
         executor.submit(new Runnable() {
             @Override
             public void run() {
-                loading.setVisibility(View.VISIBLE);
+
 
                 UserDAO userDAO = new UserDAO();
                 user = userDAO.getUser(28);
 
-                CardDao cardDao = new CardDao();
-                cards.addAll(cardDao.getAllCards(user.getUserID()));
+                PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
+                //paymentAccounts.addAll(paymentAccountDAO.getPaymentAccountUserID(user.getUserID()));
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        cardAdapter.notifyDataSetChanged();
-                        loading.setVisibility(View.GONE);
+                        payActAdapter.notifyDataSetChanged();
                     }
                 });
-
-                executor.shutdown();
             }
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.card_rv);
+        recyclerView = (RecyclerView) findViewById(R.id.paymentAccount_rv);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         // Pass card adapter to the recycler view
-        recyclerView.setAdapter(cardAdapter);
+        recyclerView.setAdapter(payActAdapter);
 
-        // Listen to add card button press event
-        FloatingActionButton addCardButton = findViewById(R.id.addCardButton);
-        addCardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CreateCard createCardPopup = new CreateCard();
-                createCardPopup.showPopupWindow(view);
-            }
-        });
     }
 }

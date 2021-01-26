@@ -1,5 +1,6 @@
 package com.team46.stubank.card_activities;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,16 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
                     sortCode.setText("11-11-11");
                     accountNumber.setText("03725748");
                 }
+            }
+        });
+
+        // Pass selected card back to view card screen
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), ViewCard.class);
+                intent.putExtra("card", card);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 
