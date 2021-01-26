@@ -49,7 +49,7 @@ public class DisplayPaymentAccount extends AppCompatActivity {
             public void run() {
 
                 UserDAO userDAO = new UserDAO();
-                user = userDAO.getUser(1278);
+                user = userDAO.getUser(1497);
 
                 PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
                 paymentAccounts.addAll(paymentAccountDAO.getAllPaymentAccount(user.getUserDetailsID()));
