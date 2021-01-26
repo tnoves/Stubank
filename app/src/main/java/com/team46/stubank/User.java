@@ -4,16 +4,21 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 public class User implements Serializable {
+// User is Serializable, meaning that User objects can be passed between activities
+
 
     private String firstName, lastName, email, username, password;
     private String dob, phoneNumber, accountID;
     private int userID, userDetailsID;
+    // Private variables identical to the columns in the user table
 
 
+    // Empty constructor, used to create instances of the User class
     public User() {
 
     }
 
+    // setter methods used to change attributes for a User object
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -55,6 +60,7 @@ public class User implements Serializable {
     }
 
 
+    // getter methods used to get the attribute for an object
     public int getUserDetailsID() {
         return userDetailsID;
     }
