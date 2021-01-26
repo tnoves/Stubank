@@ -82,7 +82,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(holder.itemView.getContext(), ViewTransaction.class);
-            intent.putExtra("transaction", transaction);
+            //intent.putExtra("transaction", transaction);
             holder.itemView.getContext().startActivity(intent);
         }
     });
