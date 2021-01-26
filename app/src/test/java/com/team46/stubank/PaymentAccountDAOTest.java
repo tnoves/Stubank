@@ -108,6 +108,26 @@ public class PaymentAccountDAOTest extends TestCase {
     }
 
     @Test
+    public void testGetPaymentAccountUserID() {
+        paymentAccountDAO = new PaymentAccountDAO();
+
+        PaymentAccount newPaymentAccount = paymentAccountDAO.getPaymentAccountUserID(paymentAccount.getUserDetailsID());
+        String accountNum = accountDAO.getAccountNumber(user.getAccountID());
+        String sortCode = accountDAO.getSortCodeNumber(accountDAO.getSortCodeId(user.getAccountID()));
+
+        Assert.assertEquals(newPaymentAccount.getPaymentActID(), paymentAccount.getPaymentActID());
+        Assert.assertEquals(newPaymentAccount.getAccountID(), paymentAccount.getAccountID());
+        Assert.assertEquals(newPaymentAccount.getUserDetailsID(), paymentAccount.getUserDetailsID());
+        Assert.assertEquals(newPaymentAccount.getFirstName(), user.getFirstName());
+        Assert.assertEquals(newPaymentAccount.getLastName(), user.getLastName());
+        Assert.assertEquals(newPaymentAccount.getAccountNumber(), accountNum);
+        Assert.assertEquals(newPaymentAccount.getSortCode(), sortCode);
+
+        userDAO.deleteUser(user);
+        paymentAccountDAO.deletePaymentAccount(paymentAccount);
+    }
+
+    @Test
     public void testDeletePaymentAccount(){
         paymentAccountDAO = new PaymentAccountDAO();
 
