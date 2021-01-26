@@ -21,11 +21,11 @@
             android:layout_height="wrap_content"
             android:background="#00FFFFFF"
             android:fontFamily="@font/roboto_medium"
+            android:text="@string/PaymentAccountTitle"
             android:textColor="#FFFFFF"
             android:textSize="36sp"
             android:translationX="10dp"
-            android:translationY="10dp"
-            tools:text="Payment Account" />
+            android:translationY="10dp" />
 
         <ImageView
             android:id="@+id/imageLogo"
