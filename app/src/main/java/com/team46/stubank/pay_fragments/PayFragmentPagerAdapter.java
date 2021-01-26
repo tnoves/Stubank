@@ -10,7 +10,7 @@ import com.team46.stubank.Card;
 import java.util.ArrayList;
 
 public class PayFragmentPagerAdapter extends FragmentStatePagerAdapter {
-    private static int NUM_ITEMS = 2;
+    private static int NUM_ITEMS = 3;
     private final ArrayList<Card> mCards;
 
     public PayFragmentPagerAdapter(@NonNull FragmentManager fm, int behavior, ArrayList<Card> cards) {
@@ -27,6 +27,8 @@ public class PayFragmentPagerAdapter extends FragmentStatePagerAdapter {
                 return StepOneCards.newInstance(mCards.get(0), mCards);
             case 1:
                 return StepFourAmount.newInstance();
+            case 2:
+                return StepFiveOverview.newInstance();
             default:
                 return null;
         }

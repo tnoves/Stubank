@@ -1,9 +1,12 @@
 package com.team46.stubank.pay_fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -38,15 +41,35 @@ public class StepFourAmount extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step_four_amount, container, false);
 
+        EditText paymentAmount = view.findViewById(R.id.paymentAmount);
         TextView currencySymbol = view.findViewById(R.id.currencySymbol);
 
-        if (DisplayPay.selectedCard.getCardType().equals("GBP")) {
+        String cardType = ((DisplayPay) getActivity()).getSelectedCard().getCardType();
+
+        if (cardType.equals("GBP")) {
             currencySymbol.setText("£");
-        } else if (DisplayPay.selectedCard.getCardType().equals("EUR")) {
+        } else if (cardType.equals("EUR")) {
             currencySymbol.setText("€");
         } else {
             currencySymbol.setText("$");
         }
+
+        paymentAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                ((DisplayPay) getActivity()).setPaymentAmount(Float.valueOf(s.toString()));
+            }
+        });
 
         return view;
     }
@@ -56,10 +79,11 @@ public class StepFourAmount extends Fragment {
         super.onResume();
 
         TextView currencySymbol = getView().findViewById(R.id.currencySymbol);
+        String cardType = ((DisplayPay) getActivity()).getSelectedCard().getCardType();
 
-        if (DisplayPay.selectedCard.getCardType().equals("GBP")) {
+        if (cardType.equals("GBP")) {
             currencySymbol.setText("£");
-        } else if (DisplayPay.selectedCard.getCardType().equals("EUR")) {
+        } else if (cardType.equals("EUR")) {
             currencySymbol.setText("€");
         } else {
             currencySymbol.setText("$");

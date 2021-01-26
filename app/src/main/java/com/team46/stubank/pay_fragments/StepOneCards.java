@@ -61,7 +61,8 @@ public class StepOneCards extends Fragment {
         mCardDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                DisplayPay.selectedCard = (Card) parent.getSelectedItem();
+                Card card = (Card) parent.getSelectedItem();
+                ((DisplayPay) getActivity()).setSelectedCard(card);
             }
 
             @Override
