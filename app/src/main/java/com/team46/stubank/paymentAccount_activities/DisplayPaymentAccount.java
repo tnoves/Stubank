@@ -48,12 +48,11 @@ public class DisplayPaymentAccount extends AppCompatActivity {
             @Override
             public void run() {
 
-
                 UserDAO userDAO = new UserDAO();
-                user = userDAO.getUser(28);
+                user = userDAO.getUser(1278);
 
                 PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
-                //paymentAccounts.addAll(paymentAccountDAO.getPaymentAccountUserID(user.getUserID()));
+                paymentAccounts.addAll(paymentAccountDAO.getAllPaymentAccount(user.getUserDetailsID()));
 
                 handler.post(new Runnable() {
                     @Override
@@ -61,6 +60,7 @@ public class DisplayPaymentAccount extends AppCompatActivity {
                         payActAdapter.notifyDataSetChanged();
                     }
                 });
+                executor.shutdown();
             }
         });
 
