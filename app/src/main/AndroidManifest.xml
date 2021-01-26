@@ -35,7 +35,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".budget_activities.DisplayBudget" />
         </activity>
-        <activity android:name=".DisplayPay">
+        <activity android:name=".DisplayPay" android:exported="true">
             android:parentActivityName=".ViewCard">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -57,7 +57,7 @@
                 android:value=".card_activities.DisplayCards" />
         </activity>
         <activity android:name=".ViewMainMenu" />
-        <activity android:name=".card_activities.DisplayCards">
+        <activity android:name=".card_activities.DisplayCards" android:exported="true">
             android:parentActivityName=".viewMainMenu">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data

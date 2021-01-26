@@ -65,6 +65,8 @@ public class DisplayCards extends AppCompatActivity {
                         loading.setVisibility(View.GONE);
                     }
                 });
+
+                executor.shutdown();
             }
         });
 
