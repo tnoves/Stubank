@@ -22,7 +22,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -33,18 +33,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/txtAccountNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="80dp"
                 android:layout_marginLeft="80dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/paymentActAccountNo"
-                app:layout_constraintStart_toEndOf="@+id/textView10"
+                app:layout_constraintStart_toEndOf="@+id/txtName"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/txtSortCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="84dp"
@@ -53,11 +53,11 @@
                 android:text="@string/paymentActSortcode"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintStart_toEndOf="@+id/txtAccountNo"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/btnSubmit"
                 android:layout_width="75dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="4dp"

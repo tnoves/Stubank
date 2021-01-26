@@ -1,6 +1,7 @@
 package com.team46.stubank.paymentAccount_activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.os.Looper;
 import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.R;
 import com.team46.stubank.User;
+import com.team46.stubank.data_access.PaymentAccountDAO;
+import com.team46.stubank.data_access.UserDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.concurrent.Executors;
 
 public class DisplayPaymentAccount extends AppCompatActivity {
     private RecyclerView recyclerView;
+    private PayActRecycler payActAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private User user;
     private static List<PaymentAccount> paymentAccounts = new ArrayList<>();
@@ -29,9 +33,44 @@ public class DisplayPaymentAccount extends AppCompatActivity {
         setContentView(R.layout.activity_display_paymentacount);
         paymentAccounts.clear();
 
+        // Get logged in user from previous activity
+        // Intent intent = getIntent();
+        // user = (User) intent.getSerializableExtra("user");
+
+        // Create new thread
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
-    }
+        payActAdapter = new PayActRecycler(paymentAccounts);
 
+        // Retrieve user and user's cards in background thread
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+
+
+                UserDAO userDAO = new UserDAO();
+                user = userDAO.getUser(28);
+
+                PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
+                //paymentAccounts.addAll(paymentAccountDAO.getPaymentAccountUserID(user.getUserID()));
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        payActAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+
+        recyclerView = (RecyclerView) findViewById(R.id.paymentAccount_rv);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // Pass card adapter to the recycler view
+        recyclerView.setAdapter(payActAdapter);
+
+    }
 }
