@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="48dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/account_number_default"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -48,7 +48,7 @@
                 android:id="@+id/viewCardBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:fontFamily="@font/roboto_medium"
@@ -93,25 +93,12 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/viewBudgetButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="16dp"
-                android:onClick="viewBudget"
-                android:text="@string/budget"
-                app:backgroundTint="#6c4095"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
                 android:id="@+id/makePaymentButton"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="156dp"
+                android:layout_marginRight="156dp"
                 android:text="@string/pay"
                 app:backgroundTint="#6c4095"
                 app:layout_constraintEnd_toEndOf="parent"
