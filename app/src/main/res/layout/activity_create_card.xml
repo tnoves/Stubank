@@ -41,10 +41,10 @@
 
                 <TextView
                     android:id="@+id/selectCurrencyText"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Currency: " />
+                    android:text="@string/currency" />
 
                 <Spinner
                     android:id="@+id/selectCurrency"
@@ -58,7 +58,7 @@
                 android:id="@+id/createCardSubmit"
                 android:layout_width="222dp"
                 android:layout_height="wrap_content"
-                android:text="Create Card"
+                android:text="@string/create_card"
                 app:backgroundTint="#6d0095" />
 
         </LinearLayout>
