@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.R;
@@ -42,25 +44,30 @@ public class DisplayPaymentAccount extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         payActAdapter = new PayActRecycler(paymentAccounts);
+        ProgressBar loading = findViewById(R.id.pbarPaymentAct);
 
-        // Retrieve user and user's cards in background thread
+
+        // Retrieve user and user's PaymentAccount in background thread
         executor.submit(new Runnable() {
             @Override
             public void run() {
-
+                loading.setVisibility(View.VISIBLE);
 
                 UserDAO userDAO = new UserDAO();
-                user = userDAO.getUser(28);
+                user = userDAO.getUser(1497);
 
                 PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
-                //paymentAccounts.addAll(paymentAccountDAO.getPaymentAccountUserID(user.getUserID()));
+                paymentAccounts.addAll(paymentAccountDAO.getAllPaymentAccount(user.getUserDetailsID()));
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+
                         payActAdapter.notifyDataSetChanged();
+                        loading.setVisibility(View.GONE);
                     }
                 });
+                executor.shutdown();
             }
         });
 
@@ -69,7 +76,7 @@ public class DisplayPaymentAccount extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        // Pass card adapter to the recycler view
+        // Pass PaymentAccount adapter to the recycler view
         recyclerView.setAdapter(payActAdapter);
 
     }

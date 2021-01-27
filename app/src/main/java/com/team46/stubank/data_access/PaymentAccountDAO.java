@@ -1,5 +1,7 @@
 package com.team46.stubank.data_access;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.team46.stubank.PaymentAccount;
@@ -10,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -46,6 +49,7 @@ public class PaymentAccountDAO {
                     response += scanner.nextLine();
                 }
                 scanner.close();
+                System.out.println(response);
 
                 JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
@@ -164,7 +168,7 @@ public class PaymentAccountDAO {
         }
     }
 
-    public PaymentAccount getPaymentAccountUserID(int userDetailsId) {
+    public ArrayList<PaymentAccount> getAllPaymentAccount(int userDetailsId) {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get Payment account endpoint
@@ -188,30 +192,39 @@ public class PaymentAccountDAO {
                 }
                 scanner.close();
 
-                JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+                //JsonObject json2 = JsonParser.parseString(response).getAsJsonObject();
 
-                // assign card json response to PaymentAccount object and return
-                PaymentAccount paymentAccount = new PaymentAccount();
-                AccountDAO accountDAO = new AccountDAO();
-                UserDAO userDAO = new UserDAO();
-                User user;
+                JsonArray json = JsonParser.parseString(response).getAsJsonArray();
+                ArrayList<PaymentAccount> paymentAccountList = new ArrayList<>();
 
-                paymentAccount.setPaymentActID((json.get("payment_account_id").getAsInt()));
-                paymentAccount.setUserDetailsID(json.get("user_details_id").getAsInt());
-                paymentAccount.setAccountID(json.get("account_id").getAsInt());
+                for (JsonElement paymentAccounts : json) {
 
-                String accountID = json.get("account_id").getAsString();
-                Integer userID = (json.get("user_details_id").getAsInt());
-                Integer sortCodeId = accountDAO.getSortCodeId(accountID);
-                user = userDAO.getUserDetails(userID);
+                    JsonObject paymentActObj = paymentAccounts.getAsJsonObject();
 
-                paymentAccount.setFirstName(user.getFirstName());
-                paymentAccount.setLastName(user.getLastName());
+                    // assign card json response to PaymentAccount object and return
+                    PaymentAccount paymentAccount = new PaymentAccount();
+                    AccountDAO accountDAO = new AccountDAO();
+                    UserDAO userDAO = new UserDAO();
+                    User user;
 
-                paymentAccount.setAccountNumber(accountDAO.getAccountNumber(accountID));
-                paymentAccount.setSortCode((accountDAO.getSortCodeNumber(sortCodeId)));
+                    paymentAccount.setPaymentActID((paymentActObj.get("payment_account_id").getAsInt()));
+                    paymentAccount.setUserDetailsID(paymentActObj.get("user_details_id").getAsInt());
+                    paymentAccount.setAccountID(paymentActObj.get("account_id").getAsInt());
 
-                return paymentAccount;
+                    String accountID = paymentActObj.get("account_id").getAsString();
+                    Integer userID = (paymentActObj.get("user_details_id").getAsInt());
+                    Integer sortCodeId = accountDAO.getSortCodeId(accountID);
+                    user = userDAO.getUserDetails(userID);
+
+                    paymentAccount.setFirstName(user.getFirstName());
+                    paymentAccount.setLastName(user.getLastName());
+
+                    paymentAccount.setAccountNumber(accountDAO.getAccountNumber(accountID));
+                    paymentAccount.setSortCode((accountDAO.getSortCodeNumber(sortCodeId)));
+
+                    paymentAccountList.add(paymentAccount);
+                }
+                return paymentAccountList;
             }
         } catch (Exception e) {
             e.printStackTrace();

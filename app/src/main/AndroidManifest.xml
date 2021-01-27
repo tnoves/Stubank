@@ -72,6 +72,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".paymentAccount_activities.DisplayPaymentAccount" android:exported="true">
+        android:parentActivityName=".viewMainMenu">
+        <!-- The meta-data tag is required if you support API level 15 and lower -->
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ViewMainMenu" />
+        </activity>
+
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

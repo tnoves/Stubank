@@ -10,16 +10,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.team46.stubank.Card;
 import com.team46.stubank.Transaction;
 import com.team46.stubank.R;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<TransactionRecyclerViewAdapter.ViewHolder>{
 
     private List<Transaction> mTransactions;
     private LayoutInflater mInflater;
+    private Card card;
 
     String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
@@ -74,7 +78,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
 
         // TODO: Fetch the users name that matches the payment account.
         transactionElementAccount.setText(transaction.getPaymentAccountID());
-        transactionElementAmount.setText("£"+(String.valueOf(transaction.getAmount())));
+        transactionElementAmount.setText(getNumberFormat(card.getCardType()).format(transaction.getAmount()));
         transactionElementDate.setText(transaction.getSortDate().getDate()+"-"+months[transaction.getSortDate().getMonth()]+"-"+(transaction.getSortDate().getYear()+1900));
 
 
@@ -91,5 +95,21 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     @Override
     public int getItemCount() {
         return mTransactions.size();
+    }
+
+    public NumberFormat getNumberFormat(String currency){
+        Locale locale;
+        switch (card.getCardType()) {
+            case ("GBP"):
+                locale = Locale.UK;
+            case ("EUR"):
+                locale = Locale.GERMANY;
+            case ("USD"):
+                locale = Locale.US;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + card.getCardType());
+        }
+        return NumberFormat.getCurrencyInstance(locale);
     }
 }

@@ -1,8 +1,9 @@
 package com.team46.stubank;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Transaction {
+public class Transaction implements Serializable {
     private String cardNumber;
     private Double balance;
     private String dateTransaction;
