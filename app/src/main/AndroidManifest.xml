@@ -20,6 +20,7 @@
                 android:value=".budget_activities.DisplayBudget" />
         </activity>
         <activity android:name=".card_activities.CreateCard"></activity>
+        <activity android:name=".card_activities.ViewTransaction"></activity>
         <activity android:name=".CreateAccount">
             android:parentActivityName=".MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->

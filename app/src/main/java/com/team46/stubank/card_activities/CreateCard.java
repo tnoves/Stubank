@@ -1,6 +1,8 @@
 package com.team46.stubank.card_activities;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -9,11 +11,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.team46.stubank.Card;
 import com.team46.stubank.R;
+import com.team46.stubank.User;
+import com.team46.stubank.data_access.AccountDAO;
+import com.team46.stubank.data_access.CardDao;
+import com.team46.stubank.data_access.UserDAO;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CreateCard extends AppCompatActivity {
 
@@ -76,10 +93,73 @@ public class CreateCard extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Create new card --> https://medium.com/@evanbishop/popupwindow-in-android-tutorial-6e5a18f49cc7
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+
+                ProgressBar loading = view.getRootView().findViewById(R.id.progressBar);
+                loading.setVisibility(View.VISIBLE);
+                loading.bringToFront();
+
+                // Create card in background
+                executor.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            UserDAO userDAO = new UserDAO();
+                            User user = userDAO.getUser(28);
+
+                            CardDao cardDao = new CardDao();
+                            AccountDAO accountDAO = new AccountDAO();
+
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            Calendar cal = Calendar.getInstance();
+                            cal.add(Calendar.YEAR, 2);
+                            Date current = cal.getTime();
+                            String expiryDate = dateFormat.format(current);
+
+                            String accountNum = accountDAO.getAccountNumber(user.getAccountID());
+                            String sortCode = accountDAO.getSortCodeNumber(accountDAO.getSortCodeId(user.getAccountID()));
+
+                            String cvc = "";
+                            Random random = new Random();
+
+                            for (int i = 0; i < 3; i++) {
+                                cvc += "0123456789".charAt(random.nextInt("0123456789".length()));
+                            }
+
+                            Card card = new Card();
+                            card.setCardNumber("");
+                            card.setBalance(0);
+                            card.setCardType(dropDown.getSelectedItem().toString());
+                            card.setAccountNum(accountNum);
+                            card.setSortCode(sortCode);
+                            card.setCvcCode(cvc);
+                            card.setExpiryEnd(expiryDate);
+                            card.setPaymentProcessor("Visa");
+                            card.setActive(true);
+
+                            cardDao.insertCard(card, user);
+                            DisplayCards.cards.add(card);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                loading.setVisibility(View.GONE);
+                                popupWindow.dismiss();
+                                Toast toast = Toast.makeText(view.getRootView().getContext(), "New card has been added to your account.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                                toast.show();
+                            }
+                        });
+                    }
+                });
             }
         });
 
+        // Dismiss popup if click outside of window
         popupView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
