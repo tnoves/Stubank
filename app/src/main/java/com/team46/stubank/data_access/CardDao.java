@@ -48,6 +48,7 @@ public class CardDao {
                 Card card = new Card();
                 AccountDAO account = new AccountDAO();
 
+                card.setUserId(json.get("user_id").getAsInt());
                 card.setCardNumber(json.get("card_number").getAsString());
                 card.setBalance(json.get("balance").getAsDouble());
                 card.setCardType(json.get("card_type").getAsString());
@@ -107,6 +108,7 @@ public class CardDao {
                     Card card = new Card();
                     AccountDAO account = new AccountDAO();
 
+                    card.setUserId(cardObj.get("user_id").getAsInt());
                     card.setCardNumber(cardObj.get("card_number").getAsString());
                     card.setBalance(cardObj.get("balance").getAsDouble());
                     card.setCardType(cardObj.get("card_type").getAsString());

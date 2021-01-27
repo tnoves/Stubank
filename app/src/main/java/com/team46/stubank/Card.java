@@ -1,11 +1,12 @@
 package com.team46.stubank;
 
 import com.team46.stubank.data_access.CardDao;
+import com.team46.stubank.data_access.UserDAO;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Card implements Serializable {
+    private int userId;
     private String cardNumber;
     private double balance;
     private String cardType;
@@ -16,6 +17,10 @@ public class Card implements Serializable {
     private String expiryEnd;
     private String paymentProcessor;
     private boolean active;
+
+    public int getUserId() { return userId; }
+
+    public void setUserId(int userId) { this.userId = userId; }
 
     public String getCardNumber() {
         return cardNumber;
@@ -94,7 +99,7 @@ public class Card implements Serializable {
     }
 
     //* ===== Card Functionality ===== *//
-    public boolean makePayment(double amount, PaymentAccount account) {
+    public boolean makePayment(double amount, User user, PaymentAccount account) {
         try {
             refresh();
 
@@ -103,23 +108,23 @@ public class Card implements Serializable {
                 return false;
             }
 
-            // deduct amount from cards balance
-            balance -= amount;
-
             // get card of payment account
-            /* Card paymentCard = new CardDao().getCard(account.getAccountNumber());
+            Card paymentCard = new CardDao().getCard(account.getAccountNumber());
 
-            // get payment account card id --> check against card account ids
+            // get user of payment account
+            User paymentUser = new UserDAO().getUser(paymentCard.getUserId());
 
             // debit x amount to payment account
             if (paymentCard != null) {
-                paymentCard.debit(amount);
-                paymentCard.update();
+                paymentCard.debit(amount, paymentUser);
+                paymentCard.update(paymentUser);
             }
 
+            // deduct amount from cards balance
+            balance -= amount;
+
             // update this card
-            update();
-            */
+            update(paymentUser);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,22 +132,7 @@ public class Card implements Serializable {
         }
     }
 
-    public boolean makePayment(double amount, PaymentAccount account, Date recurringPaymentDate) {
-        // make initial payment
-        boolean initialPaymentMade = makePayment(amount, account);
-
-        if (!initialPaymentMade) {
-            return false;
-        }
-
-        // TODO: set up payment schedule based on recurring payment date
-
-        return true;
-    }
-
     public boolean debit(double amount, User user) {
-        // TODO: verify amount for security
-
         refresh();
 
         // add amount to card

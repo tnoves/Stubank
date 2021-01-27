@@ -80,7 +80,11 @@ public class CardPaySelectorAdapter extends ArrayAdapter {
     @Nullable
     @Override
     public Object getItem(int position) {
-        DisplayPay.selectedCard = mCards.get(position);
+        try {
+            ((DisplayPay) mContext).setSelectedCard(mCards.get(position));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return mCards.get(position);
     }
 
