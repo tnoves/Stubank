@@ -44,15 +44,15 @@ public class ViewCard extends AppCompatActivity {
         setContentView(R.layout.activity_view_card);
         transactions.clear();
 
-        /*
+        // Fetches card from previous activity.
         Intent intent = getIntent();
         card = (Card) intent.getSerializableExtra("card");
-         */
 
+        // Fetches elements on activity which will be updated.
         TextView cardNumber = findViewById(R.id.viewCardNumber);
         TextView balance = findViewById(R.id.viewCardBalance);
 
-        cardNumber.setText(card.getCardNumber());
+        // Determines which currency the card is in and sets formatting for that.
         switch (card.getCardType()) {
             case ("GBP"):
                 locale = Locale.UK;
@@ -62,22 +62,23 @@ public class ViewCard extends AppCompatActivity {
                 locale = Locale.US;
         }
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+
+        // Updates elements in the activity to show card number and balance.
+        cardNumber.setText(card.getCardNumber());
         balance.setText(numberFormat.format(card.getBalance()));
 
+        // Creates new thread.
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
         ProgressBar loading = findViewById(R.id.transactionProgressBar);
         transactionAdapter = new TransactionRecyclerViewAdapter(transactions);
 
+        // Retrieves all transactions on the users card.
         executor.submit(new Runnable() {
             @Override
             public void run() {
                 loading.setVisibility(View.VISIBLE);
-
-                // TODO: Remove this once intent is implemented.
-                CardDao cardDAO = new CardDao();
-                card = cardDAO.getCard("0342480786061418");
 
                 TransactionDAO transactionDAO = new TransactionDAO();
                 transactions.addAll(transactionDAO.getCardTransactions(card.getCardNumber()));
@@ -94,6 +95,7 @@ public class ViewCard extends AppCompatActivity {
             }
         });
 
+        // Fetches element from activity where the transactions will be displayed.
         recyclerView = (RecyclerView) findViewById(R.id.transaction_rv);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -102,10 +104,6 @@ public class ViewCard extends AppCompatActivity {
         recyclerView.setAdapter(transactionAdapter);
     }
 
-    public void viewBudget(View view) {
-        Intent intent = new Intent(this, DisplayBudget.class);
-        startActivity(intent);
-    }
 
     // TODO: Unsure if this is the correct class to be calling.
     public void makePayment(View view) {
