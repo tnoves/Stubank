@@ -1,6 +1,7 @@
-package com.team46.stubank.data_access;
+package com.team46.stubank;
 
 import com.team46.stubank.User;
+import com.team46.stubank.data_access.UserDAO;
 
 import junit.framework.TestCase;
 
@@ -265,4 +266,28 @@ public class UserDAOTest extends TestCase {
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
     }*/
+
+
+    public void testGetUserByUsername(){
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.getUserByUsername("HazzaA");
+
+        System.out.println(user.getUsername());
+        System.out.println(user.getUserID());
+        System.out.println(user.getAccountID());
+        System.out.println(user.getUserDetailsID());
+        System.out.println(user.getPassword());
+
+        try {
+            User user1 = userDAO.getUser(user.getUserID());
+            Assert.assertEquals(user.getUsername(), user1.getUsername());
+            Assert.assertEquals(user.getUserID(), user1.getUserID());
+            Assert.assertEquals(user.getUserDetailsID(), user1.getUserDetailsID());
+            Assert.assertEquals(user.getAccountID(), user1.getAccountID());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

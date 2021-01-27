@@ -12,8 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StuBank"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Settings">
+            android:parentActivityName=".ViewMainMenu">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".budget_activities.DisplayBudget" />
+        </activity>
+        <activity android:name=".card_activities.CreateCard"></activity>
         <activity android:name=".card_activities.ViewTransaction"></activity>
-        <activity android:name=".card_activities.CreateCard" />
         <activity android:name=".CreateAccount">
             android:parentActivityName=".MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -35,7 +42,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".budget_activities.DisplayBudget" />
         </activity>
-        <activity android:name=".DisplayPay" android:exported="true">
+        <activity android:name=".DisplayPay">
             android:parentActivityName=".ViewCard">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -57,7 +64,7 @@
                 android:value=".card_activities.DisplayCards" />
         </activity>
         <activity android:name=".ViewMainMenu" />
-        <activity android:name=".card_activities.DisplayCards" android:exported="true">
+        <activity android:name=".card_activities.DisplayCards">
             android:parentActivityName=".viewMainMenu">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data

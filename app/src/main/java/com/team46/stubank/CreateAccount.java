@@ -18,10 +18,12 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public class CreateAccount extends AppCompatActivity{
 
+    // REGEX containing every quality the password input must contain
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile
                     ("^" +
@@ -33,12 +35,13 @@ public class CreateAccount extends AppCompatActivity{
                     "(?=\\S+$)" +           //no white spaces
                     ".{4,}" +               //at least 4 characters
                     "$");
-
+    // REGEX containing every quality the username input must contain
     private static final Pattern USERNAME_PATTERN =
             Pattern.compile
                     ("^" + "(?=.*[a-zA-Z])" + "(?=\\S+$)" + ".{3,}");
     // Username can contain any letters, contain no white space, and be at least 3 characters in length
 
+    // REGEX containing every quality the DOB input must contain
     private static final Pattern DOB_PATTERN =
             Pattern.compile
                     ("^\\d{4}-\\d{2}-\\d{2}$");
@@ -46,6 +49,7 @@ public class CreateAccount extends AppCompatActivity{
 
     EditText firstname, lastname, dob, phone, email, username, password;
     Button submit;
+    Boolean userAlreadyExists = false;
     User user = new User();
 
     @Override
@@ -63,6 +67,7 @@ public class CreateAccount extends AppCompatActivity{
         username = (EditText)findViewById(R.id.editUsername);
         password = (EditText)findViewById(R.id.editPassword);
 
+        //On Click listener for the submit button, handles methods when button is clicked
         submit.setOnClickListener(
                 new View.OnClickListener()
                 {
@@ -76,17 +81,28 @@ public class CreateAccount extends AppCompatActivity{
                         validateUsername(username);
                         validatePassword(password);
 
+                        // call runnable only when all validations are passed
                         if (validateEmail(email) && validateDob(dob) && validateFirstName(firstname) && validateLastName(lastname)
-                                && validatePhone(phone) && validateUsername(username) && validatePassword(password) )
+                                && validatePhone(phone) && validateUsername(username) && validatePassword(password))
                         {
                             ExampleRunnable runnable = new ExampleRunnable();
                             new Thread(runnable).start();
-                            displayMainMenu(view);
+                            try {
+                                TimeUnit.SECONDS.sleep(3);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            //System.out.println(validateUserExistence(username));
+                            System.out.println(userAlreadyExists);
+                            if (!userAlreadyExists){displayMainMenu(view);
+                            System.out.println("Username available");}
+                            else{System.out.println("Username Taken!");}
                         }
                     }
                 });
     }
 
+    //addUser method gets user input, calls hashpassword function and creates user object
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void addUser(EditText firstName, EditText lastName, EditText dob, EditText phone, EditText email, EditText username, EditText password){
 
@@ -116,6 +132,25 @@ public class CreateAccount extends AppCompatActivity{
         System.out.println(user.getPassword());
     }
 
+    // checks if username already exists in the database
+    public boolean validateUserExistence(EditText username) {
+        String usernameInput = username.getText().toString();
+        try {
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.getUserByUsername(usernameInput);
+            if(user.getUsername() != null){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //checks if firstname input isnt null and isnt greater than 20 charaters
     public boolean validateFirstName(EditText firstname) {
         String firstNameInput = firstname.getText().toString();
         if (!firstNameInput.isEmpty() && !(firstNameInput.length() > 20)){
@@ -127,6 +162,7 @@ public class CreateAccount extends AppCompatActivity{
         }
     }
 
+    //checks is lastname input is not null and not greater than 20 characters
     public boolean validateLastName(EditText lastname){
         String lastNameInput = lastname.getText().toString();
         if (!lastNameInput.isEmpty() && !(lastname.length() > 20)) {
@@ -138,6 +174,7 @@ public class CreateAccount extends AppCompatActivity{
         }
     }
 
+    //checks if dob matches the regex and isnt null
     public boolean validateDob(EditText dob){
         String dobInput = dob.getText().toString();
         if (!dobInput.isEmpty() && DOB_PATTERN.matcher(dobInput).matches()){
@@ -149,6 +186,7 @@ public class CreateAccount extends AppCompatActivity{
         }
     }
 
+    //checks if phone matches regex and isnt null
     public boolean validatePhone(EditText phone){
         String phoneInput = phone.getText().toString();
         if (!phoneInput.isEmpty() && Patterns.PHONE.matcher(phoneInput).matches()){
@@ -160,6 +198,7 @@ public class CreateAccount extends AppCompatActivity{
         }
     }
 
+    //checks if email matches regex and is not null
     public boolean validateEmail(EditText email){
          String emailInput = email.getText().toString();
          if (!emailInput.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()){
@@ -171,6 +210,7 @@ public class CreateAccount extends AppCompatActivity{
          }
     }
 
+    // checks if username matches regex and isnt null
     public boolean validateUsername(EditText username){
         String usernameInput = username.getText().toString();
         if (!usernameInput.isEmpty() && USERNAME_PATTERN.matcher(usernameInput).matches()){
@@ -182,6 +222,7 @@ public class CreateAccount extends AppCompatActivity{
         }
     }
 
+    // checks if password matches regex and isnt null
     public boolean validatePassword(EditText password){
         String passwordInput = password.getText().toString();
         if (!passwordInput.isEmpty() && PASSWORD_PATTERN.matcher(passwordInput).matches()){
@@ -193,12 +234,14 @@ public class CreateAccount extends AppCompatActivity{
         }
     }
 
+    // creates a new intent, taking user to main menu. Also, puts user object as an extra
     public void displayMainMenu(View view){
         Intent intent = new Intent(this, ViewMainMenu.class);
         intent.putExtra("newUser", user);
         startActivity(intent);
     }
 
+    // calls getSHA and toHexString to create a hash of the user's inputted password
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String hashPassword(EditText password){
         String hashedPassword = null;
@@ -211,14 +254,18 @@ public class CreateAccount extends AppCompatActivity{
         return hashedPassword;
     }
 
+    // creates Example Runnable class and implements Runnable in order to create a secondary thread
     class ExampleRunnable implements Runnable{
-
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void run() {
-            addUser(firstname, lastname, dob, phone, email, username, password);
-            UserDAO userDAO = new UserDAO();
-            userDAO.insertUser(user);
+            validateUserExistence(username);
+            if (!validateUserExistence(username)){addUser(firstname, lastname, dob, phone, email, username, password);
+                UserDAO userDAO = new UserDAO();
+                userDAO.insertUser(user);
+                userAlreadyExists = false;
+            }
+            else{userAlreadyExists = true;}
         }
     }
 
@@ -233,6 +280,7 @@ public class CreateAccount extends AppCompatActivity{
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
+    // converts bytearry to String
     public String toHexString(byte[] hash) {
         // Convert byte array into signum representation
         BigInteger number = new BigInteger(1, hash);

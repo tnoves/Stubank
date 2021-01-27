@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,12 +18,15 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText username, password, id;
+    EditText username, password;
     Button login;
+    int loginAttempts = 0;
+    Boolean validCredentials = false;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,90 +34,95 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         login = (Button) findViewById(R.id.login);
-
-        id = (EditText) findViewById(R.id.userId);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
 
+        //creates OnclickListener to handler methods when button is clicked
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //fetchUser(username);
-                ExampleRunnable runnable = new ExampleRunnable();
-                new Thread(runnable).start();
-               /* if (validateUserExists(id, password, username))*/
-                    viewMenu(v);
+                //if (loginAttempts < 3)
+
+                // creates instance of Example runnable class in order to create a new thread
+                    ExampleRunnable runnable = new ExampleRunnable();
+                    new Thread(runnable).start();
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(validCredentials);
+                    if (validCredentials){viewMenu(v);}
+                    else{System.out.println("Invalid credentials");}
             }
         });
 
     }
 
-/*    public Boolean fetchUser(EditText username){
-        User user = new User();
-        String usernameInput = username.getText().toString();
-        UserDAO userDAO = new UserDAO();
-        userDAO.getAllUsers();
-        String allUsers = Arrays.toString(userDAO.getAllUsers());
-
-        if (allUsers.contains(usernameInput)){
-
-            return true;
-        }
-        else return false;
-    }*/
-
+    //checks if user exists in the database and that the input from the user matches what is in the database
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public boolean validateUserExists(EditText id, EditText password, EditText username) {
-        String userIdInput = id.getText().toString();
-        int userIdInputInt = Integer.parseInt(userIdInput);
+    public boolean validateUserExists(EditText password, EditText username) {
 
         String hashedPassword = hashPassword(password);
         String usernameInput = username.getText().toString();
 
         try {
-            System.out.println(hashedPassword);
             System.out.println(usernameInput);
-            System.out.println(userIdInputInt);
+            System.out.println(hashedPassword);
+
             UserDAO userDAO = new UserDAO();
-            User user = userDAO.getUser(1253);
+            User user1 = userDAO.getUserByUsername(usernameInput);
 
-            System.out.println(user.getUsername());
-            System.out.println(user.getPassword());
-            System.out.println(user.getUserID());
+            System.out.println(user1.getUsername());
+            System.out.println(user1.getPassword());
 
-      /*      if (user.getUserID() == userIdInputInt && user.getUsername().equals(usernameInput) && user.getPassword().equals(passwordInput)) {
+            if (user1.getUsername().equals(usernameInput) && user1.getPassword().equals(hashedPassword)) {
+                user = user1;
                 return true;
+
             } else {
                 Toast.makeText(this, "Invalid user credentials!", Toast.LENGTH_SHORT).show();
+                System.out.println("input and db credentials don't match");
                 return false;
-            }*/
+            }
 
         } catch (NullPointerException e) {
+           /* Toast.makeText(this, "User does not exist!", Toast.LENGTH_SHORT).show();*/
+            loginAttempts += 1;
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 
+    // creates new intent taking user to the main menu
     public void viewMenu(View view) {
-        Intent intent = new Intent(this, ViewMainMenu.class);
-        startActivity(intent);
+
+        if (validCredentials = true){
+            Intent intent = new Intent(this, ViewMainMenu.class);
+            startActivity(intent);
+        }
+        else{System.out.println("No menu for you");}
     }
 
+    //creates new intent taking user to the create account screen
     public void viewCreateAccount(View view) {
         Intent intent = new Intent(this, CreateAccount.class);
         startActivity(intent);
     }
 
+    //creates new example runnable calss and implements runnable
     class ExampleRunnable implements Runnable {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
-        public void run() {
-            validateUserExists(id, password, username);
+        public void run()
+        {
+            //Looper.prepare();
+            validCredentials = validateUserExists(password, username);
         }
     }
 
+    // calls getSHA and toHexString methods to create a hash of user's password input
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String hashPassword(EditText password){
         String hashedPassword = null;
@@ -137,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
+    // turns byte array into string
     public String toHexString(byte[] hash) {
         // Convert byte array into signum representation
         BigInteger number = new BigInteger(1, hash);
