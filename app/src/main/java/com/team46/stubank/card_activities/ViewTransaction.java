@@ -32,15 +32,14 @@ public class ViewTransaction extends AppCompatActivity {
         setContentView(R.layout.activity_view_transaction);
 
         Intent intent = getIntent();
-        // TODO: Fetch data from previous screen to populate transaction screen.
+        card = (Card) intent.getSerializableExtra("card");
+        transaction = (Transaction) intent.getSerializableExtra("transaction");
 
         ImageView transactionImage = findViewById(R.id.transactionImage);
         TextView transactionDirection = findViewById(R.id.transactionDirection);
         TextView transactionName = findViewById(R.id.transactionName);
         TextView transactionAmount = findViewById(R.id.transactionAmount);
         TextView transactionType = findViewById(R.id.transactionType);
-
-        // TODO: Re-enable this once transaction and card has been passed into it.
 
         switch (card.getCardType()) {
             case ("GBP"):
