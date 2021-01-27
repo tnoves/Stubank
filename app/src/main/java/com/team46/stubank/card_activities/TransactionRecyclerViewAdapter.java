@@ -81,13 +81,13 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         transactionElementAmount.setText(getNumberFormat(card.getCardType()).format(transaction.getAmount()));
         transactionElementDate.setText(transaction.getSortDate().getDate()+"-"+months[transaction.getSortDate().getMonth()]+"-"+(transaction.getSortDate().getYear()+1900));
 
-
-    holder.itemView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(holder.itemView.getContext(), ViewTransaction.class);
-            //intent.putExtra("transaction", transaction);
-            holder.itemView.getContext().startActivity(intent);
+        // When a transaction is selected, open new activity window after including specific transaction in the intent.
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), ViewTransaction.class);
+                intent.putExtra("transaction", transaction);
+                holder.itemView.getContext().startActivity(intent);
         }
     });
     };
