@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.team46.stubank.Card;
 import com.team46.stubank.DisplayPay;
+import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.R;
 
 /**
@@ -46,11 +47,12 @@ public class StepFiveOverview extends Fragment {
         TextView paymentAmount = view.findViewById(R.id.finalPaymentAmountText);
 
         Card card = ((DisplayPay) getActivity()).getSelectedCard();
+        PaymentAccount paymentAccount = ((DisplayPay) getActivity()).getPaymentAccount();
 
         fromCardNumber.setText(card.getCardNumber());
         fromCurrency.setText(card.getCardType());
-        // TODO: toName.setText(DisplayPay.selectedAccount.getName());
-        // TODO: toAccountNum.setText(DisplayPay.selectedAccount.getAccountNumber());
+        toName.setText(paymentAccount.getFirstName());
+        toAccountNum.setText(paymentAccount.getAccountNumber());
         paymentAmount.setText( String.valueOf(((DisplayPay) getActivity()).getPaymentAmount()) );
 
         return view;
