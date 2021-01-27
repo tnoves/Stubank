@@ -1,6 +1,15 @@
 package com.team46.stubank;
+import java.io.Serializable;
 
-public class PaymentAccount {
+/**
+ * PaymentAccount object, Object with variables related to a payment account
+ *
+ * @author  Douglas Gray
+ * @version 1.0
+ * @since   2021-01-27
+ */
+
+public class PaymentAccount implements Serializable {
 
     private int paymentActID;
     private int accountID;
