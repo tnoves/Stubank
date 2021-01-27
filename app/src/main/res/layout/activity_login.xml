@@ -49,18 +49,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="32dp"
-        android:onClick="viewMenu"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/createAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,6 +74,7 @@
         android:layout_marginEnd="159dp"
         android:layout_marginRight="159dp"
         android:text="SIGN IN"
+        app:backgroundTint="#6D0095"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />

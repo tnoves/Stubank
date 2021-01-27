@@ -88,18 +88,28 @@ public class CreateAccount extends AppCompatActivity{
                             ExampleRunnable runnable = new ExampleRunnable();
                             new Thread(runnable).start();
                             try {
-                                TimeUnit.SECONDS.sleep(3);
+                                TimeUnit.SECONDS.sleep(2);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            //System.out.println(validateUserExistence(username));
-                            System.out.println(userAlreadyExists);
-                            if (!userAlreadyExists){displayMainMenu(view);
-                            System.out.println("Username available");}
-                            else{System.out.println("Username Taken!");}
+                            if (!userAlreadyExists){displayMainMenu(view);}
+                            else{alertUsernameExists();
+                            openDialog();}
+                        }
+                        else{
+                            openDialog();
                         }
                     }
                 });
+    }
+
+    public void openDialog(){
+        Dialog dialog = new Dialog();
+        dialog.show(getSupportFragmentManager(), "alert");
+    }
+
+    public void alertUsernameExists(){
+        Toast.makeText(this, "Username already exists!", Toast.LENGTH_SHORT).show();
     }
 
     //addUser method gets user input, calls hashpassword function and creates user object
@@ -112,7 +122,7 @@ public class CreateAccount extends AppCompatActivity{
         String phoneInput = phone.getText().toString();
         String emailInput = email.getText().toString();
         String usernameInput = username.getText().toString();
-        //String passwordInput = password.getText().toString();
+
         String passwordHashed = hashPassword(password);
 
         user.setFirstName(firstNameInput);
@@ -122,14 +132,6 @@ public class CreateAccount extends AppCompatActivity{
         user.setEmail(emailInput);
         user.setUsername(usernameInput);
         user.setPassword(passwordHashed);
-
-        System.out.println(user.getFirstName());
-        System.out.println(user.getLastName());
-        System.out.println(user.getDob());
-        System.out.println(user.getEmail());
-        System.out.println(user.getPhoneNumber());
-        System.out.println(user.getUsername());
-        System.out.println(user.getPassword());
     }
 
     // checks if username already exists in the database

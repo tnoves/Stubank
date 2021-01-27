@@ -25,7 +25,7 @@ public class UserDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get User endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/user/%s", userID));
+            URL url = new URL(String.format("http://10.0.2.2:5000/user/%s", userID));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");

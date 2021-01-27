@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team46.stubank.data_access.UserDAO;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean validCredentials = false;
     User user;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,22 +43,23 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if (loginAttempts < 3)
-
                 // creates instance of Example runnable class in order to create a new thread
                     ExampleRunnable runnable = new ExampleRunnable();
                     new Thread(runnable).start();
                     try {
-                        TimeUnit.SECONDS.sleep(3);
+                        TimeUnit.SECONDS.sleep(2);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(validCredentials);
-                    if (validCredentials){viewMenu(v);}
-                    else{System.out.println("Invalid credentials");}
+                    if (validCredentials){
+                        viewMenu(v);}
+                    else{openDialog();}
             }
         });
-
+    }
+    public void openDialog(){
+        Dialog dialog = new Dialog();
+        dialog.show(getSupportFragmentManager(), "alert");
     }
 
     //checks if user exists in the database and that the input from the user matches what is in the database
@@ -67,14 +70,9 @@ public class MainActivity extends AppCompatActivity {
         String usernameInput = username.getText().toString();
 
         try {
-            System.out.println(usernameInput);
-            System.out.println(hashedPassword);
 
             UserDAO userDAO = new UserDAO();
             User user1 = userDAO.getUserByUsername(usernameInput);
-
-            System.out.println(user1.getUsername());
-            System.out.println(user1.getPassword());
 
             if (user1.getUsername().equals(usernameInput) && user1.getPassword().equals(hashedPassword)) {
                 user = user1;
@@ -117,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run()
         {
-            //Looper.prepare();
             validCredentials = validateUserExists(password, username);
         }
     }
