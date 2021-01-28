@@ -31,7 +31,7 @@ public class UserDAO {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
+            //conn.setDoOutput(true);
             conn.connect();
 
            // if http response code isnt 200 throw exception
