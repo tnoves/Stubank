@@ -10,13 +10,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.team46.stubank.Card;
 import com.team46.stubank.DisplayPay;
 import com.team46.stubank.R;
 import com.team46.stubank.Transaction;
+import com.team46.stubank.User;
 import com.team46.stubank.budget_activities.DisplayBudget;
 import com.team46.stubank.data_access.CardDao;
 import com.team46.stubank.data_access.TransactionDAO;
@@ -29,11 +32,16 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * @author Ben McIntyre
+ **/
+
 public class ViewCard extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TransactionRecyclerViewAdapter transactionAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private Card card;
+    private User user;
     private Locale locale;
     public static List<Transaction> transactions = new ArrayList<Transaction>();
 
@@ -47,6 +55,8 @@ public class ViewCard extends AppCompatActivity {
         // Fetches card from previous activity.
         Intent intent = getIntent();
         card = (Card) intent.getSerializableExtra("card");
+        user = (User) intent.getSerializableExtra("newUser");
+
 
         // Fetches elements on activity which will be updated.
         TextView cardNumber = findViewById(R.id.viewCardNumber);
@@ -102,12 +112,17 @@ public class ViewCard extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(transactionAdapter);
-    }
-
 
     // TODO: Unsure if this is the correct class to be calling.
-    public void makePayment(View view) {
-        Intent intent = new Intent(this, DisplayPay.class);
-        startActivity(intent);
+    Button makePaymentButton = findViewById(R.id.makePaymentButton);
+    makePaymentButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(view.getContext(), DisplayPay.class);
+            intent.putExtra("card", card);
+            intent.putExtra("newUser", user);
+            view.getContext().startActivity(intent);
+        }
+    });
     }
 }
