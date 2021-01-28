@@ -2,6 +2,9 @@ package com.team46.stubank.card_activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,9 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<TransactionRecyclerViewAdapter.ViewHolder>{
 
@@ -88,15 +94,36 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         UserDAO userDAO = new UserDAO();
         PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
 
-        paymentAccountID = transaction.getPaymentAccountID();
-        paymentAccount = paymentAccountDAO.getPaymentAccount(paymentAccountID);
-        externalUser = userDAO.getUserDetails(paymentAccount.getUserDetailsID());
-        accountName = externalUser.getFirstName()+" "+externalUser.getLastName();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
+        executor.submit(new Runnable() {
+            public void run() {
+                try {
+                    paymentAccountID = transaction.getPaymentAccountID();
+                    paymentAccount = paymentAccountDAO.getPaymentAccount(paymentAccountID);
+                    externalUser = userDAO.getUserDetails(paymentAccount.getUserDetailsID());
+                    accountName = externalUser.getFirstName() + " " + externalUser.getLastName();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                executor.shutdown();
+            }
+        });
+        while(!executor.isTerminated()) {
+            try {
+                executor.awaitTermination(120, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         // TODO: Fetch the users name that matches the payment account.
         transactionElementAccount.setText(accountName);
         transactionElementAmount.setText(getNumberFormat(mCard.getCardType()).format(transaction.getAmount()));
         transactionElementDate.setText(transaction.getSortDate().getDate()+"-"+months[transaction.getSortDate().getMonth()]+"-"+(transaction.getSortDate().getYear()+1900));
+        if (transaction.getAmount() < 0) {
+            transactionElementAmount.setTextColor(Color.parseColor("#db5353"));
+        }
 
         // When a transaction is selected, open new activity window after including specific transaction in the intent.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
