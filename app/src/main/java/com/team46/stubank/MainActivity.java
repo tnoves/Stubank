@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (validCredentials = true){
             Intent intent = new Intent(this, DisplayCards.class);
+            intent.putExtra("newUser", user);
             startActivity(intent);
         }
         else{System.out.println("No menu for you");}
