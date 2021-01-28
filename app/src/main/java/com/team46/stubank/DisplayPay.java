@@ -16,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.team46.stubank.card_activities.ViewCard;
 import com.team46.stubank.data_access.CardDao;
 import com.team46.stubank.data_access.PaymentAccountDAO;
-import com.team46.stubank.data_access.UserDAO;
 import com.team46.stubank.pay_fragments.PayFragmentPagerAdapter;
 
 import java.util.ArrayList;
@@ -63,12 +62,13 @@ public class DisplayPay extends AppCompatActivity {
         FloatingActionButton backButton = findViewById(R.id.backButton);
         FloatingActionButton forwardButton = findViewById(R.id.forwardButton);
 
-        // cards = (ArrayList<Card>) getIntent().getSerializableExtra("cards");
-
         ProgressBar loading = findViewById(R.id.progressBar2);
 
         payFragmentPagerAdapter = new PayFragmentPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, cards, paymentAccounts);
+
+        Intent intent = getIntent();
+        user = (User) intent.getSerializableExtra("newUser");
 
         // Create new thread
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -80,9 +80,6 @@ public class DisplayPay extends AppCompatActivity {
             public void run() {
                 loading.setVisibility(View.VISIBLE);
 
-                UserDAO userDAO = new UserDAO();
-                user = userDAO.getUser(28);
-
                 CardDao cardDao = new CardDao();
                 cards.addAll(cardDao.getAllCards(user.getUserID()));
 
@@ -90,7 +87,6 @@ public class DisplayPay extends AppCompatActivity {
                 paymentAccounts.addAll(paymentAccountDAO.getAllPaymentAccount(user.getUserDetailsID()));
 
                 selectedCard = cards.get(0);
-                paymentAccount = paymentAccounts.get(0);
 
                 handler.post(new Runnable() {
                     @Override

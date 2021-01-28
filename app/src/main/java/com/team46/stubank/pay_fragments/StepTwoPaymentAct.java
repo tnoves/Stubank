@@ -29,17 +29,15 @@ import java.util.ArrayList;
 
 public class StepTwoPaymentAct extends Fragment {
 
-    private PaymentAccount selectedPayment;
     private List<PaymentAccount> paymentAccountList;
     
     public StepTwoPaymentAct(){
         
     }
 
-    public static StepTwoPaymentAct newInstance (PaymentAccount paymentAccount, ArrayList<PaymentAccount> paymentAccounts){
+    public static StepTwoPaymentAct newInstance (ArrayList<PaymentAccount> paymentAccounts){
         StepTwoPaymentAct fragment = new StepTwoPaymentAct();
         Bundle args = new Bundle();
-        args.putSerializable("paymentAccount", paymentAccount);
         args.putSerializable("paymentAccounts", paymentAccounts);
         fragment.setArguments(args);
         return fragment;
@@ -49,7 +47,6 @@ public class StepTwoPaymentAct extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
-            selectedPayment = (PaymentAccount) getArguments().getSerializable("paymentAccount");
             paymentAccountList = (ArrayList<PaymentAccount>) getArguments().getSerializable("paymentAccounts");
         }
     }
