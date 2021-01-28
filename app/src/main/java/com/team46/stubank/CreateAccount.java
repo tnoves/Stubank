@@ -22,6 +22,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+/**
+ * @author Harry Alexander
+ **/
+
 public class CreateAccount extends AppCompatActivity{
 
     // REGEX containing every quality the password input must contain
