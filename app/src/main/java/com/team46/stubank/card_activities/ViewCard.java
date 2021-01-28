@@ -66,10 +66,13 @@ public class ViewCard extends AppCompatActivity {
         switch (card.getCardType()) {
             case ("GBP"):
                 locale = Locale.UK;
+                break;
             case ("EUR"):
                 locale = Locale.GERMANY;
+                break;
             case ("USD"):
                 locale = Locale.US;
+                break;
         }
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
 
