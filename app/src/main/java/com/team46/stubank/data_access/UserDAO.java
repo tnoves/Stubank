@@ -31,7 +31,6 @@ public class UserDAO {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            //conn.setDoOutput(true);
             conn.connect();
 
            // if http response code isnt 200 throw exception
@@ -212,13 +211,12 @@ public class UserDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get user endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000//user/details/%s", userdetailsID));
+            URL url = new URL(String.format("http://10.0.2.2:5000//user/details/%s", userdetailsID));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
             conn.connect();
 
             //// if http response code isnt 200 throw exception
@@ -289,13 +287,12 @@ public class UserDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - get all users in user table
-            URL url = new URL(String.format("http://127.0.0.1:5000/user/all/"));
+            URL url = new URL(String.format("http://10.0.2.2:5000/user/all/"));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
             conn.connect();
 
             // if http response code is not 200 thrown exception
