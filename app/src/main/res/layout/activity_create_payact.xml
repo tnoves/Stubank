@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btnCreatePayact"
+        android:id="@+id/btnCreatePaymentAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit"
@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.298" />
+        app:layout_constraintVertical_bias="0.194" />
 
     <TextView
         android:id="@+id/txtCreationMessage"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="76dp"
         app:cardBackgroundColor="#6D0095"
-        app:layout_constraintBottom_toTopOf="@+id/btnCreatePayact"
+        app:layout_constraintBottom_toTopOf="@+id/btnCreatePaymentAccount"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp" >

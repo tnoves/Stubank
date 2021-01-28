@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.team46.stubank.Card;
 import com.team46.stubank.PaymentAccount;
+import com.team46.stubank.User;
 
 import java.util.ArrayList;
 
@@ -14,13 +15,15 @@ public class PayFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private static int NUM_ITEMS = 4;
     private final ArrayList<Card> mCards;
     private final ArrayList<PaymentAccount> mPaymentAccounts;
+    private final User mUser;
 
 
-    public PayFragmentPagerAdapter(@NonNull FragmentManager fm, int behavior, ArrayList<Card> cards, ArrayList<PaymentAccount> paymentAccounts) {
+    public PayFragmentPagerAdapter(@NonNull FragmentManager fm, int behavior, ArrayList<Card> cards, ArrayList<PaymentAccount> paymentAccounts, User user) {
         super(fm, behavior);
 
         this.mCards = cards;
-        this.mPaymentAccounts = paymentAccounts; 
+        this.mPaymentAccounts = paymentAccounts;
+        this.mUser = user;
     }
 
 
@@ -31,7 +34,7 @@ public class PayFragmentPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return StepOneCards.newInstance(mCards.get(0), mCards);
             case 1:
-                return StepTwoPaymentAct.newInstance(mPaymentAccounts);
+                return StepTwoPaymentAct.newInstance(mPaymentAccounts, mUser);
             case 2:
                 return StepFourAmount.newInstance();
             case 3:

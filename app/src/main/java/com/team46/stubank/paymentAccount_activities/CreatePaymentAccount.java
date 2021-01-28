@@ -1,13 +1,15 @@
 package com.team46.stubank.paymentAccount_activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +18,6 @@ import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.R;
 import com.team46.stubank.User;
 import com.team46.stubank.data_access.PaymentAccountDAO;
-import com.team46.stubank.data_access.UserDAO;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,22 +32,38 @@ import java.util.concurrent.Executors;
  */
 
 public class CreatePaymentAccount extends AppCompatActivity {
-    private ArrayAdapter<String> adapter;
-    private View view;
-    private User user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_payact);
-        view = (View) findViewById(R.id.txtCreationMessage);
+    }
 
-        Intent intent = getIntent();
-        user = (User) intent.getSerializableExtra("user");
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+    }
 
-        Button submitButton = findViewById(R.id.btnCreatePayact);
+    public void showPopupWindow(View view, User user) {
+
+        LayoutInflater inflater = (LayoutInflater)
+                view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.activity_create_payact, null);
+
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+
+        boolean focusable = false;
+
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        Button submitButton = popupView.findViewById(R.id.btnCreatePaymentAccount);
+
         submitButton.setOnClickListener(v -> {
+
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Handler handler = new Handler(Looper.getMainLooper());
 
@@ -69,9 +86,18 @@ public class CreatePaymentAccount extends AppCompatActivity {
                     toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
                     toast.show();
                 });
-               executor.shutdown();
-
+                executor.shutdown();
             });
         });
+
+        // Dismiss popup if click outside of window
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+
     }
 }
