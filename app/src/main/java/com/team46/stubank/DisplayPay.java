@@ -64,11 +64,11 @@ public class DisplayPay extends AppCompatActivity {
 
         ProgressBar loading = findViewById(R.id.progressBar2);
 
-        payFragmentPagerAdapter = new PayFragmentPagerAdapter(getSupportFragmentManager(),
-                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, cards, paymentAccounts);
-
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("newUser");
+
+        payFragmentPagerAdapter = new PayFragmentPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, cards, paymentAccounts, user);
 
         // Create new thread
         ExecutorService executor = Executors.newSingleThreadExecutor();

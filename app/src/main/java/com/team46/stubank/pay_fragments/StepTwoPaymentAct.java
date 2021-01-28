@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import com.team46.stubank.DisplayPay;
 import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.R;
+import com.team46.stubank.User;
+import com.team46.stubank.paymentAccount_activities.CreatePaymentAccount;
 import com.team46.stubank.paymentAccount_activities.PayActSelectorAdapter;
 
 import java.util.List;
@@ -29,22 +32,25 @@ import java.util.ArrayList;
 
 public class StepTwoPaymentAct extends Fragment {
 
+    private static User mUser;
     private List<PaymentAccount> paymentAccountList;
-    
+
     public StepTwoPaymentAct(){
         
     }
 
-    public static StepTwoPaymentAct newInstance (ArrayList<PaymentAccount> paymentAccounts){
+    public static StepTwoPaymentAct newInstance (ArrayList<PaymentAccount> paymentAccounts, User user){
         StepTwoPaymentAct fragment = new StepTwoPaymentAct();
         Bundle args = new Bundle();
         args.putSerializable("paymentAccounts", paymentAccounts);
+        mUser = user;
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
             paymentAccountList = (ArrayList<PaymentAccount>) getArguments().getSerializable("paymentAccounts");
@@ -69,6 +75,15 @@ public class StepTwoPaymentAct extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        Button addPaymentAct = view.findViewById(R.id.btnAddPaymentAct);
+        addPaymentAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreatePaymentAccount createPaymentAccountPopup = new CreatePaymentAccount();
+                createPaymentAccountPopup.showPopupWindow(view, mUser);
             }
         });
 

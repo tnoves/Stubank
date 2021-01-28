@@ -26,5 +26,11 @@
             android:layout_height="229dp"
             android:focusable="false"
             android:spinnerMode="dialog" />
+
+        <Button
+            android:id="@+id/btnAddPaymentAct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/submit" />
     </LinearLayout>
 </FrameLayout>
