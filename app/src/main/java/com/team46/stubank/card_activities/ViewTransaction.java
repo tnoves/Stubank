@@ -19,6 +19,10 @@ import com.team46.stubank.Transaction;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+/**
+ * @author Ben McIntyre
+ **/
+
 public class ViewTransaction extends AppCompatActivity {
     private Transaction transaction;
     private Locale locale;
@@ -31,6 +35,8 @@ public class ViewTransaction extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_transaction);
 
+
+        // Fetches card and transaction object from the intent.
         Intent intent = getIntent();
         card = (Card) intent.getSerializableExtra("card");
         transaction = (Transaction) intent.getSerializableExtra("transaction");
@@ -41,22 +47,28 @@ public class ViewTransaction extends AppCompatActivity {
         TextView transactionAmount = findViewById(R.id.transactionAmount);
         TextView transactionType = findViewById(R.id.transactionType);
 
+        // Uses the currency on the card and sets a formatter to a corresponding location.
         switch (card.getCardType()) {
             case ("GBP"):
                 locale = Locale.UK;
+                break;
             case ("EUR"):
                 locale = Locale.GERMANY;
+                break;
             case ("USD"):
                 locale = Locale.US;
+                break;
         }
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
 
+        // Sets elements on the transaction screen to be red if the amount is negative.
         if (transaction.getAmount() < 0) {
             transactionImage.setImageTintList(ColorStateList.valueOf(Color.parseColor("#db5353")));
             transactionDirection.setText("OUT");
             transactionDirection.setTextColor(Color.parseColor("#db5353"));
             transactionAmount.setTextColor(Color.parseColor("#db5353"));
         }
+        // Sets remaining elements on the transaction screen to have the details from the transaction.
         transactionAmount.setText(numberFormat.format(transaction.getAmount()));
         transactionName.setText(transaction.getPaymentAccountID());
         transactionType.setText(transaction.getPaymentType());
