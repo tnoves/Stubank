@@ -8,6 +8,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+
+/**
+ * @author Harry Alexander
+ **/
+
 public class Dialog extends AppCompatDialogFragment {
     @NonNull
     @Override

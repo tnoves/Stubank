@@ -22,6 +22,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
+
+/**
+ * @author Harry Alexander
+ **/
+
 public class MainActivity extends AppCompatActivity {
 
     EditText username, password;

@@ -16,6 +16,11 @@ import com.team46.stubank.data_access.UserDAO;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+/**
+ * @author Harry Alexander
+ **/
+
 public class Settings extends AppCompatActivity {
 
     Button removeAccount, signOut, changeAccount;
