@@ -102,8 +102,10 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         switch (card.getCardType()) {
             case ("GBP"):
                 locale = Locale.UK;
+                break;
             case ("EUR"):
                 locale = Locale.GERMANY;
+                break;
             case ("USD"):
                 locale = Locale.US;
                 break;
