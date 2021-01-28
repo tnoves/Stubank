@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.team46.stubank.Card;
 import com.team46.stubank.DisplayPay;
 import com.team46.stubank.R;
+import com.team46.stubank.TopupCard;
 import com.team46.stubank.Transaction;
 import com.team46.stubank.User;
 import com.team46.stubank.data_access.TransactionDAO;
@@ -131,15 +132,23 @@ public class ViewCard extends AppCompatActivity {
 
         recyclerView.setAdapter(transactionAdapter);
 
-    // TODO: Unsure if this is the correct class to be calling.
-    Button makePaymentButton = findViewById(R.id.makePaymentButton);
-    makePaymentButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(), DisplayPay.class);
-            intent.putExtra("newUser", user);
-            view.getContext().startActivity(intent);
-        }
-    });
+        Button makePaymentButton = findViewById(R.id.makePaymentButton);
+        makePaymentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), DisplayPay.class);
+                intent.putExtra("newUser", user);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        Button topupButton = findViewById(R.id.topupCardButton);
+        topupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TopupCard topupCardPopup = new TopupCard();
+                topupCardPopup.showPopupWindow(v, card, user);
+            }
+        });
     }
 }

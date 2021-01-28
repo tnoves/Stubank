@@ -93,15 +93,38 @@
             android:layout_height="match_parent">
 
             <Button
+                android:id="@+id/topupCardButton"
+                android:layout_width="88dp"
+                android:layout_height="wrap_content"
+                android:text="Topup"
+                app:backgroundTint="#6c4095"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/makePaymentButton"
+                app:layout_constraintHorizontal_bias="0.64"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
                 android:id="@+id/makePaymentButton"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="156dp"
-                android:layout_marginRight="156dp"
+                android:layout_marginEnd="180dp"
+                android:layout_marginRight="180dp"
                 android:text="@string/pay"
                 app:backgroundTint="#6c4095"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/changeCardButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change Card"
+                app:backgroundTint="#6c4095"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/makePaymentButton"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

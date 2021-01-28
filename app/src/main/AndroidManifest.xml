@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StuBank"
         android:usesCleartextTraffic="true">
+        <activity android:name=".TopupCard"></activity>
         <activity android:name=".Settings">
             android:parentActivityName=".ViewMainMenu">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -19,8 +20,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".budget_activities.DisplayBudget" />
         </activity>
-        <activity android:name=".card_activities.CreateCard"></activity>
-        <activity android:name=".card_activities.ViewTransaction"></activity>
+        <activity android:name=".card_activities.CreateCard" />
+        <activity android:name=".card_activities.ViewTransaction" />
         <activity android:name=".CreateAccount">
             android:parentActivityName=".MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -78,15 +79,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".paymentAccount_activities.DisplayPaymentAccount" android:exported="true">
-        android:parentActivityName=".viewMainMenu">
-        <!-- The meta-data tag is required if you support API level 15 and lower -->
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".ViewMainMenu" />
+        <activity
+            android:name=".paymentAccount_activities.DisplayPaymentAccount"
+            android:exported="true">
+            android:parentActivityName=".viewMainMenu">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ViewMainMenu" />
         </activity>
-
 
         <meta-data
             android:name="preloaded_fonts"

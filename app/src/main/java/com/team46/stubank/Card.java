@@ -233,7 +233,7 @@ public class Card implements Serializable {
             if (paymentAccountId == (-999)) {
                 PaymentAccount paymentAccountDebit = new PaymentAccount();
                 paymentAccountDebit.setAccountID(Integer.parseInt(userToDebit.getAccountID()));
-                paymentAccountDebit.setUserDetailsID(userToCredit.getUserDetailsID());
+                paymentAccountDebit.setUserDetailsID(userToDebit.getUserDetailsID());
 
                 paymentAccountDAO.insertPaymentAccount(paymentAccountDebit);
                 paymentAccountId = paymentAccountDebit.getPaymentActID();
@@ -258,6 +258,60 @@ public class Card implements Serializable {
             // update card in database
             update(userToCredit);
 
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean topup(double amount, User user) {
+        try {
+            refresh();
+
+            balance += amount;
+
+            // retrieve all payment accounts for this user
+            PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
+            ArrayList<PaymentAccount> paymentAccounts = paymentAccountDAO
+                    .getAllPaymentAccount(user.getUserDetailsID());
+
+            int paymentAccountId = -999;
+
+            // check if payment account exists from user crediting
+            for (PaymentAccount paymentAccount : paymentAccounts) {
+                if (paymentAccount.getAccountID() == Integer.parseInt(user.getAccountID())) {
+                    paymentAccountId = paymentAccount.getPaymentActID();
+                    break;
+                }
+            }
+
+            if (paymentAccountId == (-999)) {
+                PaymentAccount paymentAccountDebit = new PaymentAccount();
+                paymentAccountDebit.setAccountID(Integer.parseInt(user.getAccountID()));
+                paymentAccountDebit.setUserDetailsID(user.getUserDetailsID());
+
+                paymentAccountDAO.insertPaymentAccount(paymentAccountDebit);
+                paymentAccountId = paymentAccountDebit.getPaymentActID();
+            }
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar cal = Calendar.getInstance();
+            Date current = cal.getTime();
+            String currentDate = dateFormat.format(current);
+
+            Transaction transaction = new Transaction(
+                    cardNumber,
+                    balance,
+                    currentDate,
+                    paymentAccountId,
+                    (amount),
+                    "Topup");
+
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.insertTransaction(transaction);
+
+            update(user);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
