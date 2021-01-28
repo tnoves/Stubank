@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,8 +37,8 @@ public class DisplayPaymentAccount extends AppCompatActivity {
         paymentAccounts.clear();
 
         // Get logged in user from previous activity
-        // Intent intent = getIntent();
-        // user = (User) intent.getSerializableExtra("user");
+        Intent intent = getIntent();
+        user = (User) intent.getSerializableExtra("user");
 
         // Create new thread
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -53,8 +54,8 @@ public class DisplayPaymentAccount extends AppCompatActivity {
             public void run() {
                 loading.setVisibility(View.VISIBLE);
 
-                UserDAO userDAO = new UserDAO();
-                user = userDAO.getUser(1497);
+                //UserDAO userDAO = new UserDAO();
+               // user = userDAO.getUser(1497);
 
                 PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
                 paymentAccounts.addAll(paymentAccountDAO.getAllPaymentAccount(user.getUserDetailsID()));
