@@ -35,7 +35,6 @@ public class PayActSelectorAdapter extends ArrayAdapter {
         public TextView name;
         public TextView accountNumber;
         public TextView sortCode;
-        public Button btnSubmit;
         public View layout;
     }
 
@@ -58,7 +57,6 @@ public class PayActSelectorAdapter extends ArrayAdapter {
                 mViewHolder.name = (TextView) convertView.findViewById(R.id.txtName);
                 mViewHolder.sortCode = (TextView) convertView.findViewById(R.id.txtSortCode);
                 mViewHolder.accountNumber = (TextView) convertView.findViewById(R.id.txtAccountNo);
-                mViewHolder.btnSubmit = (Button) convertView.findViewById(R.id.btnSubmit);
 
                 convertView.setTag(mViewHolder);
             }
@@ -69,8 +67,6 @@ public class PayActSelectorAdapter extends ArrayAdapter {
             mViewHolder.name.setText(mPaymentAccounts.get(position).getFirstName());
             mViewHolder.sortCode.setText(mPaymentAccounts.get(position).getSortCode());
             mViewHolder.accountNumber.setText(mPaymentAccounts.get(position).getAccountNumber());
-            mViewHolder.btnSubmit.setEnabled(false);
-            mViewHolder.btnSubmit.setVisibility(View.INVISIBLE);
 
             return convertView;
         } catch (Exception e) {
