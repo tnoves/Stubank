@@ -22,7 +22,6 @@ import com.team46.stubank.R;
 import com.team46.stubank.User;
 import com.team46.stubank.data_access.AccountDAO;
 import com.team46.stubank.data_access.CardDao;
-import com.team46.stubank.data_access.UserDAO;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -65,7 +64,7 @@ public class CreateCard extends AppCompatActivity {
         dropDown.setAdapter(adapter);
     }
 
-    public void showPopupWindow(View view) {
+    public void showPopupWindow(View view, User user) {
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.activity_create_card, null);
@@ -105,9 +104,6 @@ public class CreateCard extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            UserDAO userDAO = new UserDAO();
-                            User user = userDAO.getUser(28);
-
                             CardDao cardDao = new CardDao();
                             AccountDAO accountDAO = new AccountDAO();
 

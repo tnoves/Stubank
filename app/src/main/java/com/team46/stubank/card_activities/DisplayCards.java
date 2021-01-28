@@ -1,5 +1,6 @@
 package com.team46.stubank.card_activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,6 +8,7 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +41,11 @@ public class DisplayCards extends AppCompatActivity {
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("newUser");
 
+        recyclerView = (RecyclerView) findViewById(R.id.card_rv);
+        recyclerView.setHasFixedSize(true);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         // Create new thread
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -60,6 +67,24 @@ public class DisplayCards extends AppCompatActivity {
                     public void run() {
                         cardAdapter.notifyDataSetChanged();
                         loading.setVisibility(View.GONE);
+
+                        if (cards.size() <= 0) {
+                            builder.setMessage("Your first card").setTitle("Your first card");
+
+                            builder.setMessage("Please create your first card by pressing the add " +
+                                    "button in the bottom right corner")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            AlertDialog alert = builder.create();
+                            alert.setTitle("Your first card");
+                            alert.show();
+                        }
                     }
                 });
 
@@ -67,8 +92,6 @@ public class DisplayCards extends AppCompatActivity {
             }
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.card_rv);
-        recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -81,7 +104,7 @@ public class DisplayCards extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CreateCard createCardPopup = new CreateCard();
-                createCardPopup.showPopupWindow(view);
+                createCardPopup.showPopupWindow(view, user);
             }
         });
     }
