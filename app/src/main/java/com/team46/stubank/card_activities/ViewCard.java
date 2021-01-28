@@ -46,6 +46,7 @@ public class ViewCard extends AppCompatActivity {
     private Locale locale;
     public static List<Transaction> transactions = new ArrayList<Transaction>();
 
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +149,15 @@ public class ViewCard extends AppCompatActivity {
             public void onClick(View v) {
                 TopupCard topupCardPopup = new TopupCard();
                 topupCardPopup.showPopupWindow(v, card, user);
+            }
+        });
+
+        Button changeCardButton = findViewById(R.id.changeCardButton);
+        changeCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), DisplayCards.class);
+                startActivity(intent);
             }
         });
     }
