@@ -16,8 +16,8 @@
 
         <TextView
             android:id="@+id/mainMenuText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="393dp"
+            android:layout_height="68dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
@@ -26,6 +26,14 @@
             android:text="@string/main_menu"
             android:textColor="#FFFFFF"
             android:textSize="36sp" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="300sp"
+            app:srcCompat="@android:drawable/ic_menu_help" />
+
     </androidx.cardview.widget.CardView>
 
     <Button
