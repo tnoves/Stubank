@@ -1,22 +1,18 @@
 package com.team46.stubank.data_access;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.team46.stubank.Card;
 import com.team46.stubank.User;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class UserDAO {
 
@@ -34,6 +30,55 @@ public class UserDAO {
             conn.connect();
 
            // if http response code isnt 200 throw exception
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("HttpResponseCode: " + conn.getResponseCode());
+            } else {
+                String response = "";
+                Scanner scanner = new Scanner(url.openStream());
+
+                while (scanner.hasNext()) {
+                    response += scanner.nextLine();
+                }
+
+                scanner.close();
+
+                JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+
+                User user = new User();
+                // set user attributes to data from json object
+
+                user.setUserID(json.get("id").getAsInt());
+                user.setUserDetailsID(json.get("user_details_id").getAsInt());
+                user.setUsername(json.get("username").getAsString());
+                user.setAccountID(json.get("account_id").getAsString());
+
+                return user;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        } finally {
+            if (conn != null)
+                conn.disconnect();
+        }
+    }
+
+    // getUser method used to retrieve a user from the database.
+    public User getUserByDetails(int userDetailsID) {
+        HttpURLConnection conn = null;
+        try {
+            // make connection to the StuBank api - get User endpoint
+            URL url = new URL(String.format("http://10.0.2.2:5000/user/from/details/%s", userDetailsID));
+
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.connect();
+
+            // if http response code isnt 200 throw exception
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getResponseCode());
             } else {

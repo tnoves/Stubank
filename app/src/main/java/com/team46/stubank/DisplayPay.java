@@ -21,6 +21,7 @@ import com.team46.stubank.pay_fragments.PayFragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class DisplayPay extends AppCompatActivity {
@@ -33,6 +34,8 @@ public class DisplayPay extends AppCompatActivity {
     private Card selectedCard;
     private PaymentAccount paymentAccount;
     private float paymentAmount = 0;
+
+    private ProgressBar loading;
 
     public Card getSelectedCard() {
         return selectedCard;
@@ -62,7 +65,7 @@ public class DisplayPay extends AppCompatActivity {
         FloatingActionButton backButton = findViewById(R.id.backButton);
         FloatingActionButton forwardButton = findViewById(R.id.forwardButton);
 
-        ProgressBar loading = findViewById(R.id.progressBar2);
+        loading = findViewById(R.id.progressBar2);
 
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("newUser");
@@ -71,11 +74,11 @@ public class DisplayPay extends AppCompatActivity {
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, cards, paymentAccounts, user);
 
         // Create new thread
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ExecutorService executor = Executors.newFixedThreadPool(2);
         Handler handler = new Handler(Looper.getMainLooper());
 
         // Retrieve user's cards in background thread
-        executor.submit(new Runnable() {
+        Future future = executor.submit(new Runnable() {
             @Override
             public void run() {
                 loading.setVisibility(View.VISIBLE);
@@ -95,17 +98,13 @@ public class DisplayPay extends AppCompatActivity {
                         loading.setVisibility(View.GONE);
                     }
                 });
-
-                executor.shutdown();
             }
         });
 
-        while(!executor.isTerminated()) {
-            try {
-                executor.awaitTermination(120, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            future.get(120, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         ViewPager viewPager = findViewById(R.id.payViewPager);
@@ -114,13 +113,39 @@ public class DisplayPay extends AppCompatActivity {
         forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(viewPager.getCurrentItem());
                 if (viewPager.getCurrentItem() == (payFragmentPagerAdapter.getCount() - 1)) {
-                    // Make payment
-                    selectedCard.makePayment(paymentAmount, user, paymentAccount);
-                    Toast.makeText(viewPager.getContext(), "Your payment has been sent", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(viewPager.getContext(), ViewCard.class);
-                    viewPager.getContext().startActivity(intent);
+                    try {
+                        // Make payment
+                        executor.submit(new Runnable() {
+                            @Override
+                            public void run() {
+                                selectedCard.makePayment(paymentAmount, user, paymentAccount);
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                    }
+                                });
+
+                                executor.shutdown();
+                            }
+                        });
+
+                        while (!executor.isTerminated()) {
+                            try {
+                                executor.awaitTermination(120, TimeUnit.SECONDS);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        Toast.makeText(viewPager.getContext(), "Your payment has been sent", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(viewPager.getContext(), ViewCard.class);
+                        viewPager.getContext().startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     if (viewPager.getCurrentItem() == 1 && paymentAccount == null) {
                         forwardButton.setAlpha(0.5f);

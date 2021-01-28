@@ -1,9 +1,16 @@
 package com.team46.stubank;
 
 import com.team46.stubank.data_access.CardDao;
+import com.team46.stubank.data_access.PaymentAccountDAO;
+import com.team46.stubank.data_access.TransactionDAO;
 import com.team46.stubank.data_access.UserDAO;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Card implements Serializable {
     private int userId;
@@ -109,19 +116,31 @@ public class Card implements Serializable {
             }
 
             // get card of payment account
-            Card paymentCard = new CardDao().getCard(account.getAccountNumber());
+            User paymentUser = new UserDAO().getUserByDetails(account.getUserDetailsID());
 
-            // get user of payment account
-            User paymentUser = new UserDAO().getUser(paymentCard.getUserId());
+            ArrayList<Card> cards = new CardDao().getAllCards(paymentUser.getUserID());
+            Card paymentCard = null;
+
+            for (Card card: cards) {
+                if (card.getAccountId() == account.getAccountID()) {
+                    // set payment card
+                    paymentCard = card;
+                    break;
+                }
+            }
+
+            if (paymentCard == null) {
+                return false;
+            }
 
             // debit x amount to payment account
             if (paymentCard != null) {
-                paymentCard.debit(amount, paymentUser);
+                paymentCard.debit(amount, paymentUser, user);
                 paymentCard.update(paymentUser);
             }
 
             // deduct amount from cards balance
-            balance -= amount;
+            credit(amount, user, paymentUser);
 
             // update this card
             update(paymentUser);
@@ -132,16 +151,118 @@ public class Card implements Serializable {
         }
     }
 
-    public boolean debit(double amount, User user) {
-        refresh();
+    public boolean debit(double amount, User userToDebit, User userToCredit) {
+        try {
+            refresh();
 
-        // add amount to card
-        balance += amount;
+            // add amount to card
+            balance += amount;
 
-        // update card in database
-        update(user);
+            // retrieve all payment accounts for this user
+            PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
+            ArrayList<PaymentAccount> paymentAccounts = paymentAccountDAO
+                    .getAllPaymentAccount(userToDebit.getUserDetailsID());
 
-        return true;
+            int paymentAccountId = -999;
+
+            // check if payment account exists from user crediting
+            for (PaymentAccount paymentAccount : paymentAccounts) {
+                if (paymentAccount.getAccountID() == Integer.parseInt(userToCredit.getAccountID())) {
+                    paymentAccountId = paymentAccount.getPaymentActID();
+                    break;
+                }
+            }
+
+            if (paymentAccountId == (-999)) {
+                PaymentAccount paymentAccountCredit = new PaymentAccount();
+                paymentAccountCredit.setAccountID(Integer.parseInt(userToCredit.getAccountID()));
+                paymentAccountCredit.setUserDetailsID(userToDebit.getUserDetailsID());
+
+                paymentAccountDAO.insertPaymentAccount(paymentAccountCredit);
+                paymentAccountId = paymentAccountCredit.getPaymentActID();
+            }
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar cal = Calendar.getInstance();
+            Date current = cal.getTime();
+            String currentDate = dateFormat.format(current);
+
+            Transaction transaction = new Transaction(
+                    cardNumber,
+                    balance,
+                    currentDate,
+                    paymentAccountId,
+                    amount,
+                    "Debit");
+
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.insertTransaction(transaction);
+
+            // update card in database
+            update(userToDebit);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean credit(double amount, User userToCredit, User userToDebit) {
+        try {
+            refresh();
+
+            // add amount to card
+            balance -= amount;
+
+            // retrieve all payment accounts for this user
+            PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
+            ArrayList<PaymentAccount> paymentAccounts = paymentAccountDAO
+                    .getAllPaymentAccount(userToCredit.getUserDetailsID());
+
+            int paymentAccountId = -999;
+
+            // check if payment account exists from user crediting
+            for (PaymentAccount paymentAccount : paymentAccounts) {
+                if (paymentAccount.getAccountID() == Integer.parseInt(userToDebit.getAccountID())) {
+                    paymentAccountId = paymentAccount.getPaymentActID();
+                    break;
+                }
+            }
+
+            if (paymentAccountId == (-999)) {
+                PaymentAccount paymentAccountDebit = new PaymentAccount();
+                paymentAccountDebit.setAccountID(Integer.parseInt(userToDebit.getAccountID()));
+                paymentAccountDebit.setUserDetailsID(userToCredit.getUserDetailsID());
+
+                paymentAccountDAO.insertPaymentAccount(paymentAccountDebit);
+                paymentAccountId = paymentAccountDebit.getPaymentActID();
+            }
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar cal = Calendar.getInstance();
+            Date current = cal.getTime();
+            String currentDate = dateFormat.format(current);
+
+            Transaction transaction = new Transaction(
+                    cardNumber,
+                    balance,
+                    currentDate,
+                    paymentAccountId,
+                    amount,
+                    "Credit");
+
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.insertTransaction(transaction);
+
+            // update card in database
+            update(userToCredit);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void update(User user) {
