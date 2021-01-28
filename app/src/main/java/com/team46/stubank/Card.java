@@ -249,7 +249,7 @@ public class Card implements Serializable {
                     balance,
                     currentDate,
                     paymentAccountId,
-                    amount,
+                    (-1 * amount),
                     "Credit");
 
             TransactionDAO transactionDAO = new TransactionDAO();
