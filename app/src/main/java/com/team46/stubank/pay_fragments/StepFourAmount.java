@@ -38,55 +38,66 @@ public class StepFourAmount extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_step_four_amount, container, false);
+        try {
+            // Inflate the layout for this fragment
+            View view = inflater.inflate(R.layout.fragment_step_four_amount, container, false);
 
-        EditText paymentAmount = view.findViewById(R.id.paymentAmount);
-        TextView currencySymbol = view.findViewById(R.id.currencySymbol);
+            EditText paymentAmount = view.findViewById(R.id.paymentAmount);
+            TextView currencySymbol = view.findViewById(R.id.currencySymbol);
 
-        String cardType = ((DisplayPay) getActivity()).getSelectedCard().getCardType();
+            String cardType = ((DisplayPay) getActivity()).getSelectedCard().getCardType();
 
-        if (cardType.equals("GBP")) {
-            currencySymbol.setText("£");
-        } else if (cardType.equals("EUR")) {
-            currencySymbol.setText("€");
-        } else {
-            currencySymbol.setText("$");
+            if (cardType.equals("GBP")) {
+                currencySymbol.setText("£");
+            } else if (cardType.equals("EUR")) {
+                currencySymbol.setText("€");
+            } else {
+                currencySymbol.setText("$");
+            }
+
+            paymentAmount.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.length() > 0) {
+                        ((DisplayPay) getActivity()).setPaymentAmount(Float.valueOf(s.toString()));
+                    }
+                }
+            });
+
+            return view;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-
-        paymentAmount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                ((DisplayPay) getActivity()).setPaymentAmount(Float.valueOf(s.toString()));
-            }
-        });
-
-        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        TextView currencySymbol = getView().findViewById(R.id.currencySymbol);
-        String cardType = ((DisplayPay) getActivity()).getSelectedCard().getCardType();
+        try {
+            TextView currencySymbol = getView().findViewById(R.id.currencySymbol);
+            String cardType = ((DisplayPay) getActivity()).getSelectedCard().getCardType();
 
-        if (cardType.equals("GBP")) {
-            currencySymbol.setText("£");
-        } else if (cardType.equals("EUR")) {
-            currencySymbol.setText("€");
-        } else {
-            currencySymbol.setText("$");
+            if (cardType.equals("GBP")) {
+                currencySymbol.setText("£");
+            } else if (cardType.equals("EUR")) {
+                currencySymbol.setText("€");
+            } else {
+                currencySymbol.setText("$");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

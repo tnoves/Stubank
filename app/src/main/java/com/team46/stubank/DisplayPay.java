@@ -114,6 +114,7 @@ public class DisplayPay extends AppCompatActivity {
         forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println(viewPager.getCurrentItem());
                 if (viewPager.getCurrentItem() == (payFragmentPagerAdapter.getCount() - 1)) {
                     // Make payment
                     selectedCard.makePayment(paymentAmount, user, paymentAccount);
@@ -121,7 +122,16 @@ public class DisplayPay extends AppCompatActivity {
                     Intent intent = new Intent(viewPager.getContext(), ViewCard.class);
                     viewPager.getContext().startActivity(intent);
                 } else {
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                    if (viewPager.getCurrentItem() == 1 && paymentAccount == null) {
+                        forwardButton.setAlpha(0.5f);
+                    } else {
+                        forwardButton.setAlpha(1f);
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+
+                        if (viewPager.getCurrentItem() == 1 && paymentAccount == null) {
+                            forwardButton.setAlpha(0.5f);
+                        }
+                    }
                 }
 
                 // Change icon of button to tick if on the review payment screen
@@ -136,6 +146,7 @@ public class DisplayPay extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+                forwardButton.setAlpha(1f);
 
                 if (viewPager.getCurrentItem() != (payFragmentPagerAdapter.getCount() - 1)) {
                     forwardButton.setImageResource(R.drawable.abc_vector_test);

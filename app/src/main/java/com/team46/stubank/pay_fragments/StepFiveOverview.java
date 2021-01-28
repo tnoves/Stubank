@@ -37,24 +37,29 @@ public class StepFiveOverview extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_step_five_overview, container, false);
+        try {
+            // Inflate the layout for this fragment
+            View view = inflater.inflate(R.layout.fragment_step_five_overview, container, false);
 
-        TextView fromCardNumber = view.findViewById(R.id.fromCardNumberText);
-        TextView fromCurrency = view.findViewById(R.id.reviewFromCurrency);
-        TextView toName = view.findViewById(R.id.toPaymentAccountNameText);
-        TextView toAccountNum = view.findViewById(R.id.toPaymentAccountNumberText);
-        TextView paymentAmount = view.findViewById(R.id.finalPaymentAmountText);
+            TextView fromCardNumber = view.findViewById(R.id.fromCardNumberText);
+            TextView fromCurrency = view.findViewById(R.id.reviewFromCurrency);
+            TextView toName = view.findViewById(R.id.toPaymentAccountNameText);
+            TextView toAccountNum = view.findViewById(R.id.toPaymentAccountNumberText);
+            TextView paymentAmount = view.findViewById(R.id.finalPaymentAmountText);
 
-        Card card = ((DisplayPay) getActivity()).getSelectedCard();
-        PaymentAccount paymentAccount = ((DisplayPay) getActivity()).getPaymentAccount();
+            Card card = ((DisplayPay) getActivity()).getSelectedCard();
+            PaymentAccount paymentAccount = ((DisplayPay) getActivity()).getPaymentAccount();
 
-        fromCardNumber.setText(card.getCardNumber());
-        fromCurrency.setText(card.getCardType());
-        toName.setText(paymentAccount.getFirstName());
-        toAccountNum.setText(paymentAccount.getAccountNumber());
-        paymentAmount.setText( String.valueOf(((DisplayPay) getActivity()).getPaymentAmount()) );
+            fromCardNumber.setText(card.getCardNumber());
+            fromCurrency.setText(card.getCardType());
+            toName.setText(paymentAccount.getFirstName());
+            toAccountNum.setText(paymentAccount.getAccountNumber());
+            paymentAmount.setText(String.valueOf(((DisplayPay) getActivity()).getPaymentAmount()));
 
-        return view;
+            return view;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
