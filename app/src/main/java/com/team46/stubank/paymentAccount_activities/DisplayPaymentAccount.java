@@ -54,9 +54,6 @@ public class DisplayPaymentAccount extends AppCompatActivity {
             public void run() {
                 loading.setVisibility(View.VISIBLE);
 
-                //UserDAO userDAO = new UserDAO();
-               // user = userDAO.getUser(1497);
-
                 PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
                 paymentAccounts.addAll(paymentAccountDAO.getAllPaymentAccount(user.getUserDetailsID()));
 
@@ -79,6 +76,5 @@ public class DisplayPaymentAccount extends AppCompatActivity {
 
         // Pass PaymentAccount adapter to the recycler view
         recyclerView.setAdapter(payActAdapter);
-
     }
 }
