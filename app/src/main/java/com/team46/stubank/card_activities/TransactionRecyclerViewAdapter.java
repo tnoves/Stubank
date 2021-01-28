@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.team46.stubank.Card;
+import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.Transaction;
 import com.team46.stubank.R;
 import com.team46.stubank.User;
@@ -27,8 +28,9 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     private List<Transaction> mTransactions;
     private LayoutInflater mInflater;
     private Card mCard;
-    private int userDetailsID;
+    private int paymentAccountID;
     private User externalUser;
+    private PaymentAccount paymentAccount;
     private String accountName;
 
     String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -84,9 +86,11 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         TextView transactionElementDate = holder.transactionElementDate;
 
         UserDAO userDAO = new UserDAO();
+        PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
 
-        userDetailsID = transaction.getPaymentAccountID();
-        externalUser = userDAO.getUser(userDetailsID);
+        paymentAccountID = transaction.getPaymentAccountID();
+        paymentAccount = paymentAccountDAO.getPaymentAccount(paymentAccountID);
+        externalUser = userDAO.getUserDetails(paymentAccount.getUserDetailsID());
         accountName = externalUser.getFirstName()+" "+externalUser.getLastName();
 
         // TODO: Fetch the users name that matches the payment account.
