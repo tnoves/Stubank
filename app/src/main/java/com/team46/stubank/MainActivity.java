@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.team46.stubank.card_activities.DisplayCards;
 import com.team46.stubank.data_access.UserDAO;
 
 import java.math.BigInteger;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     if (validCredentials){
-                        viewMenu(v);}
+                        viewCards(v);}
                     else{openDialog();}
             }
         });
@@ -80,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 Toast.makeText(this, "Invalid user credentials!", Toast.LENGTH_SHORT).show();
-                System.out.println("input and db credentials don't match");
                 return false;
             }
 
@@ -93,10 +93,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // creates new intent taking user to the main menu
-    public void viewMenu(View view) {
+    public void viewCards(View view) {
 
         if (validCredentials = true){
-            Intent intent = new Intent(this, ViewMainMenu.class);
+            Intent intent = new Intent(this, DisplayCards.class);
             startActivity(intent);
         }
         else{System.out.println("No menu for you");}

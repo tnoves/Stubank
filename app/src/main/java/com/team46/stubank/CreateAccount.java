@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.team46.stubank.card_activities.DisplayCards;
 import com.team46.stubank.data_access.UserDAO;
 
 import java.math.BigInteger;
@@ -92,7 +93,7 @@ public class CreateAccount extends AppCompatActivity{
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            if (!userAlreadyExists){displayMainMenu(view);}
+                            if (!userAlreadyExists){displayCards(view);}
                             else{alertUsernameExists();
                             openDialog();}
                         }
@@ -237,8 +238,8 @@ public class CreateAccount extends AppCompatActivity{
     }
 
     // creates a new intent, taking user to main menu. Also, puts user object as an extra
-    public void displayMainMenu(View view){
-        Intent intent = new Intent(this, ViewMainMenu.class);
+    public void displayCards(View view){
+        Intent intent = new Intent(this, DisplayCards.class);
         intent.putExtra("newUser", user);
         startActivity(intent);
     }
