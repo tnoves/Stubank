@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Ben McIntyre
@@ -87,13 +88,14 @@ public class ViewCard extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         ProgressBar loading = findViewById(R.id.transactionProgressBar);
-        transactionAdapter = new TransactionRecyclerViewAdapter(transactions, card);
+        //transactionAdapter = new TransactionRecyclerViewAdapter(transactions, card);
 
         // Retrieves all transactions on the users card.
         executor.submit(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
+                transactionAdapter = new TransactionRecyclerViewAdapter(transactions, card);
                 loading.setVisibility(View.VISIBLE);
 
                 TransactionDAO transactionDAO = new TransactionDAO();
@@ -110,7 +112,13 @@ public class ViewCard extends AppCompatActivity {
                 executor.shutdown();
             }
         });
-
+        while(!executor.isTerminated()) {
+            try {
+                executor.awaitTermination(120, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         // Fetches element from activity where the transactions will be displayed.
         recyclerView = (RecyclerView) findViewById(R.id.transaction_rv);
         recyclerView.setHasFixedSize(true);
