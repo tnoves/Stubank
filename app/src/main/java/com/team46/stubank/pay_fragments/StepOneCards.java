@@ -31,10 +31,9 @@ public class StepOneCards extends Fragment {
         // Required empty public constructor
     }
 
-    public static StepOneCards newInstance(Card selectedCard, ArrayList<Card> cards) {
+    public static StepOneCards newInstance(ArrayList<Card> cards) {
         StepOneCards fragment = new StepOneCards();
         Bundle args = new Bundle();
-        args.putSerializable("selectedCard", selectedCard);
         args.putSerializable("cards", cards);
         fragment.setArguments(args);
         return fragment;
@@ -54,23 +53,38 @@ public class StepOneCards extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step_one_cards, container, false);
-
-        CardPaySelectorAdapter adapter = new CardPaySelectorAdapter(view.getContext(), cardList);
-        Spinner mCardDropdown = view.findViewById(R.id.cardDropDown);
-        mCardDropdown.setAdapter(adapter);
-        mCardDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Card card = (Card) parent.getSelectedItem();
-                ((DisplayPay) getActivity()).setSelectedCard(card);
+        try {
+            if (cardList.size() > 0) {
+                selectedCard = cardList.get(0);
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            CardPaySelectorAdapter adapter = new CardPaySelectorAdapter(view.getContext(), cardList);
+            Spinner mCardDropdown = view.findViewById(R.id.cardDropDown);
+            mCardDropdown.setAdapter(adapter);
+            mCardDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Card card = (Card) parent.getSelectedItem();
+                    ((DisplayPay) getActivity()).setSelectedCard(card);
+                    selectedCard = card;
+                }
 
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    ((DisplayPay) getActivity()).setSelectedCard(selectedCard);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
     }
 }

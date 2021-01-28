@@ -62,122 +62,125 @@ public class DisplayPay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_pay);
 
-        FloatingActionButton backButton = findViewById(R.id.backButton);
-        FloatingActionButton forwardButton = findViewById(R.id.forwardButton);
-
-        loading = findViewById(R.id.progressBar2);
-
-        Intent intent = getIntent();
-        user = (User) intent.getSerializableExtra("newUser");
-
-        payFragmentPagerAdapter = new PayFragmentPagerAdapter(getSupportFragmentManager(),
-                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, cards, paymentAccounts, user);
-
-        // Create new thread
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        // Retrieve user's cards in background thread
-        Future future = executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                loading.setVisibility(View.VISIBLE);
-
-                CardDao cardDao = new CardDao();
-                cards.addAll(cardDao.getAllCards(user.getUserID()));
-
-                PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
-                paymentAccounts.addAll(paymentAccountDAO.getAllPaymentAccount(user.getUserDetailsID()));
-
-                selectedCard = cards.get(0);
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        payFragmentPagerAdapter.notifyDataSetChanged();
-                        loading.setVisibility(View.GONE);
-                    }
-                });
-            }
-        });
-
         try {
-            future.get(120, TimeUnit.SECONDS);
+            FloatingActionButton backButton = findViewById(R.id.backButton);
+            FloatingActionButton forwardButton = findViewById(R.id.forwardButton);
+
+            loading = findViewById(R.id.progressBar2);
+
+            Intent intent = getIntent();
+            user = (User) intent.getSerializableExtra("newUser");
+
+            payFragmentPagerAdapter = new PayFragmentPagerAdapter(getSupportFragmentManager(),
+                    FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, cards, paymentAccounts, user);
+
+            // Create new thread
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Handler handler = new Handler(Looper.getMainLooper());
+
+            ViewPager viewPager = findViewById(R.id.payViewPager);
+            viewPager.setAdapter(null);
+
+            loading.setVisibility(View.VISIBLE);
+
+            // Retrieve user's cards in background thread
+            Future future = executor.submit(new Runnable() {
+                @Override
+                public void run() {
+                    CardDao cardDao = new CardDao();
+                    cards.addAll(cardDao.getAllCards(user.getUserID()));
+
+                    PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
+                    paymentAccounts.addAll(paymentAccountDAO.getAllPaymentAccount(user.getUserDetailsID()));
+
+                    selectedCard = cards.get(0);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewPager.setAdapter(payFragmentPagerAdapter);
+                            payFragmentPagerAdapter.notifyDataSetChanged();
+                            loading.setVisibility(View.GONE);
+                        }
+                    });
+                    executor.shutdown();
+                }
+            });
+
+            forwardButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (viewPager.getCurrentItem() == (payFragmentPagerAdapter.getCount() - 1)) {
+                        try {
+                            // Make payment
+                            executor.submit(new Runnable() {
+                                @Override
+                                public void run() {
+                                    boolean madePayment = selectedCard.makePayment(paymentAmount, user, paymentAccount);
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (madePayment == true) {
+                                                Toast.makeText(viewPager.getContext(), "Your payment has been sent", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(viewPager.getContext(), "Your payment failed to send", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                                    executor.shutdown();
+                                }
+                            });
+
+                            while (!executor.isTerminated()) {
+                                try {
+                                    executor.awaitTermination(120, TimeUnit.SECONDS);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            Intent intent = new Intent(viewPager.getContext(), ViewCard.class);
+                            viewPager.getContext().startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        if (viewPager.getCurrentItem() == 1 && paymentAccount == null) {
+                            forwardButton.setAlpha(0.5f);
+                        } else {
+                            forwardButton.setAlpha(1f);
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+
+                            if (viewPager.getCurrentItem() == 1 && paymentAccount == null) {
+                                forwardButton.setAlpha(0.5f);
+                            }
+                        }
+                    }
+
+                    // Change icon of button to tick if on the review payment screen
+                    if (viewPager.getCurrentItem() == (payFragmentPagerAdapter.getCount() - 1)) {
+                        forwardButton.setImageResource(android.R.drawable.ic_menu_send);
+                        forwardButton.setScaleX(1);
+                    }
+                }
+            });
+
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+                    forwardButton.setAlpha(1f);
+
+                    if (viewPager.getCurrentItem() != (payFragmentPagerAdapter.getCount() - 1)) {
+                        forwardButton.setImageResource(R.drawable.abc_vector_test);
+                        forwardButton.setScaleX(-1);
+                    }
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        ViewPager viewPager = findViewById(R.id.payViewPager);
-        viewPager.setAdapter(payFragmentPagerAdapter);
-
-        forwardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewPager.getCurrentItem() == (payFragmentPagerAdapter.getCount() - 1)) {
-                    try {
-                        // Make payment
-                        executor.submit(new Runnable() {
-                            @Override
-                            public void run() {
-                                selectedCard.makePayment(paymentAmount, user, paymentAccount);
-
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                    }
-                                });
-
-                                executor.shutdown();
-                            }
-                        });
-
-                        while (!executor.isTerminated()) {
-                            try {
-                                executor.awaitTermination(120, TimeUnit.SECONDS);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        Toast.makeText(viewPager.getContext(), "Your payment has been sent", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(viewPager.getContext(), ViewCard.class);
-                        viewPager.getContext().startActivity(intent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    if (viewPager.getCurrentItem() == 1 && paymentAccount == null) {
-                        forwardButton.setAlpha(0.5f);
-                    } else {
-                        forwardButton.setAlpha(1f);
-                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-
-                        if (viewPager.getCurrentItem() == 1 && paymentAccount == null) {
-                            forwardButton.setAlpha(0.5f);
-                        }
-                    }
-                }
-
-                // Change icon of button to tick if on the review payment screen
-                if (viewPager.getCurrentItem() == (payFragmentPagerAdapter.getCount() - 1)) {
-                    forwardButton.setImageResource(android.R.drawable.ic_menu_send);
-                    forwardButton.setScaleX(1);
-                }
-            }
-        });
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-                forwardButton.setAlpha(1f);
-
-                if (viewPager.getCurrentItem() != (payFragmentPagerAdapter.getCount() - 1)) {
-                    forwardButton.setImageResource(R.drawable.abc_vector_test);
-                    forwardButton.setScaleX(-1);
-                }
-            }
-        });
     }
 }

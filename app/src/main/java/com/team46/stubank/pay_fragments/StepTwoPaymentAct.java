@@ -62,30 +62,34 @@ public class StepTwoPaymentAct extends Fragment {
 
         // Inflate the layout for fragment
         View view = inflater.inflate(R.layout.fragment_step_two_payact, container, false);
-        PayActSelectorAdapter adapter = new PayActSelectorAdapter(view.getContext(), paymentAccountList);
-        Spinner mPayActDropdown = view.findViewById(R.id.payActDropDown);
-        mPayActDropdown.setAdapter(adapter);
-        mPayActDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                PaymentAccount paymentAccount = (PaymentAccount) parent.getSelectedItem();
-                ((DisplayPay) getActivity()).setPaymentAccount(paymentAccount);
-            }
+        try {
+            PayActSelectorAdapter adapter = new PayActSelectorAdapter(view.getContext(), paymentAccountList);
+            Spinner mPayActDropdown = view.findViewById(R.id.payActDropDown);
+            mPayActDropdown.setAdapter(adapter);
+            mPayActDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    PaymentAccount paymentAccount = (PaymentAccount) parent.getSelectedItem();
+                    ((DisplayPay) getActivity()).setPaymentAccount(paymentAccount);
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
 
-        Button addPaymentAct = view.findViewById(R.id.btnAddPaymentAct);
-        addPaymentAct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreatePaymentAccount createPaymentAccountPopup = new CreatePaymentAccount();
-                createPaymentAccountPopup.showPopupWindow(view, mUser);
-            }
-        });
+            Button addPaymentAct = view.findViewById(R.id.btnAddPaymentAct);
+            addPaymentAct.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CreatePaymentAccount createPaymentAccountPopup = new CreatePaymentAccount();
+                    createPaymentAccountPopup.showPopupWindow(view, mUser);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return view;
 

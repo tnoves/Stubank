@@ -103,8 +103,25 @@ public class DisplayCards extends AppCompatActivity {
         addCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCard createCardPopup = new CreateCard();
-                createCardPopup.showPopupWindow(view, user);
+                if (cards.size() >= 3) {
+                    builder.setMessage("Card limit reached").setTitle("Card limit reached");
+
+                    builder.setMessage("You cannot create more than 3 cards")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert = builder.create();
+                    alert.setTitle("Card limit reached");
+                    alert.show();
+                } else {
+                    CreateCard createCardPopup = new CreateCard();
+                    createCardPopup.showPopupWindow(view, user);
+                }
             }
         });
     }

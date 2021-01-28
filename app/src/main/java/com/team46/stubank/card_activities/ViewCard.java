@@ -1,10 +1,5 @@
 package com.team46.stubank.card_activities;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
@@ -16,23 +11,25 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.team46.stubank.Card;
 import com.team46.stubank.DisplayPay;
 import com.team46.stubank.R;
 import com.team46.stubank.Transaction;
 import com.team46.stubank.User;
-import com.team46.stubank.budget_activities.DisplayBudget;
-import com.team46.stubank.data_access.CardDao;
 import com.team46.stubank.data_access.TransactionDAO;
 
-import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -90,14 +87,27 @@ public class ViewCard extends AppCompatActivity {
         ProgressBar loading = findViewById(R.id.transactionProgressBar);
         //transactionAdapter = new TransactionRecyclerViewAdapter(transactions, card);
 
+        Future future = executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                transactionAdapter = new TransactionRecyclerViewAdapter(transactions, card);
+            }
+        });
+
+        try {
+            future.get(120, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        loading.setVisibility(View.VISIBLE);
+
         // Retrieves all transactions on the users card.
         executor.submit(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
-                transactionAdapter = new TransactionRecyclerViewAdapter(transactions, card);
-                loading.setVisibility(View.VISIBLE);
-
                 TransactionDAO transactionDAO = new TransactionDAO();
                 transactions.addAll(transactionDAO.getCardTransactions(card.getCardNumber()));
 
@@ -112,13 +122,7 @@ public class ViewCard extends AppCompatActivity {
                 executor.shutdown();
             }
         });
-        while(!executor.isTerminated()) {
-            try {
-                executor.awaitTermination(120, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
         // Fetches element from activity where the transactions will be displayed.
         recyclerView = (RecyclerView) findViewById(R.id.transaction_rv);
         recyclerView.setHasFixedSize(true);
@@ -133,7 +137,6 @@ public class ViewCard extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), DisplayPay.class);
-            intent.putExtra("card", card);
             intent.putExtra("newUser", user);
             view.getContext().startActivity(intent);
         }

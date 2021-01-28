@@ -32,7 +32,7 @@ public class PayFragmentPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return StepOneCards.newInstance(mCards.get(0), mCards);
+                return StepOneCards.newInstance(mCards);
             case 1:
                 return StepTwoPaymentAct.newInstance(mPaymentAccounts, mUser);
             case 2:
