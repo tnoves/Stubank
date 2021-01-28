@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.team46.stubank.Card;
 import com.team46.stubank.R;
+import com.team46.stubank.User;
 
 import java.util.List;
 
 public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerViewAdapter.ViewHolder> {
 
     private List<Card> mCards;
+    private User mUser;
     private LayoutInflater mInflater;
 
     // stores and recycles views as they are scrolled off screen
@@ -55,8 +57,9 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         mCards.addAll(cards);
     }
 
-    CardRecyclerViewAdapter(List<Card> data) {
+    CardRecyclerViewAdapter(List<Card> data, User user) {
         this.mCards = data;
+        this.mUser = user;
     }
 
     // inflates the row layout from xml when needed
@@ -105,6 +108,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), ViewCard.class);
                 intent.putExtra("card", card);
+                intent.putExtra("newUser", mUser);
                 holder.itemView.getContext().startActivity(intent);
             }
         });

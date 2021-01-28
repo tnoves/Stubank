@@ -1,5 +1,6 @@
 package com.team46.stubank.card_activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,7 +16,6 @@ import com.team46.stubank.Card;
 import com.team46.stubank.R;
 import com.team46.stubank.User;
 import com.team46.stubank.data_access.CardDao;
-import com.team46.stubank.data_access.UserDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,24 +36,21 @@ public class DisplayCards extends AppCompatActivity {
         cards.clear();
 
         // Get logged in user from previous activity
-        // Intent intent = getIntent();
-        // user = (User) intent.getSerializableExtra("user");
+        Intent intent = getIntent();
+        user = (User) intent.getSerializableExtra("newUser");
 
         // Create new thread
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
         ProgressBar loading = findViewById(R.id.progressBar);
-        cardAdapter = new CardRecyclerViewAdapter(cards);
+        cardAdapter = new CardRecyclerViewAdapter(cards, user);
 
         // Retrieve user and user's cards in background thread
         executor.submit(new Runnable() {
             @Override
             public void run() {
                 loading.setVisibility(View.VISIBLE);
-
-                UserDAO userDAO = new UserDAO();
-                user = userDAO.getUser(28);
 
                 CardDao cardDao = new CardDao();
                 cards.addAll(cardDao.getAllCards(user.getUserID()));
