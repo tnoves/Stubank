@@ -58,7 +58,7 @@ public class CreatePaymentAccount extends AppCompatActivity {
         boolean focusable = false;
 
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 20);
 
         Button submitButton = popupView.findViewById(R.id.btnCreatePaymentAccount);
 

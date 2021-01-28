@@ -17,16 +17,16 @@
             android:text="Step 2 - Choose a Payment Account"
             android:textSize="21sp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="131dp" />
-
         <Spinner
             android:id="@+id/payActDropDown"
             android:layout_width="match_parent"
-            android:layout_height="229dp"
+            android:layout_height="200dp"
             android:focusable="false"
             android:spinnerMode="dropdown" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="130dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

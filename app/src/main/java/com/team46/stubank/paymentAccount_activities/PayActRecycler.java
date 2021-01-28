@@ -33,7 +33,6 @@ public class PayActRecycler extends RecyclerView.Adapter<PayActRecycler.ViewHold
             name = itemView.findViewById(R.id.txtName);
             sortCode = itemView.findViewById(R.id.txtSortCode);
             accountNumber = itemView.findViewById(R.id.txtAccountNo);
-            btnSubmit = itemView.findViewById(R.id.btnSubmit);
         }
     }
 
