@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.team46.stubank.Card;
 import com.team46.stubank.Transaction;
 import com.team46.stubank.R;
+import com.team46.stubank.User;
+import com.team46.stubank.data_access.PaymentAccountDAO;
+import com.team46.stubank.data_access.UserDAO;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -24,6 +27,9 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     private List<Transaction> mTransactions;
     private LayoutInflater mInflater;
     private Card mCard;
+    private int userDetailsID;
+    private User externalUser;
+    private String accountName;
 
     String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
@@ -77,8 +83,14 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         TextView transactionElementAmount = holder.transactionElementAmount;
         TextView transactionElementDate = holder.transactionElementDate;
 
+        UserDAO userDAO = new UserDAO();
+
+        userDetailsID = transaction.getPaymentAccountID();
+        externalUser = userDAO.getUser(userDetailsID);
+        accountName = externalUser.getFirstName()+" "+externalUser.getLastName();
+
         // TODO: Fetch the users name that matches the payment account.
-        transactionElementAccount.setText(String.valueOf(transaction.getPaymentAccountID()));
+        transactionElementAccount.setText(accountName);
         transactionElementAmount.setText(getNumberFormat(mCard.getCardType()).format(transaction.getAmount()));
         transactionElementDate.setText(transaction.getSortDate().getDate()+"-"+months[transaction.getSortDate().getMonth()]+"-"+(transaction.getSortDate().getYear()+1900));
 
