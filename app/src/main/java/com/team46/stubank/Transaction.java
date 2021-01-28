@@ -2,6 +2,9 @@ package com.team46.stubank;
 
 import java.io.Serializable;
 import java.util.Date;
+/**
+ * @author Ben McIntyre
+ **/
 
 public class Transaction implements Serializable {
     private String cardNumber;

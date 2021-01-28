@@ -1,11 +1,13 @@
 package com.team46.stubank.card_activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -85,10 +87,11 @@ public class ViewCard extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         ProgressBar loading = findViewById(R.id.transactionProgressBar);
-        transactionAdapter = new TransactionRecyclerViewAdapter(transactions);
+        transactionAdapter = new TransactionRecyclerViewAdapter(transactions, card);
 
         // Retrieves all transactions on the users card.
         executor.submit(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
                 loading.setVisibility(View.VISIBLE);

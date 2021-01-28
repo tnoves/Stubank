@@ -23,7 +23,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
 
     private List<Transaction> mTransactions;
     private LayoutInflater mInflater;
-    private Card card;
+    private Card mCard;
 
     String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
@@ -56,8 +56,9 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         mTransactions.addAll(transactions);
     }
 
-    TransactionRecyclerViewAdapter(List<Transaction> data) {
+    TransactionRecyclerViewAdapter(List<Transaction> data, Card card) {
         this.mTransactions = data;
+        this.mCard = card;
     }
 
     @Override
@@ -77,8 +78,8 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         TextView transactionElementDate = holder.transactionElementDate;
 
         // TODO: Fetch the users name that matches the payment account.
-        transactionElementAccount.setText(transaction.getPaymentAccountID());
-        transactionElementAmount.setText(getNumberFormat(card.getCardType()).format(transaction.getAmount()));
+        transactionElementAccount.setText(String.valueOf(transaction.getPaymentAccountID()));
+        transactionElementAmount.setText(getNumberFormat(mCard.getCardType()).format(transaction.getAmount()));
         transactionElementDate.setText(transaction.getSortDate().getDate()+"-"+months[transaction.getSortDate().getMonth()]+"-"+(transaction.getSortDate().getYear()+1900));
 
         // When a transaction is selected, open new activity window after including specific transaction in the intent.
@@ -99,7 +100,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
 
     public NumberFormat getNumberFormat(String currency){
         Locale locale;
-        switch (card.getCardType()) {
+        switch (mCard.getCardType()) {
             case ("GBP"):
                 locale = Locale.UK;
                 break;
@@ -110,7 +111,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
                 locale = Locale.US;
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + card.getCardType());
+                throw new IllegalStateException("Unexpected value: " + mCard.getCardType());
         }
         return NumberFormat.getCurrencyInstance(locale);
     }

@@ -1,5 +1,9 @@
 package com.team46.stubank.data_access;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,9 +16,16 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+
+/**
+ * @author Ben McIntyre
+ **/
 
 public class TransactionDAO {
 
@@ -119,6 +130,7 @@ public class TransactionDAO {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public List<Transaction> getCardTransactions(String cardID) {
             HttpURLConnection conn = null;
             try {
@@ -150,6 +162,7 @@ public class TransactionDAO {
 
                     for (JsonElement transactions : json) {
                         JsonObject transactionObj = transactions.getAsJsonObject();
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
                         // Creates a transaction from the json response.
                         Transaction transaction = new Transaction(
@@ -159,11 +172,13 @@ public class TransactionDAO {
                                 transactionObj.get("payment_account_id").getAsInt(),
                                 transactionObj.get("payment_amount").getAsDouble(),
                                 transactionObj.get("payment_type").getAsString());
+                        transaction.setSortDate(format.parse(transaction.getDateTransaction()));
                         transaction.setTransactionID(transactionObj.get("id").getAsString());
 
                         // Adds constructed transaction to the list of transactions from the provided card.
                         transactionList.add(transaction);
                     }
+                    transactionList.sort(Comparator.comparing(Transaction::getSortDate).reversed());
                     return transactionList;
                 }
 
