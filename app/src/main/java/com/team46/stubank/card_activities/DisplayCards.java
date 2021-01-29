@@ -24,6 +24,13 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * DisplayCards class, displays cards from database within the application
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class DisplayCards extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CardRecyclerViewAdapter cardAdapter;
@@ -38,7 +45,7 @@ public class DisplayCards extends AppCompatActivity {
         setContentView(R.layout.activity_display_cards);
         cards.clear();
 
-        // Get logged in user from previous activity
+        // get logged in user from previous activity
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("newUser");
 
@@ -53,10 +60,10 @@ public class DisplayCards extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        // Pass card adapter to the recycler view
+        // pass card adapter to the recycler view
         recyclerView.setAdapter(cardAdapter);
 
-        // Listen to add card button press event
+        // show create card popup if user has pressed the FAB button
         FloatingActionButton addCardButton = findViewById(R.id.addCardButton);
         addCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,17 +102,17 @@ public class DisplayCards extends AppCompatActivity {
             loading = findViewById(R.id.progressBar);
             cardAdapter = new CardRecyclerViewAdapter(cards, user);
 
-            // Pass card adapter to the recycler view
+            // pass card adapter to the recycler view
             recyclerView.setAdapter(cardAdapter);
 
-            // Create new thread
+            // create new thread
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Handler handler = new Handler(Looper.getMainLooper());
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             loading.setVisibility(View.VISIBLE);
 
-            // Retrieve user and user's cards in background thread
+            // retrieve user's cards in background thread
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
@@ -118,6 +125,7 @@ public class DisplayCards extends AppCompatActivity {
                             cardAdapter.notifyDataSetChanged();
                             loading.setVisibility(View.GONE);
 
+                            // show prompt if no cards exist
                             if (cards.size() <= 0) {
                                 builder.setMessage("Your first card").setTitle("Your first card");
 
@@ -144,8 +152,5 @@ public class DisplayCards extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        System.out.println("empty " + cards.isEmpty());
-        System.out.println("size " + cards.size());
     }
 }

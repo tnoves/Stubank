@@ -15,16 +15,18 @@ import com.team46.stubank.DisplayPay;
 import com.team46.stubank.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link StepFourAmount#newInstance} factory method to
- * create an instance of this fragment.
+ * StepFourAmount class, fragment for fourth step in payment - setting payment amount
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
  */
 public class StepFourAmount extends Fragment {
 
     private String lastString = "";
 
     public StepFourAmount() {
-        // Required empty public constructor
+        // required empty public constructor
     }
 
     public static StepFourAmount newInstance() {
@@ -41,7 +43,7 @@ public class StepFourAmount extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         try {
-            // Inflate the layout for this fragment
+            // inflate the layout for this fragment
             View view = inflater.inflate(R.layout.fragment_step_four_amount, container, false);
 
             EditText paymentAmount = view.findViewById(R.id.paymentAmount);
@@ -49,6 +51,7 @@ public class StepFourAmount extends Fragment {
 
             String cardType = ((DisplayPay) getActivity()).getSelectedCard().getCardType();
 
+            // set currency based on card's currency
             if (cardType.equals("GBP")) {
                 currencySymbol.setText("£");
             } else if (cardType.equals("EUR")) {
@@ -57,6 +60,8 @@ public class StepFourAmount extends Fragment {
                 currencySymbol.setText("$");
             }
 
+            // when payment amount is entered, pass this data to container display class for use
+            // in overview and making payment
             paymentAmount.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -91,6 +96,7 @@ public class StepFourAmount extends Fragment {
         super.onResume();
 
         try {
+            // on viewing screen, update currency
             TextView currencySymbol = getView().findViewById(R.id.currencySymbol);
             String cardType = ((DisplayPay) getActivity()).getSelectedCard().getCardType();
 

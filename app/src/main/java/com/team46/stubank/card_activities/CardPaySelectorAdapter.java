@@ -17,11 +17,19 @@ import com.team46.stubank.R;
 
 import java.util.List;
 
+/**
+ * CardPaySelectorAdapter class, adapter for custom card dropdown in payment screen
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class CardPaySelectorAdapter extends ArrayAdapter {
 
     private List<Card> mCards;
     private Context mContext;
 
+    // stores and recycles views as they are scrolled off screen
     public class ViewHolder {
         public TextView cardNumber;
         public TextView name;
@@ -40,6 +48,7 @@ public class CardPaySelectorAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        // retrieve card details and set data for this card view
         try {
             ViewHolder mViewHolder = new ViewHolder();
             if (convertView == null) {
@@ -80,6 +89,7 @@ public class CardPaySelectorAdapter extends ArrayAdapter {
     @Nullable
     @Override
     public Object getItem(int position) {
+        // on selecting card in dropdown, pass this to display payment container class
         try {
             ((DisplayPay) mContext).setSelectedCard(mCards.get(position));
         } catch (Exception e) {

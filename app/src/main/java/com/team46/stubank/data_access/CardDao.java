@@ -15,6 +15,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * CardDAO class, data access class for handling network interactions with API
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class CardDao {
 
     public Card getCard(String cardNumber) {

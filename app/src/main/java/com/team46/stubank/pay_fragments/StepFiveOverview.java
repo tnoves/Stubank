@@ -14,14 +14,16 @@ import com.team46.stubank.PaymentAccount;
 import com.team46.stubank.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link StepFiveOverview#newInstance} factory method to
- * create an instance of this fragment.
+ * StepFiveOverview class, fragment for fifth step in payment - viewing payment overview
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
  */
 public class StepFiveOverview extends Fragment {
 
     public StepFiveOverview() {
-        // Required empty public constructor
+        // required empty public constructor
     }
 
     public static StepFiveOverview newInstance() {
@@ -38,7 +40,7 @@ public class StepFiveOverview extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         try {
-            // Inflate the layout for this fragment
+            // inflate the layout for this fragment
             View view = inflater.inflate(R.layout.fragment_step_five_overview, container, false);
 
             TextView fromCardNumber = view.findViewById(R.id.fromCardNumberText);
@@ -50,6 +52,7 @@ public class StepFiveOverview extends Fragment {
             Card card = ((DisplayPay) getActivity()).getSelectedCard();
             PaymentAccount paymentAccount = ((DisplayPay) getActivity()).getPaymentAccount();
 
+            // retrieve payment details from previous fragments and display to user
             fromCardNumber.setText(card.getCardNumber());
             fromCurrency.setText(card.getCardType());
             toName.setText(paymentAccount.getFirstName());

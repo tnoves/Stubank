@@ -25,6 +25,13 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * TopupCard class, popup window that provides option for user to topup their card
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class TopupCard extends AppCompatActivity {
 
     private View previousView = null;
@@ -38,6 +45,7 @@ public class TopupCard extends AppCompatActivity {
     }
 
     public void showPopupWindow(Context mContext, View view, Card card, User user) {
+        // display popup in given view
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.activity_topup_card, null);
@@ -55,11 +63,10 @@ public class TopupCard extends AppCompatActivity {
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        // Initialise dropdown with currencies
         EditText paymentAmount = popupView.findViewById(R.id.topupAmount);
         ProgressBar loading = popupView.findViewById(R.id.topupProgressBar);
 
-        // Topup balance
+        // topup balance when submit button pressed
         Button submitButton = popupView.findViewById(R.id.topupCardSubmit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +103,7 @@ public class TopupCard extends AppCompatActivity {
                                 thisAccount = newPaymentAccount;
                             }
 
+                            // topup balance
                             boolean madePayment = card.topup(Double.parseDouble(paymentAmount.getText().toString()), user);
 
                             handler.post(new Runnable() {
@@ -103,6 +111,7 @@ public class TopupCard extends AppCompatActivity {
                                 public void run() {
                                     loading.setVisibility(View.GONE);
 
+                                    // refresh view card screen to get new balance
                                     Intent intent = new Intent(v.getContext(), ViewCard.class);
                                     intent.putExtra("newUser", user);
                                     intent.putExtra("card", _card);
@@ -127,7 +136,7 @@ public class TopupCard extends AppCompatActivity {
             }
         });
 
-        // Dismiss popup if click outside of window
+        // dismiss popup if click outside of window
         popupView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

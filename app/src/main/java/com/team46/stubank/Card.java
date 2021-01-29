@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Card class, main class for cards
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class Card implements Serializable {
     private int userId;
     private String cardNumber;
@@ -187,6 +194,7 @@ public class Card implements Serializable {
             Date current = cal.getTime();
             String currentDate = dateFormat.format(current);
 
+            // create transaction in database
             Transaction transaction = new Transaction(
                     cardNumber,
                     balance,
@@ -212,7 +220,7 @@ public class Card implements Serializable {
         try {
             refresh();
 
-            // add amount to card
+            // deduct amount from card
             balance -= amount;
 
             // retrieve all payment accounts for this user
@@ -244,6 +252,7 @@ public class Card implements Serializable {
             Date current = cal.getTime();
             String currentDate = dateFormat.format(current);
 
+            // create transaction in database
             Transaction transaction = new Transaction(
                     cardNumber,
                     balance,
@@ -269,6 +278,7 @@ public class Card implements Serializable {
         try {
             refresh();
 
+            // add topup amount to balance
             balance += amount;
 
             // retrieve all payment accounts for this user
@@ -300,6 +310,7 @@ public class Card implements Serializable {
             Date current = cal.getTime();
             String currentDate = dateFormat.format(current);
 
+            // create transaction in database
             Transaction transaction = new Transaction(
                     cardNumber,
                     balance,
@@ -311,6 +322,7 @@ public class Card implements Serializable {
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.insertTransaction(transaction);
 
+            // update this card in database
             update(user);
             return true;
         } catch (Exception e) {
