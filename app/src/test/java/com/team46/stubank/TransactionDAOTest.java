@@ -14,6 +14,14 @@ import org.junit.Test;
 
 import java.util.List;
 
+/**
+ * Testing for the TransactionDAO class.
+ *
+ *
+ * @author  Ben McIntyre
+ * @version 1.0
+ * @since   2021-01-25
+ */
 
 public class TransactionDAOTest extends TestCase {
     private AccountDAO accountDAO;
@@ -26,6 +34,8 @@ public class TransactionDAOTest extends TestCase {
     private Card card;
     private Transaction transaction;
 
+    // Sets up necessary prerequisites for each of the following tests.
+    // This is done as the database structure means transactions require all other tables to have entries.
     @Before
     public void setUp() {
         accountDAO = new AccountDAO();
@@ -44,7 +54,6 @@ public class TransactionDAOTest extends TestCase {
         user.setDob("2000-11-11");
         userDAO.insertUser(user);
 
-        // TODO: get Card to hold accountID as an String or User to hold it as an int.
         card = new Card();
         card.setAccountId(Integer.parseInt(user.getAccountID()));
         card.setActive(true);
@@ -77,8 +86,7 @@ public class TransactionDAOTest extends TestCase {
 
         Assert.assertEquals(transaction.getTransactionID(), check.getTransactionID());
 
-        // TODO: User details not being deleted when deleting user?
-        // This seems to clear any new data apart from in the UserDetails table.
+        // Removes the dummy data added by the @Before method and this test.
         transactionDAO.deleteTransaction(check.getTransactionID());
         userDAO.deleteUser(user);
         accountDAO.deleteAccount(user.getAccountID());
@@ -98,8 +106,7 @@ public class TransactionDAOTest extends TestCase {
         Assert.assertEquals(transaction.getPaymentType(), check.getPaymentType());
         Assert.assertEquals(transaction.getPaymentType(), check.getPaymentType());
 
-        // TODO: User details not being deleted when deleting user?
-        // This seems to clear any new data apart from in the UserDetails table.
+        // Removes the dummy data added by the @Before method and this test.
         transactionDAO.deleteTransaction(check.getTransactionID());
         userDAO.deleteUser(user);
         accountDAO.deleteAccount(user.getAccountID());
@@ -107,7 +114,6 @@ public class TransactionDAOTest extends TestCase {
 
     @Test
     public void testGetCardTransactions() {
-        // TODO: This is only an outgoing transaction check, needs another API method to query where transactions go into account.
         Transaction transaction2 = new Transaction(
                 card.getCardNumber(),
                 card.getBalance(),
@@ -123,6 +129,7 @@ public class TransactionDAOTest extends TestCase {
         Transaction check = checkList.get(0);
         Transaction check2 = checkList.get(1);
 
+        // Compares the original transactions and what is returned from the database.
         Assert.assertEquals(transaction.getTransactionID(), check.getTransactionID());
         Assert.assertEquals(transaction.getCardNumber(), check.getCardNumber());
         Assert.assertEquals(transaction.getBalanceAtTransaction(), check.getBalanceAtTransaction());
@@ -140,6 +147,7 @@ public class TransactionDAOTest extends TestCase {
         Assert.assertEquals(transaction2.getPaymentType(), check2.getPaymentType());
         Assert.assertEquals(transaction2.getPaymentType(), check2.getPaymentType());
 
+        // Removes the dummy data added by the @Before method and this test.
         transactionDAO.deleteTransaction(transaction.getTransactionID());
         transactionDAO.deleteTransaction(transaction2.getTransactionID());
         userDAO.deleteUser(user);
@@ -149,9 +157,11 @@ public class TransactionDAOTest extends TestCase {
     @Test
     public void testDeleteTransaction() {
         transactionDAO.insertTransaction(transaction);
+        // Removes the dummy data added by the @Before method and this test.
         transactionDAO.deleteTransaction(transaction.getTransactionID());
         userDAO.deleteUser(user);
         accountDAO.deleteAccount(user.getAccountID());
+        // Tries to fetch previously deleted transaction from database, if it fails then the transaction is deleted and the test has passed.
         try {
             Transaction newTransaction = transactionDAO.getTransaction(transaction.getTransactionID());
         } catch (final NullPointerException e) {

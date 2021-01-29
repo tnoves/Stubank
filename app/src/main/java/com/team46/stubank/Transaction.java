@@ -3,8 +3,13 @@ package com.team46.stubank;
 import java.io.Serializable;
 import java.util.Date;
 /**
- * @author Ben McIntyre
- **/
+ *  Transaction class object to hold the data for an individual transaction.
+ *
+ *
+ * @author  Ben McIntyre
+ * @version 1.0
+ * @since   2020-12-09
+ */
 
 public class Transaction implements Serializable {
     private String cardNumber;

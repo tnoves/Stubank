@@ -1,16 +1,21 @@
 package com.team46.stubank;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.team46.stubank.card_activities.DisplayCards;
 import com.team46.stubank.data_access.UserDAO;
 
 import java.util.concurrent.ExecutorService;
@@ -25,6 +30,7 @@ public class Settings extends AppCompatActivity {
 
     Button removeAccount, signOut, changeAccount;
     User user;
+
     //get user object from create Account or login
 
     @Override
@@ -33,7 +39,9 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         //gets the user object created in the CreateAccount activity
-        user = (User) getIntent().getSerializableExtra("newUser");
+        Intent intent = getIntent();
+        user = (User) intent.getSerializableExtra("newUser");
+        //System.out.println(user.getUsername());
 
         removeAccount = findViewById(R.id.removeAccount);
         signOut = findViewById(R.id.signOut);
@@ -79,5 +87,13 @@ public class Settings extends AppCompatActivity {
         public void run() {
            removeUser(user);
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, DisplayCards.class);
+        intent.putExtra("newUser", user);
+        startActivity(intent);
+        super.onBackPressed();
     }
 }

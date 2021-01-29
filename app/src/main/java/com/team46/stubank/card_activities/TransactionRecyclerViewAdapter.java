@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.team46.stubank.Card;
@@ -22,12 +21,20 @@ import com.team46.stubank.data_access.PaymentAccountDAO;
 import com.team46.stubank.data_access.UserDAO;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+/**
+ * Recycler ViewAdapter for transaction elements, allows for scrolling through transactions.
+ *
+ *
+ * @author  Ben McIntyre
+ * @version 1.0
+ * @since   2021-01-26
+ */
 
 public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<TransactionRecyclerViewAdapter.ViewHolder>{
 
@@ -38,9 +45,9 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     private User externalUser;
     private PaymentAccount paymentAccount;
     private String accountName;
-
     String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
+    // Stores and recycles views going off screen.
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView transactionElementAccount;
         public TextView transactionElementAmount;
@@ -85,18 +92,22 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        // Gets transaction at position in list.
         Transaction transaction = mTransactions.get(position);
 
+        // Fetches elements on activity to be assigned.
         TextView transactionElementAccount = holder.transactionElementAccount;
         TextView transactionElementAmount = holder.transactionElementAmount;
         TextView transactionElementDate = holder.transactionElementDate;
 
+        // Instantiates DAOs to fetch the username for where the transaction has been made from.
         UserDAO userDAO = new UserDAO();
         PaymentAccountDAO paymentAccountDAO = new PaymentAccountDAO();
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
+        // Runs a separate thread to fetch the first and last names of payment account.
         executor.submit(new Runnable() {
             public void run() {
                 try {
@@ -110,6 +121,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
                 executor.shutdown();
             }
         });
+        // Forces the thread to timeout after set time.
         while(!executor.isTerminated()) {
             try {
                 executor.awaitTermination(120, TimeUnit.SECONDS);
@@ -117,7 +129,8 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
                 e.printStackTrace();
             }
         }
-        // TODO: Fetch the users name that matches the payment account.
+
+        // Assigned useful values to the elements on the activity and updates colour when appropriate.
         transactionElementAccount.setText(accountName);
         transactionElementAmount.setText(getNumberFormat(mCard.getCardType()).format(transaction.getAmount()));
         transactionElementDate.setText(transaction.getSortDate().getDate()+"-"+months[transaction.getSortDate().getMonth()]+"-"+(transaction.getSortDate().getYear()+1900));
@@ -141,6 +154,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         return mTransactions.size();
     }
 
+    // Uses the currency from the card to determine what locality is needed for formatting.
     public NumberFormat getNumberFormat(String currency){
         Locale locale;
         switch (mCard.getCardType()) {

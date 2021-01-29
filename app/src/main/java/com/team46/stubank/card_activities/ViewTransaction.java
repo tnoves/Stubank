@@ -20,8 +20,13 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * @author Ben McIntyre
- **/
+ * ViewTransaction class to handle the view_transaction activity screen.
+ *
+ *
+ * @author  Ben McIntyre
+ * @version 1.0
+ * @since   2021-01-25
+ */
 
 public class ViewTransaction extends AppCompatActivity {
     private Transaction transaction;
@@ -41,6 +46,7 @@ public class ViewTransaction extends AppCompatActivity {
         card = (Card) intent.getSerializableExtra("card");
         transaction = (Transaction) intent.getSerializableExtra("transaction");
 
+        // Fetches elements on activity which will be updated.
         ImageView transactionImage = findViewById(R.id.transactionImage);
         TextView transactionDirection = findViewById(R.id.transactionDirection);
         TextView transactionName = findViewById(R.id.transactionName);

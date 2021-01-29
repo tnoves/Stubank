@@ -49,7 +49,6 @@ public class PaymentAccountDAO {
                     response += scanner.nextLine();
                 }
                 scanner.close();
-                System.out.println(response);
 
                 JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
@@ -191,8 +190,6 @@ public class PaymentAccountDAO {
                     response += scanner.nextLine();
                 }
                 scanner.close();
-
-                //JsonObject json2 = JsonParser.parseString(response).getAsJsonObject();
 
                 JsonArray json = JsonParser.parseString(response).getAsJsonArray();
                 ArrayList<PaymentAccount> paymentAccountList = new ArrayList<>();
