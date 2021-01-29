@@ -151,6 +151,7 @@ public class DisplayCards extends AppCompatActivity {
     }
     public void viewSettings(View v){
         Intent intent = new Intent(this, Settings.class);
+        intent.putExtra("newUser", user);
         startActivity(intent);
     }
 }

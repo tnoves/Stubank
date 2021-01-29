@@ -33,7 +33,6 @@ public class PayActRecycler extends RecyclerView.Adapter<PayActRecycler.ViewHold
         public TextView name;
         public TextView accountNumber;
         public TextView sortCode;
-        public Button btnSubmit;
         public View layout;
 
         ViewHolder(View itemView) {
@@ -71,7 +70,6 @@ public class PayActRecycler extends RecyclerView.Adapter<PayActRecycler.ViewHold
         View view = inflater.inflate(R.layout.paymentact_element, parent, false);
         return new ViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {

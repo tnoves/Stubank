@@ -311,7 +311,7 @@ public class UserDAO {
         HttpURLConnection conn = null;
         try {
             // make connection to the StuBank api - delete user endpoint
-            URL url = new URL(String.format("http://127.0.0.1:5000/user/%s", user.getUserID()));
+            URL url = new URL(String.format("http://10.0.2.2:5000/user/%s", user.getUserID()));
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
