@@ -24,6 +24,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * DisplayPay class, screen that displays payment step fragments in viewpager
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class DisplayPay extends AppCompatActivity {
 
     private ArrayList<Card> cards = new ArrayList<>();
@@ -74,7 +81,7 @@ public class DisplayPay extends AppCompatActivity {
             payFragmentPagerAdapter = new PayFragmentPagerAdapter(getSupportFragmentManager(),
                     FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, cards, paymentAccounts, user);
 
-            // Create new thread
+            // create new thread
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Handler handler = new Handler(Looper.getMainLooper());
 
@@ -83,7 +90,7 @@ public class DisplayPay extends AppCompatActivity {
 
             loading.setVisibility(View.VISIBLE);
 
-            // Retrieve user's cards in background thread
+            // retrieve user's cards, payment accounts in background thread and pass to adapter
             Future future = executor.submit(new Runnable() {
                 @Override
                 public void run() {
@@ -110,9 +117,9 @@ public class DisplayPay extends AppCompatActivity {
             forwardButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // make payment on last screen
                     if (viewPager.getCurrentItem() == (payFragmentPagerAdapter.getCount() - 1)) {
                         try {
-                            // Make payment
                             executor.submit(new Runnable() {
                                 @Override
                                 public void run() {
@@ -133,6 +140,7 @@ public class DisplayPay extends AppCompatActivity {
                                 }
                             });
 
+                            // wait for thread
                             while (!executor.isTerminated()) {
                                 try {
                                     executor.awaitTermination(120, TimeUnit.SECONDS);
@@ -141,6 +149,7 @@ public class DisplayPay extends AppCompatActivity {
                                 }
                             }
 
+                            // go back to view card screen after payment made
                             Intent intent = new Intent(viewPager.getContext(), ViewCard.class);
                             intent.putExtra("newUser", user);
                             viewPager.getContext().startActivity(intent);
@@ -148,6 +157,7 @@ public class DisplayPay extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     } else {
+                        // move forward when pressed unless payment account screen doesn't include any payment accounts
                         if (viewPager.getCurrentItem() == 1 && paymentAccount == null) {
                             forwardButton.setAlpha(0.5f);
                         } else {
@@ -160,7 +170,7 @@ public class DisplayPay extends AppCompatActivity {
                         }
                     }
 
-                    // Change icon of button to tick if on the review payment screen
+                    // change icon of button to paperplane if on the review payment screen
                     if (viewPager.getCurrentItem() == (payFragmentPagerAdapter.getCount() - 1)) {
                         forwardButton.setImageResource(android.R.drawable.ic_menu_send);
                         forwardButton.setScaleX(1);
@@ -171,6 +181,7 @@ public class DisplayPay extends AppCompatActivity {
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // move backwards through fragments when button pressed
                     viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
                     forwardButton.setAlpha(1f);
 

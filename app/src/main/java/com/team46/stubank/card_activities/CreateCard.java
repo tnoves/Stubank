@@ -31,6 +31,13 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * CreateCard class, popup window that provides option for user to create a card
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class CreateCard extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
@@ -40,7 +47,7 @@ public class CreateCard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_card);
 
-        // Populate dropdown with pre-defined currencies
+        // populate dropdown with pre-defined currencies
         Spinner dropDown = findViewById(R.id.selectCurrency);
         String[] currencies = new String[]{ "GBP", "EUR", "USD" };
 
@@ -54,7 +61,7 @@ public class CreateCard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // Populate dropdown with pre-defined currencies
+        // populate dropdown with pre-defined currencies
         Spinner dropDown = findViewById(R.id.selectCurrency);
         String[] currencies = new String[]{ "GBP", "EUR", "USD" };
 
@@ -65,6 +72,7 @@ public class CreateCard extends AppCompatActivity {
     }
 
     public void showPopupWindow(View view, User user) {
+        // display popup in given view
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.activity_create_card, null);
@@ -77,7 +85,7 @@ public class CreateCard extends AppCompatActivity {
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        // Initialise dropdown with currencies
+        // initialise dropdown with currencies
         Spinner dropDown = popupView.findViewById(R.id.selectCurrency);
 
         String[] currencies = new String[]{ "GBP", "EUR", "USD" };
@@ -89,7 +97,7 @@ public class CreateCard extends AppCompatActivity {
 
         ProgressBar loading = popupView.findViewById(R.id.createCardProgressBar);
 
-        // Create new card
+        // create new card
         Button submitButton = popupView.findViewById(R.id.createCardSubmit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +108,7 @@ public class CreateCard extends AppCompatActivity {
                 loading.setVisibility(View.VISIBLE);
                 loading.bringToFront();
 
-                // Create card in background
+                // create card in background and add to database
                 executor.submit(new Runnable() {
                     @Override
                     public void run() {
@@ -144,6 +152,7 @@ public class CreateCard extends AppCompatActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
+                                // dismiss popup and return to previous screen with success message
                                 loading.setVisibility(View.GONE);
                                 popupWindow.dismiss();
                                 Toast toast = Toast.makeText(view.getRootView().getContext(), "New card has been added to your account.", Toast.LENGTH_SHORT);
@@ -156,7 +165,7 @@ public class CreateCard extends AppCompatActivity {
             }
         });
 
-        // Dismiss popup if click outside of window
+        // dismiss popup if click outside of window
         popupView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

@@ -16,6 +16,13 @@ import com.team46.stubank.User;
 
 import java.util.List;
 
+/**
+ * CardRecyclerViewAdapter class, adapter for displaying cards to view
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerViewAdapter.ViewHolder> {
 
     private List<Card> mCards;
@@ -62,7 +69,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         this.mUser = user;
     }
 
-    // inflates the row layout from xml when needed
+    // inflates the card layout from xml when needed
     @Override
     public CardRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -74,7 +81,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // Grab card at this position and replace contents of view with data
+        // grab card at this position and replace contents of view with data
         Card card = mCards.get(position);
 
         Switch simpleSwitch = holder.simpleSwitch;
@@ -89,7 +96,6 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     cardNumber.setText(card.getCardNumber());
-                    // name.setText(user.getFirstName());
                     sortCode.setText(card.getSortCode());
                     accountNumber.setText(card.getAccountNum());
                 }
@@ -102,7 +108,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
             }
         });
 
-        // Pass selected card back to view card screen
+        // pass selected card to view card screen
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,9 +119,9 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
             }
         });
 
+        // toggle displaying hidden details and sensitive card details
         if (simpleSwitch.isChecked()){
             cardNumber.setText(card.getCardNumber());
-            // name.setText(user.getFirstName());
             sortCode.setText(card.getSortCode());
             accountNumber.setText(card.getAccountNum());
         }

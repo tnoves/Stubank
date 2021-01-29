@@ -6,6 +6,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * RequestManager class, singleton class for handling volley requests in android app
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class RequestManager {
     private static RequestManager instance;
     private RequestQueue requestQueue;
@@ -13,7 +20,7 @@ public class RequestManager {
 
     private RequestManager(Context context) {
         context = context;
-        // Create new request queue
+        // create new request queue
         requestQueue = getRequestQueue();
     }
 

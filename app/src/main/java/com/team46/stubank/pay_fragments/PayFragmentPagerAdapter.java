@@ -11,6 +11,13 @@ import com.team46.stubank.User;
 
 import java.util.ArrayList;
 
+/**
+ * PayFragmentPagerAdapter class, adapter for displaying payment step fragments in view pager
+ *
+ *
+ * @author  George Cartridge
+ * @version 1.0
+ */
 public class PayFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private static int NUM_ITEMS = 4;
     private final ArrayList<Card> mCards;
@@ -30,6 +37,7 @@ public class PayFragmentPagerAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
+        // retrieve correct fragment for each page of viewpager
         switch (position) {
             case 0:
                 return StepOneCards.newInstance(mCards);
