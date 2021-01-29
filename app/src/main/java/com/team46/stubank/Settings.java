@@ -25,6 +25,7 @@ public class Settings extends AppCompatActivity {
 
     Button removeAccount, signOut, changeAccount;
     User user;
+
     //get user object from create Account or login
 
     @Override

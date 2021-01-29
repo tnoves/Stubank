@@ -20,6 +20,7 @@
             android:id="@+id/imageView9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:onClick="viewSettings"
             android:paddingLeft="300sp"
             app:srcCompat="@android:drawable/ic_menu_help" />
 
