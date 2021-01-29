@@ -14,6 +14,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @author Harry Alexander
+ **/
+
+
 public class UserDAO {
 
     // getUser method used to retrieve a user from the database.

@@ -3,6 +3,10 @@ package com.team46.stubank;
 import java.io.Serializable;
 import java.math.BigInteger;
 
+/**
+ * @author Harry Alexander
+ **/
+
 public class User implements Serializable {
 // User is Serializable, meaning that User objects can be passed between activities
 
