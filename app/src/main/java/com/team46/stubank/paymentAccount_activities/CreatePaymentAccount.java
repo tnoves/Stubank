@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 
 /**
  * CreatePaymentAccount class, creates a new PaymentAccount within the application
- *
+ * for a logged in user.
  *
  * @author  Douglas Gray
  * @version 1.0

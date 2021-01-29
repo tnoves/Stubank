@@ -14,6 +14,15 @@ import com.team46.stubank.R;
 
 import java.util.List;
 
+/**
+ * PaymentAccount Selector Recycler, iterates through PaymentAccounts to display them to GUI
+ *
+ *
+ * @author  Douglas Gray
+ * @version 1.0
+ * @since   2021-01-28
+ */
+
 public class PayActRecycler extends RecyclerView.Adapter<PayActRecycler.ViewHolder> {
 
     private List<PaymentAccount> mPaymentAccounts;
