@@ -87,6 +87,8 @@ public class CreateCard extends AppCompatActivity {
 
         dropDown.setAdapter(adapter);
 
+        ProgressBar loading = popupView.findViewById(R.id.createCardProgressBar);
+
         // Create new card
         Button submitButton = popupView.findViewById(R.id.createCardSubmit);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +97,6 @@ public class CreateCard extends AppCompatActivity {
                 ExecutorService executor = Executors.newSingleThreadExecutor();
                 Handler handler = new Handler(Looper.getMainLooper());
 
-                ProgressBar loading = view.getRootView().findViewById(R.id.progressBar);
                 loading.setVisibility(View.VISIBLE);
                 loading.bringToFront();
 

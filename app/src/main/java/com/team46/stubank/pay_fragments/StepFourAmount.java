@@ -21,6 +21,8 @@ import com.team46.stubank.R;
  */
 public class StepFourAmount extends Fragment {
 
+    private String lastString = "";
+
     public StepFourAmount() {
         // Required empty public constructor
     }
@@ -63,7 +65,10 @@ public class StepFourAmount extends Fragment {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                    if (s.length()>0 && !s.equals(lastString)) {
+                        ((DisplayPay) getActivity()).setPaymentAmount(Float.valueOf(s.toString()));
+                        lastString = s.toString();
+                    }
                 }
 
                 @Override

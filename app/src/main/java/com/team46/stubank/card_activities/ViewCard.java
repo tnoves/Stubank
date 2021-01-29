@@ -1,17 +1,21 @@
 package com.team46.stubank.card_activities;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +62,6 @@ public class ViewCard extends AppCompatActivity {
         Intent intent = getIntent();
         card = (Card) intent.getSerializableExtra("card");
         user = (User) intent.getSerializableExtra("newUser");
-
 
         // Fetches elements on activity which will be updated.
         TextView cardNumber = findViewById(R.id.viewCardNumber);
@@ -148,7 +151,7 @@ public class ViewCard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TopupCard topupCardPopup = new TopupCard();
-                topupCardPopup.showPopupWindow(v, card, user);
+                topupCardPopup.showPopupWindow(v.getContext(), v, card, user);
             }
         });
 
@@ -157,8 +160,40 @@ public class ViewCard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DisplayCards.class);
+                intent.putExtra("newUser", user);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog quitDialog = new AlertDialog.Builder(this)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to exit?")
+                .setIcon(android.R.drawable.ic_menu_delete)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+
+        quitDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

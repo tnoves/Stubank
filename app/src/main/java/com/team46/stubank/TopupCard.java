@@ -1,5 +1,7 @@
 package com.team46.stubank;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.team46.stubank.card_activities.ViewCard;
 import com.team46.stubank.data_access.PaymentAccountDAO;
 
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ import java.util.concurrent.Executors;
 public class TopupCard extends AppCompatActivity {
 
     private View previousView = null;
+    private Context _context;
+    private Card _card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +37,13 @@ public class TopupCard extends AppCompatActivity {
         setContentView(R.layout.activity_topup_card);
     }
 
-    public void showPopupWindow(View view, Card card, User user) {
+    public void showPopupWindow(Context mContext, View view, Card card, User user) {
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.activity_topup_card, null);
+
+        _context = mContext;
+        _card = card;
 
         previousView = view;
 
@@ -49,6 +57,7 @@ public class TopupCard extends AppCompatActivity {
 
         // Initialise dropdown with currencies
         EditText paymentAmount = popupView.findViewById(R.id.topupAmount);
+        ProgressBar loading = popupView.findViewById(R.id.topupProgressBar);
 
         // Topup balance
         Button submitButton = popupView.findViewById(R.id.topupCardSubmit);
@@ -58,7 +67,6 @@ public class TopupCard extends AppCompatActivity {
                 ExecutorService executor = Executors.newSingleThreadExecutor();
                 Handler handler = new Handler(Looper.getMainLooper());
 
-                ProgressBar loading = view.getRootView().findViewById(R.id.transactionProgressBar);
                 loading.setVisibility(View.VISIBLE);
                 loading.bringToFront();
 
@@ -94,6 +102,12 @@ public class TopupCard extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     loading.setVisibility(View.GONE);
+
+                                    Intent intent = new Intent(v.getContext(), ViewCard.class);
+                                    intent.putExtra("newUser", user);
+                                    intent.putExtra("card", _card);
+                                    v.getContext().startActivity(intent);
+
                                     popupWindow.dismiss();
 
                                     if (madePayment == true) {

@@ -142,6 +142,7 @@ public class DisplayPay extends AppCompatActivity {
                             }
 
                             Intent intent = new Intent(viewPager.getContext(), ViewCard.class);
+                            intent.putExtra("newUser", user);
                             viewPager.getContext().startActivity(intent);
                         } catch (Exception e) {
                             e.printStackTrace();
