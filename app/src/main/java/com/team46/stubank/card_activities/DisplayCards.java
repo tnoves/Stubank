@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.team46.stubank.Card;
 import com.team46.stubank.R;
+import com.team46.stubank.Settings;
 import com.team46.stubank.User;
 import com.team46.stubank.data_access.CardDao;
 
@@ -147,5 +148,9 @@ public class DisplayCards extends AppCompatActivity {
 
         System.out.println("empty " + cards.isEmpty());
         System.out.println("size " + cards.size());
+    }
+    public void viewSettings(View v){
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
     }
 }
