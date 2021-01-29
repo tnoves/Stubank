@@ -91,9 +91,9 @@ public class Settings extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
+        Intent intent = new Intent(this, DisplayCards.class);
+        intent.putExtra("newUser", user);
+        startActivity(intent);
         super.onBackPressed();
-//        Intent intent = new Intent(this, DisplayCards.class);
-//        intent.putExtra("newUser", user);
-//        startActivity(intent);
     }
 }
