@@ -38,8 +38,13 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Ben McIntyre
- **/
+ * ViewCard class to display into the view_card activity.
+ *
+ *
+ * @author  Ben McIntyre
+ * @version 1.0
+ * @since   2021-01-26
+ */
 
 public class ViewCard extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -136,6 +141,7 @@ public class ViewCard extends AppCompatActivity {
 
         recyclerView.setAdapter(transactionAdapter);
 
+        // Adds a button to the screen to allow making payments.
         Button makePaymentButton = findViewById(R.id.makePaymentButton);
         makePaymentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +152,7 @@ public class ViewCard extends AppCompatActivity {
             }
         });
 
+        // Adds a button to topup the card.
         Button topupButton = findViewById(R.id.topupCardButton);
         topupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +162,7 @@ public class ViewCard extends AppCompatActivity {
             }
         });
 
+        // Adds a button to change the card.
         Button changeCardButton = findViewById(R.id.changeCardButton);
         changeCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +174,7 @@ public class ViewCard extends AppCompatActivity {
         });
     }
 
+    // Interacts with user to exit.
     @Override
     public void onBackPressed() {
         AlertDialog quitDialog = new AlertDialog.Builder(this)

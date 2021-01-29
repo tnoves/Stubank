@@ -8,7 +8,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.team46.stubank.Card;
 import com.team46.stubank.Transaction;
 
 import java.io.BufferedReader;
@@ -24,8 +23,13 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * @author Ben McIntyre
- **/
+ * Transaction Database access object class, retrieves Data from API connected to database.
+ *
+ *
+ * @author  Ben McIntyre
+ * @version 1.0
+ * @since   2020-12-10
+ */
 
 public class TransactionDAO {
 
@@ -43,6 +47,7 @@ public class TransactionDAO {
 
             JsonObject json = new JsonObject();
 
+            // Builds the json file to be sent to the API with required properties.
             json.addProperty("card_number", transaction.getCardNumber());
             json.addProperty("balance", transaction.getBalanceAtTransaction());
             json.addProperty("date", transaction.getDateTransaction());
@@ -54,6 +59,7 @@ public class TransactionDAO {
             dataOutputStream.writeBytes(json.toString());
             dataOutputStream.close();
 
+            // If the insert method is successful, the id assigned to the transaction by the database is returned in a response and assigned to the transaction.
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getErrorStream());
             } else {
@@ -94,6 +100,7 @@ public class TransactionDAO {
             conn.setRequestProperty("Accept", "application/json");
             conn.connect();
 
+            // If the transaction with corresponding id is found in the database, it is returned.
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("HttpResponseCode: " + conn.getResponseCode());
             } else {
@@ -144,7 +151,6 @@ public class TransactionDAO {
                 conn.connect();
 
                 // Get all transactions from an account.
-                // TODO: this only fetches transactions coming from the provided card ID, need another endpoint to fetch transactions going into the account. Alternative method is to create 2 opposite transactions when they're made.
                 if (conn.getResponseCode() != 200) {
                     throw new RuntimeException("HttpResponseCode: " + conn.getResponseCode());
                 } else {
@@ -160,6 +166,7 @@ public class TransactionDAO {
                     JsonArray json = JsonParser.parseString(response).getAsJsonArray();
                     List<Transaction> transactionList = new ArrayList<>();
 
+                    // Iterates through the elements in the returned json.
                     for (JsonElement transactions : json) {
                         JsonObject transactionObj = transactions.getAsJsonObject();
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
