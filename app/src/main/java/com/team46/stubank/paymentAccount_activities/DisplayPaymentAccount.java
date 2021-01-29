@@ -22,6 +22,14 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * DisplayPaymentAccount, Displays paymentAccounts to a GUI screen
+ *
+ *
+ * @author  Douglas Gray
+ * @version 1.0
+ * @since   2021-01-28
+ */
 
 public class DisplayPaymentAccount extends AppCompatActivity {
     private RecyclerView recyclerView;
