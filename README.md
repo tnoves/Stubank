@@ -25,3 +25,6 @@ username password
 Run the `api_main.py` file, and the API will be launched at `127.0.0.1:5000`.
 
 Then, launch the Android app.
+
+When creating a new account, make sure none of the input fields are empty and that the date is in format yyyy-mm-dd, and that password
+includes upper-case letters, lower-case letters, a digit, no white space, and any of the special characters [@#$%^&+=].
