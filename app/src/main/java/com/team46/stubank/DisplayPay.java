@@ -110,7 +110,7 @@ public class DisplayPay extends AppCompatActivity {
                             loading.setVisibility(View.GONE);
                         }
                     });
-                    executor.shutdown();
+
                 }
             });
 
@@ -152,6 +152,7 @@ public class DisplayPay extends AppCompatActivity {
                             // go back to view card screen after payment made
                             Intent intent = new Intent(viewPager.getContext(), ViewCard.class);
                             intent.putExtra("newUser", user);
+                            intent.putExtra("card", selectedCard);
                             viewPager.getContext().startActivity(intent);
                         } catch (Exception e) {
                             e.printStackTrace();
